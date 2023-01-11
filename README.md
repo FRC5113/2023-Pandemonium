@@ -1,2 +1,3 @@
-# 2023-Protrusion
-The Combustible Lemons' 2023 bot, temporarily nicknamed (Prodigious) Protrusion
+# 2023-Pandemonium
+The Combustible Lemons' 2023 bot, temporarily nicknamed Pandemonium
+
