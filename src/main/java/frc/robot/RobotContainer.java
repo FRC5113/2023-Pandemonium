@@ -11,6 +11,8 @@ import frc.robot.subsystems.ExampleSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.subsystems.*;
+import frc.robot.commands.*;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -20,10 +22,13 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
+  
+  private final S_PhotonVision photonVision = new S_PhotonVision();
+  private final S_DriveTrain driveTrain = new S_DriveTrain();
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
-  private final CommandXboxController m_driverController =
+  private final CommandXboxController driverController =
       new CommandXboxController(OperatorConstants.kDriverControllerPort);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -42,13 +47,8 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
-    new Trigger(m_exampleSubsystem::exampleCondition)
-        .onTrue(new ExampleCommand(m_exampleSubsystem));
-
-    // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
-    // cancelling on release.
-    m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
+    photonVision.setDefaultCommand(new D_OutputTelemetry(photonVision));
+    driveTrain.setDefaultCommand(new D_TeleopDrive(driveTrain, ()->driverController.getLeftY(), ()->driverController.getRightY()));
   }
 
   /**
@@ -59,5 +59,14 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
     return Autos.exampleAuto(m_exampleSubsystem);
+  }
+
+  public void teleInit(){
+    photonVision.register();
+  }
+
+  public void robotPeriodic(){
+    driveTrain.updateOdometry();
+    driveTrain.addVisionMeasurement(photonVision.getEstimatedGlobalPose(driveTrain.getEstimatedPose()));
   }
 }
