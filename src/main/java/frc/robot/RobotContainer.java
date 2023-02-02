@@ -22,8 +22,7 @@ import frc.robot.commands.*;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  
-  private final S_PhotonVision photonVision = new S_PhotonVision();
+
   private final S_DriveTrain driveTrain = new S_DriveTrain();
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
 
@@ -47,7 +46,6 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    photonVision.setDefaultCommand(new D_OutputTelemetry(photonVision));
     driveTrain.setDefaultCommand(new D_TeleopDrive(driveTrain, ()->driverController.getLeftY(), ()->driverController.getRightY()));
   }
 
@@ -62,11 +60,9 @@ public class RobotContainer {
   }
 
   public void teleInit(){
-    photonVision.register();
   }
 
   public void robotPeriodic(){
-    driveTrain.updateOdometry();
-    driveTrain.addVisionMeasurement(photonVision.getEstimatedGlobalPose(driveTrain.getEstimatedPose()));
+
   }
 }
