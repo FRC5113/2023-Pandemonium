@@ -6,12 +6,12 @@ package com.frc5113.robot;
 
 import com.frc5113.robot.commands.drive.D_TeleopDrive;
 import com.frc5113.robot.constants.OperatorInterfaceConstants;
+import com.frc5113.robot.subsystems.*;
 import com.frc5113.robot.subsystems.S_DriveTrain;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import com.frc5113.robot.subsystems.*;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -44,7 +44,8 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    driveTrain.setDefaultCommand(new D_TeleopDrive(driveTrain, driverController::getLeftY, driverController::getRightY));
+    driveTrain.setDefaultCommand(
+        new D_TeleopDrive(driveTrain, driverController::getLeftY, driverController::getRightY));
   }
 
   /**
@@ -57,7 +58,7 @@ public class RobotContainer {
     return new InstantCommand(() -> {});
   }
 
-  public void teleopInit(){}
+  public void teleopInit() {}
 
   public void robotPeriodic() {}
 }

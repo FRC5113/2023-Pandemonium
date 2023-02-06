@@ -4,10 +4,9 @@
 
 package com.frc5113.robot.commands.drive;
 
-import java.util.function.Supplier;
-
 import com.frc5113.robot.subsystems.S_DriveTrain;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import java.util.function.Supplier;
 
 public class D_TeleopDrive extends CommandBase {
 
@@ -16,7 +15,8 @@ public class D_TeleopDrive extends CommandBase {
   private final Supplier<Double> rightSpeed;
 
   /** Creates a new DEF_DriveTrain. */
-  public D_TeleopDrive(S_DriveTrain driveTrain, Supplier<Double> leftSpeed, Supplier<Double> rightSpeed) {
+  public D_TeleopDrive(
+      S_DriveTrain driveTrain, Supplier<Double> leftSpeed, Supplier<Double> rightSpeed) {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(driveTrain);
 

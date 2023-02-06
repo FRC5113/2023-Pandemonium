@@ -11,7 +11,7 @@ In that order
 
 ## Naming
 1. Variables are in camel case: `autoProgramsChooser`, `teleopInit`
-2. Except for constants, which **must** be `final` and `static` are in screaming snake case: `LEFT_PARENT_MOTOR_ID` 
+2. Except for constants, which **must** be `final` and `static` are in screaming snake case: `LEFT_PARENT_MOTOR_ID`
 3. Class names must make clear what it does
 
 | Class Name | Abbreviation | Explanation                                 |

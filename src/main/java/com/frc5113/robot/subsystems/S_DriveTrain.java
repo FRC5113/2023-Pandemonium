@@ -4,15 +4,14 @@
 
 package com.frc5113.robot.subsystems;
 
+import static com.frc5113.robot.constants.DrivetrainConstants.*;
+
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-
 import java.security.InvalidParameterException;
-
-import static com.frc5113.robot.constants.DrivetrainConstants.*;
 
 public class S_DriveTrain extends SubsystemBase {
   private final CANSparkMax leftLeader;
@@ -41,9 +40,10 @@ public class S_DriveTrain extends SubsystemBase {
     drive = new DifferentialDrive(leftGroup, rightGroup);
   }
 
-  public void tankDrive(double leftSpeed, double rightSpeed){
+  public void tankDrive(double leftSpeed, double rightSpeed) {
     if (leftSpeed < -1 || leftSpeed > 1 || rightSpeed < -1 || rightSpeed > 1) {
-      throw new InvalidParameterException("Left=" + leftSpeed + " Right=" + rightSpeed + " - MUST -1 < Left||Right < 1");
+      throw new InvalidParameterException(
+          "Left=" + leftSpeed + " Right=" + rightSpeed + " - MUST -1 < Left||Right < 1");
     }
     drive.tankDrive(leftSpeed, rightSpeed);
   }
