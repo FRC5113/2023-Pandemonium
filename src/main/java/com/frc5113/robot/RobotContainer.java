@@ -4,10 +4,10 @@
 
 package com.frc5113.robot;
 
-import com.frc5113.robot.commands.drive.D_TeleopDrive;
+import com.frc5113.robot.commands.drive.*;
+import com.frc5113.robot.commands.photonvision.*;
 import com.frc5113.robot.constants.OperatorInterfaceConstants;
 import com.frc5113.robot.subsystems.*;
-import com.frc5113.robot.subsystems.S_DriveTrain;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -23,6 +23,7 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
 
   public final S_DriveTrain driveTrain = new S_DriveTrain();
+  public final S_PhotonVision photonVision = new S_PhotonVision();
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   private final CommandXboxController driverController =
@@ -46,6 +47,8 @@ public class RobotContainer {
   private void configureBindings() {
     driveTrain.setDefaultCommand(
         new D_TeleopDrive(driveTrain, driverController::getLeftY, driverController::getRightY));
+
+    photonVision.setDefaultCommand(new D_OutputTelemetry(photonVision));
   }
 
   /**
