@@ -2,7 +2,7 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands;
+package frc.robot.commands.drive;
 
 import java.util.function.Supplier;
 
@@ -11,15 +11,18 @@ import frc.robot.subsystems.S_DriveTrain;
 
 public class D_TeleopDrive extends CommandBase {
 
-  private S_DriveTrain driveTrain;
-  private Supplier<Double> leftSpeed, rightSpeed;
+  private final S_DriveTrain driveTrain;
+  private final Supplier<Double> leftSpeed;
+  private final Supplier<Double> rightSpeed;
+
   /** Creates a new DEF_DriveTrain. */
   public D_TeleopDrive(S_DriveTrain driveTrain, Supplier<Double> leftSpeed, Supplier<Double> rightSpeed) {
     // Use addRequirements() here to declare subsystem dependencies.
+    addRequirements(driveTrain);
+
     this.leftSpeed = leftSpeed;
     this.rightSpeed = rightSpeed;
     this.driveTrain = driveTrain;
-    addRequirements(driveTrain);
   }
 
   // Called when the command is initially scheduled.
