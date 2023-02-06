@@ -2,12 +2,12 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands.drive;
+package com.frc5113.robot.commands.drive;
 
 import java.util.function.Supplier;
 
+import com.frc5113.robot.subsystems.S_DriveTrain;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.S_DriveTrain;
 
 public class D_TeleopDrive extends CommandBase {
 
