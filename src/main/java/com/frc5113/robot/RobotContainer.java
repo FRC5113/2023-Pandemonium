@@ -60,5 +60,7 @@ public class RobotContainer {
 
   public void teleopInit() {}
 
-  public void robotPeriodic() {}
+  public void robotPeriodic() {
+    driveTrain.updateOdometry();
+  }
 }
