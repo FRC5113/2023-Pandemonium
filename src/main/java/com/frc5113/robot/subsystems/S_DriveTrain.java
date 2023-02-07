@@ -102,6 +102,18 @@ public class S_DriveTrain extends SubsystemBase {
     return Units.inchesToMeters((WHEEL_CIRCUMFERENCE / GEAR_RATIO) * position);
   }
 
+  public float pitch() {
+    return navX.getPitch();
+  }
+
+  public float yaw() {
+    return navX.getYaw();
+  }
+
+  public float roll(){
+    return navX.getRoll();
+  }
+
   // GETTERS
   public CANSparkMax getLeftFollower() {
     return leftFollower;
