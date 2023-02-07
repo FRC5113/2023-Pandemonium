@@ -9,7 +9,6 @@ import static com.frc5113.robot.constants.DrivetrainConstants.*;
 import com.frc5113.library.motors.SmartNeo;
 import com.frc5113.library.subsystem.SmartSubsystem;
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.RelativeEncoder;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;

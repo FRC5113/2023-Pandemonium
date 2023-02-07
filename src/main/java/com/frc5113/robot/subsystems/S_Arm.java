@@ -56,6 +56,8 @@ public class S_Arm extends SmartSubsystem {
   public void outputTelemetry() {
     SmartDashboard.putData("Arm: leftFalcon", leftFalcon);
     SmartDashboard.putData("Arm: rightFalcon", rightFalcon);
+    SmartDashboard.putNumber("Arm: leftFalconTicks", leftFalcon.getEncoderTicks());
+    SmartDashboard.putNumber("Arm: rightFalconTicks", rightFalcon.getEncoderTicks());
   }
 
   @Override
@@ -74,5 +76,9 @@ public class S_Arm extends SmartSubsystem {
 
   public MotorControllerGroup getArmGroup() {
     return armGroup;
+  }
+
+  public double getTickPosition() {
+    return rightFalcon.getEncoderTicks();
   }
 }
