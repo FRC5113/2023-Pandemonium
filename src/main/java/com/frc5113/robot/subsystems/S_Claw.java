@@ -10,9 +10,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class S_Claw extends SubsystemBase {
   /** Creates a new S_Claw. */
-
   public final DoubleSolenoid clawSolenoid;
-   
+
   public S_Claw() {
     clawSolenoid = new DoubleSolenoid(PneumaticsModuleType.REVPH, 0, 1);
   }
