@@ -6,31 +6,39 @@ package com.frc5113.robot.subsystems;
 
 import static com.frc5113.robot.constants.DrivetrainConstants.*;
 
+import com.frc5113.library.motors.SmartNeo;
+import com.frc5113.library.subsystem.SmartSubsystem;
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.revrobotics.CANSparkMax.IdleMode;
+import com.revrobotics.RelativeEncoder;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import java.security.InvalidParameterException;
 
 /** The drivetrain, well... drives */
-public class S_DriveTrain extends SubsystemBase {
-  private final CANSparkMax leftLeader;
-  private final CANSparkMax leftFollower;
-  private final CANSparkMax rightLeader;
-  private final CANSparkMax rightFollower;
+public class S_DriveTrain extends SmartSubsystem {
+  private final SmartNeo leftLeader;
+  private final SmartNeo leftFollower;
+  private final SmartNeo rightLeader;
+  private final SmartNeo rightFollower;
+
+  private final RelativeEncoder leftLeaderEncoder;
+  private final RelativeEncoder rightLeaderEncoder;
+  private final RelativeEncoder leftFollowerEncoder;
+  private final RelativeEncoder rightFolowerEncoder;
 
   private final MotorControllerGroup leftGroup;
   private final MotorControllerGroup rightGroup;
 
   private final DifferentialDrive drive;
 
-  /** Creates a new SUB_DriveTrain. */
+  /** Creates a new DriveTrain. */
   public S_DriveTrain() {
-    leftLeader = new CANSparkMax(LEFT_LEADER_ID, MotorType.kBrushless);
-    leftFollower = new CANSparkMax(LEFT_FOLLOWER_ID, MotorType.kBrushless);
-    rightLeader = new CANSparkMax(RIGHT_LEADER_ID, MotorType.kBrushless);
-    rightFollower = new CANSparkMax(RIGHT_FOLLOWER_ID, MotorType.kBrushless);
+    leftLeader = new SmartNeo(LEFT_LEADER_ID, MOTOR_MODE);
+    leftFollower = new SmartNeo(LEFT_FOLLOWER_ID, MOTOR_MODE);
+    rightLeader = new SmartNeo(RIGHT_LEADER_ID, MOTOR_MODE);
+    rightFollower = new SmartNeo(RIGHT_FOLLOWER_ID, MOTOR_MODE);
 
     leftGroup = new MotorControllerGroup(leftLeader, leftFollower);
     rightGroup = new MotorControllerGroup(rightLeader, rightFollower);
@@ -39,6 +47,12 @@ public class S_DriveTrain extends SubsystemBase {
     rightGroup.setInverted(false);
 
     drive = new DifferentialDrive(leftGroup, rightGroup);
+
+    // Generate the onboard encoders
+    leftLeaderEncoder = leftLeader.encoder;
+    rightLeaderEncoder = rightLeader.encoder;
+    leftFollowerEncoder = leftFollower.encoder;
+    rightFolowerEncoder = rightFollower.encoder;
   }
 
   public void tankDrive(double leftSpeed, double rightSpeed) {
@@ -52,6 +66,35 @@ public class S_DriveTrain extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+  }
+
+  // Methods required by SmartSubsystem
+  @Override
+  public void outputTelemetry() {
+    SmartDashboard.putData("Drive: Diff Drive", drive);
+    SmartDashboard.putNumber("Drive: Right Leader Enc", rightLeaderEncoder.getPosition());
+    SmartDashboard.putNumber("Drive: Left Leader Enc", leftLeaderEncoder.getPosition());
+    SmartDashboard.putNumber("Drive: Right Follower Enc", rightFolowerEncoder.getPosition());
+    SmartDashboard.putNumber("Drive: Left Follower Enc", leftFollowerEncoder.getPosition());
+  }
+
+  @Override
+  public void zeroSensors() {
+    leftLeaderEncoder.setPosition(0);
+    leftFollowerEncoder.setPosition(0);
+    rightLeaderEncoder.setPosition(0);
+    rightFolowerEncoder.setPosition(0);
+  }
+
+  @Override
+  public boolean checkSubsystem() {
+    return true; // TODO: FIXME
+  }
+
+  @Override
+  public void stop() {
+    rightGroup.set(0);
+    leftGroup.set(0);
   }
 
   // GETTERS
