@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import java.security.InvalidParameterException;
 
+/** The drivetrain, well... drives */
 public class S_DriveTrain extends SubsystemBase {
   private final CANSparkMax leftLeader;
   private final CANSparkMax leftFollower;

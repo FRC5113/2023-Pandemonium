@@ -20,11 +20,21 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
-  // The robot's subsystems and commands are defined here...
+  // Robot subsystems
+  /** Neo Drivetrain responsible for robot movement (Subsystem) */
+  private final S_DriveTrain driveTrain = new S_DriveTrain();
 
-  public final S_DriveTrain driveTrain = new S_DriveTrain();
+  /** General pneumatics controller from which pneumatic components are derived */
+  private final S_Pneumatics pneumatics = new S_Pneumatics();
 
-  // Replace with CommandPS4Controller or CommandJoystick if needed
+  /** Claw pneumatic component (derived from pneumatics) */
+  private final S_Claw claw = pneumatics.getClaw();
+
+  /** Arm/truss subsystem */
+  private final S_Arm arm = new S_Arm();
+
+  // Operator interface
+  /** Xbox controller used by primary driver */
   private final CommandXboxController driverController =
       new CommandXboxController(OperatorInterfaceConstants.DRIVER_CONTROLLER_PORT);
 
@@ -54,11 +64,12 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    // An example command will be run in autonomous
     return new InstantCommand(() -> {});
   }
 
+  public void robotPeriodic() {}
+
   public void teleopInit() {}
 
-  public void robotPeriodic() {}
+  public void testPeriodic() {}
 }

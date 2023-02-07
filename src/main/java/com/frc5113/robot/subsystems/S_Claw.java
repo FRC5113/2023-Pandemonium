@@ -4,20 +4,62 @@
 
 package com.frc5113.robot.subsystems;
 
+import static com.frc5113.robot.constants.PneumaticsConstants.*;
+
+import com.frc5113.library.subsystem.SmartSubsystem;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
-import edu.wpi.first.wpilibj.PneumaticsModuleType;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj.PneumaticsBase;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public class S_Claw extends SubsystemBase {
-  /** Creates a new S_Claw. */
-  public final DoubleSolenoid clawSolenoid;
+/** The claw is a primarily pneumatic open/close mechanism for game piece acquisition */
+public class S_Claw extends SmartSubsystem {
+  private final DoubleSolenoid clawSolenoid;
+  private final PneumaticsBase hub;
 
-  public S_Claw() {
-    clawSolenoid = new DoubleSolenoid(PneumaticsModuleType.REVPH, 0, 1);
+  /** Creates a new Claw Subsystem. */
+  public S_Claw(PneumaticsBase hub) {
+    clawSolenoid = hub.makeDoubleSolenoid(CLAW_FORWARD_SOLENOID_ID, CLAW_BACKWARD_SOLENOID_ID);
+    this.hub = hub;
+  }
+
+  public DoubleSolenoid getClawSolenoid() {
+    return clawSolenoid;
+  }
+
+  public void actuate() {
+    clawSolenoid.toggle();
+  }
+
+  public void expand() {
+    clawSolenoid.set(DoubleSolenoid.Value.kReverse);
+  }
+
+  public void contract() {
+    clawSolenoid.set(DoubleSolenoid.Value.kForward);
+  }
+
+  // methods required by SmartSubsystem
+  @Override
+  public void outputTelemetry() {
+    SmartDashboard.putData("Claw: clawSolenoid", clawSolenoid);
   }
 
   @Override
-  public void periodic() {
-    // This method will be called once per scheduler run
+  public void stop() {
+    contract();
   }
+
+  @Override
+  public void zeroSensors() {
+    contract();
+  }
+
+  @Override
+  public boolean checkSubsystem() {
+    return hub.checkSolenoidChannel(CLAW_BACKWARD_SOLENOID_ID)
+        && hub.checkSolenoidChannel(CLAW_FORWARD_SOLENOID_ID);
+  }
+
+  @Override
+  public void periodic() {}
 }
