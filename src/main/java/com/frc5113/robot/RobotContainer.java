@@ -11,6 +11,7 @@ import com.frc5113.robot.subsystems.*;
 import com.frc5113.robot.subsystems.S_DriveTrain;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
@@ -29,6 +30,11 @@ public class RobotContainer {
   private final CommandXboxController driverController =
       new CommandXboxController(OperatorInterfaceConstants.DRIVER_CONTROLLER_PORT);
 
+  private final CommandJoystick leftJoy =
+      new CommandJoystick(OperatorInterfaceConstants.LEFT_JOYSTICK_PORT);
+  private final CommandJoystick rightJoy =
+      new CommandJoystick(OperatorInterfaceConstants.RIGHT_JOYSTICK_PORT);
+
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the trigger bindings
@@ -45,8 +51,7 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    driveTrain.setDefaultCommand(
-        new D_TeleopDrive(driveTrain, driverController::getLeftY, driverController::getRightY));
+    driveTrain.setDefaultCommand(new D_TeleopDrive(driveTrain, leftJoy::getY, leftJoy::getY));
 
     driverController.a().whileTrue(new C_ResetOdometry(driveTrain));
   }

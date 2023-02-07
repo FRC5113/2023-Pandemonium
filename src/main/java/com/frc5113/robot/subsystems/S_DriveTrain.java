@@ -102,21 +102,42 @@ public class S_DriveTrain extends SubsystemBase {
   public double posToMeters(double position) {
     return Units.inchesToMeters((WHEEL_CIRCUMFERENCE / GEAR_RATIO) * position);
   }
+  //navX info
+
+  public double angle() {
+    return navX.getAngle();
+  }
+
+  public double angle(double deadband) {
+    if(Math.abs(navX.getAngle()) < deadband) {
+      return 0;
+    } else {
+      return navX.getAngle();
+    }
+  }
 
   public float pitch() {
     return navX.getPitch();
   }
 
-  public float yaw() {
-    return navX.getYaw();
+  public float pitch(double deadband) {
+    if(Math.abs(navX.getPitch()) < deadband) {
+      return 0;
+    } else {
+      return navX.getPitch();
+    }
   }
 
   public float roll() {
     return navX.getRoll();
   }
 
-  public double angle() {
-    return navX.getAngle();
+  public float roll(double deadband) {
+    if(Math.abs(navX.getRoll()) < deadband) {
+      return 0;
+    } else {
+      return navX.getRoll();
+    }
   }
 
   public void resetGyro() {
@@ -134,6 +155,7 @@ public class S_DriveTrain extends SubsystemBase {
   public void resetOdometry() {
     resetGyro();
     resetEncoders();
+    updateOdometry();
   }
 
   public void outputTelemetry() {
@@ -143,9 +165,8 @@ public class S_DriveTrain extends SubsystemBase {
     SmartDashboard.putNumber("Drive: rightLeaderRotations", rightLeader.getEncoder().getPosition());
     SmartDashboard.putNumber(
         "Drive: rightFollowerRotations", rightFollower.getEncoder().getPosition());
-    SmartDashboard.putNumber("NavX: angle", angle());
+    SmartDashboard.putNumber("NavX: angle/yaw", angle());
     SmartDashboard.putNumber("NavX: pitch", pitch());
-    SmartDashboard.putNumber("NavX: yaw", yaw());
     SmartDashboard.putNumber("NavX: roll", roll());
   }
 
