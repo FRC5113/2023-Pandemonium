@@ -17,6 +17,7 @@ import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import java.security.InvalidParameterException;
 
@@ -110,8 +111,42 @@ public class S_DriveTrain extends SubsystemBase {
     return navX.getYaw();
   }
 
-  public float roll(){
+  public float roll() {
     return navX.getRoll();
+  }
+
+  public double angle() {
+    return navX.getAngle();
+  }
+
+  public void resetGyro() {
+    navX.reset();
+    navX.resetDisplacement();
+  }
+
+  public void resetEncoders() {
+    leftLeader.getEncoder().setPosition(0);
+    leftFollower.getEncoder().setPosition(0);
+    rightLeader.getEncoder().setPosition(0);
+    rightFollower.getEncoder().setPosition(0);
+  }
+
+  public void resetOdometry() {
+    resetGyro();
+    resetEncoders();
+  }
+
+  public void outputTelemetry() {
+    SmartDashboard.putNumber("Drive: leftLeaderRotations", leftLeader.getEncoder().getPosition());
+    SmartDashboard.putNumber(
+        "Drive: leftFollowerRotations", leftFollower.getEncoder().getPosition());
+    SmartDashboard.putNumber("Drive: rightLeaderRotations", rightLeader.getEncoder().getPosition());
+    SmartDashboard.putNumber(
+        "Drive: rightFollowerRotations", rightFollower.getEncoder().getPosition());
+    SmartDashboard.putNumber("NavX: angle", angle());
+    SmartDashboard.putNumber("NavX: pitch", pitch());
+    SmartDashboard.putNumber("NavX: yaw", yaw());
+    SmartDashboard.putNumber("NavX: roll", roll());
   }
 
   // GETTERS

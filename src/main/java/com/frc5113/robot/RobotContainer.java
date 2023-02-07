@@ -4,6 +4,7 @@
 
 package com.frc5113.robot;
 
+import com.frc5113.robot.commands.C_ResetOdometry;
 import com.frc5113.robot.commands.drive.D_TeleopDrive;
 import com.frc5113.robot.constants.OperatorInterfaceConstants;
 import com.frc5113.robot.subsystems.*;
@@ -46,6 +47,8 @@ public class RobotContainer {
   private void configureBindings() {
     driveTrain.setDefaultCommand(
         new D_TeleopDrive(driveTrain, driverController::getLeftY, driverController::getRightY));
+
+    driverController.a().whileTrue(new C_ResetOdometry(driveTrain));
   }
 
   /**
