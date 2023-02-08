@@ -4,6 +4,7 @@
 
 package com.frc5113.robot;
 
+import com.frc5113.robot.commands.auto.Autos;
 import com.frc5113.robot.commands.drive.D_TeleopDrive;
 import com.frc5113.robot.constants.OperatorInterfaceConstants;
 import com.frc5113.robot.subsystems.*;
@@ -63,7 +64,7 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    return new InstantCommand(() -> {});
+    return Autos.driveBackward(driveTrain); // Do Nothing: new InstantCommand(() -> {});
   }
 
   public void robotPeriodic() {}

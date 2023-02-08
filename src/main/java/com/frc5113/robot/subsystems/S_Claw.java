@@ -7,6 +7,8 @@ package com.frc5113.robot.subsystems;
 import static com.frc5113.robot.constants.PneumaticsConstants.*;
 
 import com.frc5113.library.subsystem.SmartSubsystem;
+import com.frc5113.robot.enums.ClawState;
+
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PneumaticsBase;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -15,6 +17,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class S_Claw extends SmartSubsystem {
   private final DoubleSolenoid clawSolenoid;
   private final PneumaticsBase hub;
+  /** Save some CAN time by storing state */
+  private ClawState state;
 
   /** Creates a new Claw Subsystem. */
   public S_Claw(PneumaticsBase hub) {
@@ -28,14 +32,17 @@ public class S_Claw extends SmartSubsystem {
 
   public void actuate() {
     clawSolenoid.toggle();
+    setState(clawSolenoid.get());
   }
 
   public void expand() {
     clawSolenoid.set(DoubleSolenoid.Value.kReverse);
+    setState(DoubleSolenoid.Value.kReverse);
   }
 
   public void contract() {
     clawSolenoid.set(DoubleSolenoid.Value.kForward);
+    setState(DoubleSolenoid.Value.kReverse);
   }
 
   // methods required by SmartSubsystem
@@ -62,4 +69,20 @@ public class S_Claw extends SmartSubsystem {
 
   @Override
   public void periodic() {}
+
+  // getters
+  public static ClawState solenoidToClawState(DoubleSolenoid.Value v) {
+    if (v == DoubleSolenoid.Value.kForward) {
+      return ClawState.Closed;
+    }
+    return ClawState.Open;
+  }
+
+  public ClawState getState() {
+      return state;
+  }
+
+  private void setState(ClawState state) {
+    this.state = state;
+  }
 }
