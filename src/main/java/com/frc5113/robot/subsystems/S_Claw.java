@@ -8,8 +8,8 @@ import static com.frc5113.robot.constants.PneumaticsConstants.*;
 
 import com.frc5113.library.subsystem.SmartSubsystem;
 import com.frc5113.robot.enums.ClawState;
-
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.PneumaticsBase;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -32,17 +32,17 @@ public class S_Claw extends SmartSubsystem {
 
   public void actuate() {
     clawSolenoid.toggle();
-    setState(clawSolenoid.get());
+    setState(solenoidToClawState(clawSolenoid.get()));
   }
 
   public void expand() {
     clawSolenoid.set(DoubleSolenoid.Value.kReverse);
-    setState(DoubleSolenoid.Value.kReverse);
+    setState(solenoidToClawState(Value.kReverse));
   }
 
   public void contract() {
     clawSolenoid.set(DoubleSolenoid.Value.kForward);
-    setState(DoubleSolenoid.Value.kReverse);
+    setState(solenoidToClawState(Value.kForward));
   }
 
   // methods required by SmartSubsystem
@@ -79,7 +79,7 @@ public class S_Claw extends SmartSubsystem {
   }
 
   public ClawState getState() {
-      return state;
+    return state;
   }
 
   private void setState(ClawState state) {

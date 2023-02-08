@@ -5,7 +5,6 @@
 package com.frc5113.robot.commands.auto;
 
 import com.frc5113.robot.subsystems.S_DriveTrain;
-
 import edu.wpi.first.wpilibj2.command.Command;
 
 public final class Autos {
@@ -26,7 +25,8 @@ public final class Autos {
     return driveBackward(drive, power, power, endTime);
   }
 
-  public static Command driveBackward(S_DriveTrain drive, double powerLeft, double powerRight, double endTime) {
+  public static Command driveBackward(
+      S_DriveTrain drive, double powerLeft, double powerRight, double endTime) {
     return new A_AutoDrive(drive, () -> powerLeft, () -> powerRight, endTime);
   }
 }

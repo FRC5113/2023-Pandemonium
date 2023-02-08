@@ -4,16 +4,15 @@
 
 package com.frc5113.robot.commands.auto;
 
-import java.util.function.Supplier;
-
 import com.frc5113.robot.subsystems.S_DriveTrain;
-
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import java.util.function.Supplier;
 
 public class A_AutoDrive extends CommandBase {
   /** Creates a new AutoDriveCommand. */
   private final S_DriveTrain drive;
+
   private final Supplier<Double> rightSpeed;
   private final Supplier<Double> leftSpeed;
   private final double endTime;
@@ -22,12 +21,14 @@ public class A_AutoDrive extends CommandBase {
 
   /**
    * Custom drive command with a timeout
+   *
    * @param drive Drivetrain instance
    * @param leftSpeed Supplier for speed on the left side
    * @param rightSpeed Supplier for speed on the right side
    * @param endTime Time (in seconds) to finish at
    */
-  public A_AutoDrive(S_DriveTrain drive, Supplier<Double> leftSpeed, Supplier<Double> rightSpeed, double endTime) {
+  public A_AutoDrive(
+      S_DriveTrain drive, Supplier<Double> leftSpeed, Supplier<Double> rightSpeed, double endTime) {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(drive);
 
