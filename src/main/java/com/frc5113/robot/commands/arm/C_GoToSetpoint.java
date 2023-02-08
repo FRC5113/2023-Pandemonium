@@ -4,16 +4,16 @@
 
 package com.frc5113.robot.commands.arm;
 
-import com.frc5113.robot.enums.ArmPosition;
-import com.frc5113.robot.subsystems.S_Arm;
-
-import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.wpilibj2.command.PIDCommand;
-import static com.frc5113.robot.constants.ArmConstants.kP;
-import static com.frc5113.robot.constants.ArmConstants.kI;
 import static com.frc5113.robot.constants.ArmConstants.kD;
+import static com.frc5113.robot.constants.ArmConstants.kI;
+import static com.frc5113.robot.constants.ArmConstants.kP;
 import static com.frc5113.robot.constants.ArmConstants.kTolerance;
 import static com.frc5113.robot.constants.ArmConstants.kVTolerance;
+
+import com.frc5113.robot.enums.ArmPosition;
+import com.frc5113.robot.subsystems.S_Arm;
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj2.command.PIDCommand;
 
 public class C_GoToSetpoint extends PIDCommand {
   /** Creates a new C_GoToSetpoint. */
@@ -27,7 +27,7 @@ public class C_GoToSetpoint extends PIDCommand {
         () -> setpoint.getSetpoint(),
         // This uses the output
         output -> {
-          // Use output to set position on arm 
+          // Use output to set position on arm
           arm.setPosition(output);
         },
         arm);
