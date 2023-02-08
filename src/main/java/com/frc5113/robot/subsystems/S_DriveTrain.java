@@ -116,6 +116,14 @@ public class S_DriveTrain extends SubsystemBase {
     }
   }
 
+  public double angle(double deadband, float offset) {
+    if(Math.abs(navX.getAngle()) < deadband) {
+      return 0;
+    } else {
+      return navX.getAngle() - offset;
+    }
+  }
+
   public float pitch() {
     return navX.getPitch();
   }
@@ -128,6 +136,14 @@ public class S_DriveTrain extends SubsystemBase {
     }
   }
 
+  public float pitch(double deadband, float offset) {
+    if(Math.abs(navX.getPitch()) < deadband) {
+      return 0;
+    } else {
+      return navX.getPitch() - offset;
+    }
+  }
+
   public float roll() {
     return navX.getRoll();
   }
@@ -137,6 +153,14 @@ public class S_DriveTrain extends SubsystemBase {
       return 0;
     } else {
       return navX.getRoll();
+    }
+  }
+
+  public float roll(double deadband, float offset) {
+    if(Math.abs(navX.getRoll()) < deadband) {
+      return 0;
+    } else {
+      return navX.getRoll() - offset;
     }
   }
 
