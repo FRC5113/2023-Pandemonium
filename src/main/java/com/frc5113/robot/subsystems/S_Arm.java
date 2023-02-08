@@ -7,6 +7,7 @@ package com.frc5113.robot.subsystems;
 import static com.frc5113.robot.constants.ArmConstants.LEFT_FALCON_CAN_ID;
 import static com.frc5113.robot.constants.ArmConstants.RIGHT_FALCON_CAN_ID;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.frc5113.library.motors.SmartFalcon;
 import com.frc5113.library.subsystem.SmartSubsystem;
@@ -25,16 +26,18 @@ public class S_Arm extends SmartSubsystem {
   /** Falcon located left of robot */
   private final SmartFalcon leftFalcon;
 
-  /** Group of arm motors */
-  private final MotorControllerGroup armGroup;
-
   /** Creates a new Arm Subsystem. */
   public S_Arm() {
     rightFalcon = new SmartFalcon(RIGHT_FALCON_CAN_ID); // create a regular falcon on the right side
     leftFalcon =
         new SmartFalcon(LEFT_FALCON_CAN_ID, true); // create a inverted falcon on the left side
 
-    armGroup = new MotorControllerGroup(rightFalcon, leftFalcon);
+    leftFalcon.follow(rightFalcon); // this is necessary, and motor controller groups can't be used
+    // because we will be using "position set()"
+  }
+
+  public void setPosition(double position) {
+    rightFalcon.set(ControlMode.Position, position);
   }
 
   @Override
@@ -49,7 +52,7 @@ public class S_Arm extends SmartSubsystem {
 
   @Override
   public void stop() {
-    armGroup.set(0);
+    rightFalcon.set(0);
   }
 
   @Override
@@ -72,10 +75,6 @@ public class S_Arm extends SmartSubsystem {
 
   public WPI_TalonFX getRightFalcon() {
     return rightFalcon;
-  }
-
-  public MotorControllerGroup getArmGroup() {
-    return armGroup;
   }
 
   public double getTickPosition() {
