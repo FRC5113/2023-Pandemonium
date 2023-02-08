@@ -45,6 +45,10 @@ public class S_Claw extends SmartSubsystem {
     setState(solenoidToClawState(Value.kForward));
   }
 
+  public void set(ClawState clawState) {
+    clawSolenoid.set(clawStateToSolenoid(clawState));
+  }
+
   // methods required by SmartSubsystem
   @Override
   public void outputTelemetry() {
@@ -76,6 +80,13 @@ public class S_Claw extends SmartSubsystem {
       return ClawState.Closed;
     }
     return ClawState.Open;
+  }
+
+  public static DoubleSolenoid.Value clawStateToSolenoid(ClawState v) {
+    if (v == ClawState.Closed) {
+      return DoubleSolenoid.Value.kForward;
+    }
+    return DoubleSolenoid.Value.kReverse;
   }
 
   public ClawState getState() {

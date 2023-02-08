@@ -4,13 +4,13 @@
 
 package com.frc5113.robot.commands.claw;
 
+import com.frc5113.robot.enums.ClawState;
 import com.frc5113.robot.subsystems.S_Claw;
-import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 public class C_ActuateClaw extends CommandBase {
   public final S_Claw claw;
-  public DoubleSolenoid.Value state;
+  public ClawState state;
 
   /** Creates a new C_ActuateClaw. */
   public C_ActuateClaw(S_Claw claw) {
@@ -20,16 +20,21 @@ public class C_ActuateClaw extends CommandBase {
   }
 
   /** Creates a new ActuateClaw with tostate. */
-  public C_ActuateClaw(S_Claw claw, DoubleSolenoid.Value state) {
+  public C_ActuateClaw(S_Claw claw, ClawState state) {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(claw);
     this.claw = claw;
+    this.state = state;
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    claw.actuate();
+    if (state == null) {
+      claw.actuate();
+    } else {
+      claw.set(state);
+    }
   }
 
   // Called every time the scheduler runs while the command is scheduled.
