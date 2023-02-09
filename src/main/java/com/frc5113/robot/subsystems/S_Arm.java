@@ -8,13 +8,15 @@ import static com.frc5113.robot.constants.ArmConstants.LEFT_FALCON_CAN_ID;
 import static com.frc5113.robot.constants.ArmConstants.RIGHT_FALCON_CAN_ID;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+<<<<<<< HEAD
 import com.ctre.phoenix.motorcontrol.NeutralMode;
+=======
+>>>>>>> vb-commands
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.frc5113.library.loops.ILooper;
 import com.frc5113.library.loops.Loop;
 import com.frc5113.library.motors.SmartFalcon;
 import com.frc5113.library.subsystem.SmartSubsystem;
-import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
@@ -37,8 +39,8 @@ public class S_Arm extends SmartSubsystem {
     rightFalcon = new SmartFalcon(RIGHT_FALCON_CAN_ID); // create a regular falcon on the right side
     leftFalcon =
         new SmartFalcon(LEFT_FALCON_CAN_ID, true); // create a inverted falcon on the left side
-
-    leftFalcon.follow(rightFalcon);
+    leftFalcon.follow(rightFalcon); // this is necessary, and motor controller groups can't be used
+    // because we will be using "position set()"
   }
 
   // Stuff required by SmartSubsystem
