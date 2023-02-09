@@ -52,8 +52,10 @@ public class RobotContainer {
    */
   private void configureBindings() {
     driveTrain.setDefaultCommand(new D_TeleopDrive(driveTrain, leftJoy::getY, leftJoy::getY));
+    int joyOne = 1;
 
     driverController.a().whileTrue(new C_ResetOdometry(driveTrain));
+    leftJoy.button(joyOne).whileTrue(new C_ResetOdometry(driveTrain));
   }
 
   /**

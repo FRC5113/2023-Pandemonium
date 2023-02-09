@@ -192,6 +192,8 @@ public class S_DriveTrain extends SubsystemBase {
     SmartDashboard.putNumber("NavX: angle/yaw", angle());
     SmartDashboard.putNumber("NavX: pitch", pitch());
     SmartDashboard.putNumber("NavX: roll", roll());
+    SmartDashboard.putNumber("Position", getEstimatedPose().getX());
+    SmartDashboard.putNumber("Position", getEstimatedPose().getY());
   }
 
   // GETTERS
