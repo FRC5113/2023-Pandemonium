@@ -8,10 +8,7 @@ import static com.frc5113.robot.constants.ArmConstants.LEFT_FALCON_CAN_ID;
 import static com.frc5113.robot.constants.ArmConstants.RIGHT_FALCON_CAN_ID;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
-<<<<<<< HEAD
 import com.ctre.phoenix.motorcontrol.NeutralMode;
-=======
->>>>>>> vb-commands
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.frc5113.library.loops.ILooper;
 import com.frc5113.library.loops.Loop;
