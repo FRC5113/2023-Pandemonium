@@ -7,7 +7,11 @@ package com.frc5113.robot.subsystems;
 import static com.frc5113.robot.constants.ArmConstants.LEFT_FALCON_CAN_ID;
 import static com.frc5113.robot.constants.ArmConstants.RIGHT_FALCON_CAN_ID;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+import com.frc5113.library.loops.ILooper;
+import com.frc5113.library.loops.Loop;
 import com.frc5113.library.motors.SmartFalcon;
 import com.frc5113.library.subsystem.SmartSubsystem;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
@@ -25,8 +29,8 @@ public class S_Arm extends SmartSubsystem {
   /** Falcon located left of robot */
   private final SmartFalcon leftFalcon;
 
-  /** Group of arm motors */
-  private final MotorControllerGroup armGroup;
+  private double leftFalconEncoderTicks;
+  private double rightFalconEncoderTicks;
 
   /** Creates a new Arm Subsystem. */
   public S_Arm() {
@@ -34,11 +38,8 @@ public class S_Arm extends SmartSubsystem {
     leftFalcon =
         new SmartFalcon(LEFT_FALCON_CAN_ID, true); // create a inverted falcon on the left side
 
-    armGroup = new MotorControllerGroup(rightFalcon, leftFalcon);
+    leftFalcon.follow(rightFalcon);
   }
-
-  @Override
-  public void periodic() {}
 
   // Stuff required by SmartSubsystem
   @Override
@@ -49,7 +50,7 @@ public class S_Arm extends SmartSubsystem {
 
   @Override
   public void stop() {
-    armGroup.set(0);
+    rightFalcon.set(0);
   }
 
   @Override
@@ -65,20 +66,41 @@ public class S_Arm extends SmartSubsystem {
     return leftFalcon.isConnected() && rightFalcon.isConnected();
   }
 
-  // Getters
-  public WPI_TalonFX getLeftFalcon() {
-    return leftFalcon;
+  @Override
+  public void readPeriodicInputs() {
+    leftFalconEncoderTicks = leftFalcon.getEncoderTicks();
+    rightFalconEncoderTicks = rightFalcon.getEncoderTicks();
   }
 
-  public WPI_TalonFX getRightFalcon() {
-    return rightFalcon;
+  @Override
+  public void writePeriodicOutputs() {}
+
+  @Override
+  public void registerEnabledLoops(ILooper looper) {
+    looper.register(new Loop() {
+      @Override
+      public void onLoop(double dt) {}
+
+      @Override
+      public void onStart(double dt) {
+        rightFalcon.setNeutralMode(NeutralMode.Brake);
+        leftFalcon.setNeutralMode(NeutralMode.Brake);
+      }
+
+      @Override
+      public void onStop(double dt) {
+        rightFalcon.setNeutralMode(NeutralMode.Coast);
+        leftFalcon.setNeutralMode(NeutralMode.Coast);
+      }
+    });
   }
 
-  public MotorControllerGroup getArmGroup() {
-    return armGroup;
-  }
-
-  public double getTickPosition() {
-    return rightFalcon.getEncoderTicks();
-  }
+    // Getters
+    public void setPosition(double position) {
+      rightFalcon.set(ControlMode.Position, position);
+    }
+  
+    public double getTickPosition() {
+      return rightFalcon.getEncoderTicks();
+    }
 }

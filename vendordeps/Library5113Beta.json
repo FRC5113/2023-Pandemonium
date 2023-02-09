@@ -1,17 +1,17 @@
 {
     "fileName": "Library5113Beta.json",
     "name": "Library5113Beta",
-    "version": "cc81547",
+    "version": "3f00499",
     "uuid": "5869a73f-d175-403d-9107-8ce1766835ba",
     "mavenUrls": [
-        "https://frc5113.github.io/LibraryBuilds/rcrepo/main/"
+        "https://frc5113.github.io/LibraryBuilds/rcrepo/looper/"
     ],
-    "jsonUrl": "https://frc5113.github.io/LibraryBuilds/rcrepo/main/Library5113Beta.json",
+    "jsonUrl": "https://frc5113.github.io/LibraryBuilds/rcrepo/looper/Library5113Beta.json",
     "javaDependencies": [
         {
             "groupId": "com.frc5113",
             "artifactId": "library",
-            "version": "cc81547"
+            "version": "3f00499"
         }
     ],
     "jniDependencies": [],
