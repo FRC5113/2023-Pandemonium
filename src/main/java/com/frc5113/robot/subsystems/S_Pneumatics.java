@@ -8,6 +8,7 @@ import static com.frc5113.robot.constants.PneumaticsConstants.ANALOG_SENSOR_PORT
 import static com.frc5113.robot.constants.PneumaticsConstants.LOOP_MAX_PRESSURE;
 import static com.frc5113.robot.constants.PneumaticsConstants.LOOP_MIN_PRESSURE;
 
+import com.frc5113.library.loops.ILooper;
 import com.frc5113.library.subsystem.SmartSubsystem;
 import edu.wpi.first.wpilibj.PneumaticHub;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -19,6 +20,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class S_Pneumatics extends SmartSubsystem {
   private final S_Claw claw;
   private final PneumaticHub pneumaticHub;
+
+  double pressure;
 
   public S_Pneumatics() {
     pneumaticHub = new PneumaticHub();
@@ -46,7 +49,7 @@ public class S_Pneumatics extends SmartSubsystem {
   }
 
   public double getPressure() {
-    return pneumaticHub.getPressure(ANALOG_SENSOR_PORT);
+    return pressure;
   }
 
   @Override
@@ -55,7 +58,15 @@ public class S_Pneumatics extends SmartSubsystem {
   }
 
   @Override
-  public void periodic() {}
+  public void readPeriodicInputs() {
+    pressure = pneumaticHub.getPressure(ANALOG_SENSOR_PORT);
+  }
+
+  @Override
+  public void writePeriodicOutputs() {}
+
+  @Override
+  public void registerEnabledLoops(ILooper a) {}
 
   // Getters
 

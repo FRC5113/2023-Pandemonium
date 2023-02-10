@@ -6,6 +6,7 @@ package com.frc5113.robot.subsystems;
 
 import static com.frc5113.robot.constants.PneumaticsConstants.*;
 
+import com.frc5113.library.loops.ILooper;
 import com.frc5113.library.subsystem.SmartSubsystem;
 import com.frc5113.robot.enums.ClawState;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
@@ -72,7 +73,15 @@ public class S_Claw extends SmartSubsystem {
   }
 
   @Override
-  public void periodic() {}
+  public void registerEnabledLoops(ILooper enabledLoop) {}
+
+  @Override
+  public void readPeriodicInputs() {
+    setState(solenoidToClawState(clawSolenoid.get()));
+  }
+
+  @Override
+  public void writePeriodicOutputs() {}
 
   // getters
   public static ClawState solenoidToClawState(DoubleSolenoid.Value v) {

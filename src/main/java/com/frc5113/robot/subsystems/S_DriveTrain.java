@@ -6,8 +6,11 @@ package com.frc5113.robot.subsystems;
 
 import static com.frc5113.robot.constants.DrivetrainConstants.*;
 
+import com.frc5113.library.loops.ILooper;
+import com.frc5113.library.loops.Loop;
 import com.frc5113.library.motors.SmartNeo;
 import com.frc5113.library.subsystem.SmartSubsystem;
+import com.frc5113.robot.primative.DrivetrainEncoders;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
@@ -32,6 +35,9 @@ public class S_DriveTrain extends SmartSubsystem {
 
   private final DifferentialDrive drive;
 
+  // encoder values
+  private final DrivetrainEncoders encoders;
+
   /** Creates a new DriveTrain. */
   public S_DriveTrain() {
     leftLeader = new SmartNeo(LEFT_LEADER_ID, MOTOR_MODE);
@@ -52,6 +58,8 @@ public class S_DriveTrain extends SmartSubsystem {
     rightLeaderEncoder = rightLeader.encoder;
     leftFollowerEncoder = leftFollower.encoder;
     rightFolowerEncoder = rightFollower.encoder;
+
+    encoders = new DrivetrainEncoders();
   }
 
   public void tankDrive(double leftSpeed, double rightSpeed) {
@@ -60,11 +68,6 @@ public class S_DriveTrain extends SmartSubsystem {
           "Left=" + leftSpeed + " Right=" + rightSpeed + " - MUST -1 < Left||Right < 1");
     }
     drive.tankDrive(leftSpeed, rightSpeed);
-  }
-
-  @Override
-  public void periodic() {
-    // This method will be called once per scheduler run
   }
 
   // Methods required by SmartSubsystem
@@ -87,13 +90,50 @@ public class S_DriveTrain extends SmartSubsystem {
 
   @Override
   public boolean checkSubsystem() {
-    return true; // TODO: FIXME
+    return true; // FIXME
   }
 
   @Override
   public void stop() {
     rightGroup.set(0);
     leftGroup.set(0);
+  }
+
+  public void updatePositions() {
+    encoders.updateMeasurements(
+        leftLeaderEncoder.getPosition(),
+        rightLeaderEncoder.getPosition(),
+        leftFollowerEncoder.getPosition(),
+        rightFollower.getPosition());
+  }
+
+  @Override
+  public void readPeriodicInputs() {
+    updatePositions();
+  }
+
+  @Override
+  public void writePeriodicOutputs() {}
+
+  @Override
+  public void registerEnabledLoops(ILooper enabledLooper) {
+    enabledLooper.register(
+        new Loop() {
+          @Override
+          public void onLoop(double arg0) {}
+
+          @Override
+          public void onStart(double arg0) {
+            stop(); // be sure to stop
+            zeroSensors();
+          }
+
+          @Override
+          public void onStop(double arg0) {
+            stop(); // be sure to stop
+            zeroSensors();
+          }
+        });
   }
 
   // GETTERS
@@ -123,5 +163,9 @@ public class S_DriveTrain extends SmartSubsystem {
 
   public MotorControllerGroup getRightMotorGroup() {
     return rightGroup;
+  }
+
+  public DrivetrainEncoders getEncoders() {
+    return encoders;
   }
 }

@@ -9,7 +9,6 @@ import static com.frc5113.robot.constants.ArmConstants.RIGHT_FALCON_CAN_ID;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.frc5113.library.loops.ILooper;
 import com.frc5113.library.loops.Loop;
 import com.frc5113.library.motors.SmartFalcon;
@@ -76,30 +75,31 @@ public class S_Arm extends SmartSubsystem {
 
   @Override
   public void registerEnabledLoops(ILooper looper) {
-    looper.register(new Loop() {
-      @Override
-      public void onLoop(double dt) {}
+    looper.register(
+        new Loop() {
+          @Override
+          public void onLoop(double dt) {}
 
-      @Override
-      public void onStart(double dt) {
-        rightFalcon.setNeutralMode(NeutralMode.Brake);
-        leftFalcon.setNeutralMode(NeutralMode.Brake);
-      }
+          @Override
+          public void onStart(double dt) {
+            rightFalcon.setNeutralMode(NeutralMode.Brake);
+            leftFalcon.setNeutralMode(NeutralMode.Brake);
+          }
 
-      @Override
-      public void onStop(double dt) {
-        rightFalcon.setNeutralMode(NeutralMode.Coast);
-        leftFalcon.setNeutralMode(NeutralMode.Coast);
-      }
-    });
+          @Override
+          public void onStop(double dt) {
+            rightFalcon.setNeutralMode(NeutralMode.Coast);
+            leftFalcon.setNeutralMode(NeutralMode.Coast);
+          }
+        });
   }
 
-    // Getters
-    public void setPosition(double position) {
-      rightFalcon.set(ControlMode.Position, position);
-    }
-  
-    public double getTickPosition() {
-      return rightFalcon.getEncoderTicks();
-    }
+  // Getters
+  public void setPosition(double position) {
+    rightFalcon.set(ControlMode.Position, position);
+  }
+
+  public double getTickPosition() {
+    return rightFalcon.getEncoderTicks();
+  }
 }
