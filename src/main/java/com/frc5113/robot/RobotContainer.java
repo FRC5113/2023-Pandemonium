@@ -5,7 +5,8 @@
 package com.frc5113.robot;
 
 import com.frc5113.robot.commands.drive.D_TeleopDrive;
-import com.frc5113.robot.constants.OperatorInterfaceConstants;
+import com.frc5113.robot.oi.IOI;
+import com.frc5113.robot.oi.JoystickOI;
 import com.frc5113.robot.subsystems.*;
 import com.frc5113.robot.subsystems.S_DriveTrain;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -24,9 +25,7 @@ public class RobotContainer {
 
   public final S_DriveTrain driveTrain = new S_DriveTrain();
 
-  // Replace with CommandPS4Controller or CommandJoystick if needed
-  private final CommandXboxController driverController =
-      new CommandXboxController(OperatorInterfaceConstants.DRIVER_CONTROLLER_PORT);
+  private final IOI controller1 = new JoystickOI();
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -45,7 +44,7 @@ public class RobotContainer {
    */
   private void configureBindings() {
     driveTrain.setDefaultCommand(
-        new D_TeleopDrive(driveTrain, driverController::getLeftY, driverController::getRightY));
+        new D_TeleopDrive(driveTrain, controller1.tankL(), controller1.tankR()));
   }
 
   /**
