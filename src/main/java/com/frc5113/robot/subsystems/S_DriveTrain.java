@@ -48,7 +48,8 @@ public class S_DriveTrain extends SmartSubsystem {
     leftGroup = new MotorControllerGroup(leftLeader, leftFollower);
     rightGroup = new MotorControllerGroup(rightLeader, rightFollower);
 
-    leftGroup.setInverted(true);
+    leftLeader.setInverted(true);
+    leftFollower.setInverted(true);
     rightGroup.setInverted(false);
 
     drive = new DifferentialDrive(leftGroup, rightGroup);
