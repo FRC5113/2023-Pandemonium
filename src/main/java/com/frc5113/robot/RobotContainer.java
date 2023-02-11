@@ -6,7 +6,7 @@ package com.frc5113.robot;
 
 import com.frc5113.robot.commands.drive.D_TeleopDrive;
 import com.frc5113.robot.oi.IOI;
-import com.frc5113.robot.oi.DuelJoystickOI;
+import com.frc5113.robot.oi.JoystickOI;
 import com.frc5113.robot.subsystems.*;
 import com.frc5113.robot.subsystems.S_DriveTrain;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -25,7 +25,7 @@ public class RobotContainer {
 
   public final S_DriveTrain driveTrain = new S_DriveTrain();
 
-  private final IOI controller1 = new DuelJoystickOI();
+  private final IOI controller1 = new JoystickOI();
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {

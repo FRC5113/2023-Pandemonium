@@ -1,8 +1,6 @@
 package com.frc5113.robot.oi;
 
-import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-
 import java.util.function.Supplier;
 
 public class XboxOI implements IOI {
