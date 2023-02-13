@@ -4,9 +4,29 @@
 
 package com.frc5113.robot.commands.auto;
 
+import com.frc5113.robot.subsystems.S_DriveTrain;
+import edu.wpi.first.wpilibj2.command.Command;
+
 public final class Autos {
   /** Example static factory for an autonomous command. */
   private Autos() {
     throw new UnsupportedOperationException("This is a utility class!");
+  }
+
+  public static Command driveBackward(S_DriveTrain drive) {
+    return driveBackward(drive, 0.3);
+  }
+
+  public static Command driveBackward(S_DriveTrain drive, double power) {
+    return driveBackward(drive, power, 2);
+  }
+
+  public static Command driveBackward(S_DriveTrain drive, double power, double endTime) {
+    return driveBackward(drive, power, power, endTime);
+  }
+
+  public static Command driveBackward(
+      S_DriveTrain drive, double powerLeft, double powerRight, double endTime) {
+    return new A_AutoDrive(drive, () -> powerLeft, () -> powerRight, endTime);
   }
 }
