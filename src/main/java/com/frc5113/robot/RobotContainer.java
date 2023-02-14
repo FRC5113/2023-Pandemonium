@@ -4,15 +4,14 @@
 
 package com.frc5113.robot;
 
+import com.frc5113.robot.commands.auto.Autos;
 import com.frc5113.robot.commands.drive.D_TeleopDrive;
 import com.frc5113.robot.oi.IOI;
 import com.frc5113.robot.oi.JoystickOI;
 import com.frc5113.robot.subsystems.*;
-import com.frc5113.robot.subsystems.S_DriveTrain;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
@@ -23,13 +22,22 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
-  // The robot's subsystems and commands are defined here...
+  // Robot subsystems
+  /** Neo Drivetrain responsible for robot movement (Subsystem) */
+  private final S_DriveTrain driveTrain = new S_DriveTrain();
 
-  public final S_DriveTrain driveTrain = new S_DriveTrain();
+  /** General pneumatics controller from which pneumatic components are derived */
+  private final S_Pneumatics pneumatics = new S_Pneumatics();
 
   public final PowerDistribution powerDistribution = new PowerDistribution(1, ModuleType.kRev);
-  ;
 
+  /** Claw pneumatic component (derived from pneumatics) */
+  private final S_Claw claw = pneumatics.getClaw();
+
+  /** Arm/truss subsystem */
+  private final S_Arm arm = new S_Arm();
+
+  // Operator interface
   private final IOI controller1 = new JoystickOI();
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -58,11 +66,12 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    // An example command will be run in autonomous
-    return new InstantCommand(() -> {});
+    return Autos.driveBackward(driveTrain); // Do Nothing: new InstantCommand(() -> {});
   }
+
+  public void robotPeriodic() {}
 
   public void teleopInit() {}
 
-  public void robotPeriodic() {}
+  public void testPeriodic() {}
 }
