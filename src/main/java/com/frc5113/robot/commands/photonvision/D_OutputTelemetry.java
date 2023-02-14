@@ -32,6 +32,7 @@ public class D_OutputTelemetry extends CommandBase {
       SmartDashboard.putNumber("Best Target ID", photonVision.getId(photonVision.getBestTarget()));
       SmartDashboard.putNumber(
           "Best Target Area", photonVision.getTargetArea(photonVision.getBestTarget()));
+      SmartDashboard.putNumber("FIDUCIAL Id", photonVision.getId(photonVision.getBestTarget()));
 
       SmartDashboard.putNumber("Best Target TX", photonVision.getTx());
       SmartDashboard.putNumber("Best Target TY", photonVision.getTy());
