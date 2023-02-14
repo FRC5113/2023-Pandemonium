@@ -74,5 +74,19 @@
       <option name="url"
         value="https://maven.photonvision.org/repository/internal" />
     </remote-repository>
+    <remote-repository>
+      <option name="id"
+        value="WPI5869a73f-d175-403d-9107-8ce1766835ba_0Release" />
+      <option name="name"
+        value="WPI5869a73f-d175-403d-9107-8ce1766835ba_0Release" />
+      <option name="url"
+        value="https://frc5113.github.io/LibraryBuilds/rcrepo/looper/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="maven" />
+      <option name="name" value="maven" />
+      <option name="url"
+        value="https://maven.pkg.github.com/Mechanical-Advantage/AdvantageKit" />
+    </remote-repository>
   </component>
 </project>
