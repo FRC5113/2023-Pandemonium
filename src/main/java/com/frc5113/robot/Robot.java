@@ -4,6 +4,7 @@
 
 package com.frc5113.robot;
 
+import com.frc5113.robot.constants.GeneralConstants;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import org.littletonrobotics.junction.LogFileUtil;
@@ -12,8 +13,6 @@ import org.littletonrobotics.junction.Logger;
 import org.littletonrobotics.junction.networktables.NT4Publisher;
 import org.littletonrobotics.junction.wpilog.WPILOGReader;
 import org.littletonrobotics.junction.wpilog.WPILOGWriter;
-
-import com.frc5113.robot.constants.GeneralConstants;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -55,31 +54,30 @@ public class Robot extends LoggedRobot {
         break;
     }
 
-      // Set up data receivers & replay source
-      switch (GeneralConstants.currentMode) {
+    // Set up data receivers & replay source
+    switch (GeneralConstants.currentMode) {
         // Running on a real robot, log to a USB stick
-        case REAL:
-          log.addDataReceiver(new WPILOGWriter("/media/sda1/"));
-          log.addDataReceiver(new NT4Publisher());
-          break;
-  
-        // Running a physics simulator, log to local folder
-        case SIM:
-          log.addDataReceiver(new WPILOGWriter(""));
-          log.addDataReceiver(new NT4Publisher());
-          break;
-  
-        // Replaying a log, set up replay source
-        case REPLAY:
-          setUseTiming(false); // Run as fast as possible
-          String logPath = LogFileUtil.findReplayLog();
-          log.setReplaySource(new WPILOGReader(logPath));
-          log.addDataReceiver(new WPILOGWriter(LogFileUtil.addPathSuffix(logPath, "_sim")));
-          break;
-      }
+      case REAL:
+        log.addDataReceiver(new WPILOGWriter("/media/sda1/"));
+        log.addDataReceiver(new NT4Publisher());
+        break;
 
-    log
-        .start(); // Start logging! No more data receivers, replay sources, or metadata values may
+        // Running a physics simulator, log to local folder
+      case SIM:
+        log.addDataReceiver(new WPILOGWriter(""));
+        log.addDataReceiver(new NT4Publisher());
+        break;
+
+        // Replaying a log, set up replay source
+      case REPLAY:
+        setUseTiming(false); // Run as fast as possible
+        String logPath = LogFileUtil.findReplayLog();
+        log.setReplaySource(new WPILOGReader(logPath));
+        log.addDataReceiver(new WPILOGWriter(LogFileUtil.addPathSuffix(logPath, "_sim")));
+        break;
+    }
+
+    log.start(); // Start logging! No more data receivers, replay sources, or metadata values may
     // be added.
   }
 
