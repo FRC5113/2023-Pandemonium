@@ -163,4 +163,4 @@ bin/
 
 
 # Ignore updates to BuildConstants
-BuildConstants.java
+src/main/java/com/frc5113/robot/BuildConstants.java
