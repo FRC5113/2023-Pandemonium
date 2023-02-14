@@ -7,7 +7,7 @@ import edu.wpi.first.math.geometry.Translation3d;
 public final class PhotonVisionConstants {
   public static final double CENTER_X = 1280 / 2;
   public static final double CENTER_Y = 720 / 2;
-  public static final String CAMERA_NAME = "camera";
+  public static final String CAMERA_NAME = "Microsoft_LifeCam_HD-3000";
   public static final double kP = 0.0;
   public static final double kI = 0.0;
   public static final double kD = 0.0;
