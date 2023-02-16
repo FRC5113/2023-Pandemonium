@@ -6,35 +6,25 @@ package com.frc5113.robot.subsystems;
 
 import static com.frc5113.robot.constants.DrivetrainConstants.*;
 
-<<<<<<< HEAD
 import com.frc5113.library.loops.ILooper;
 import com.frc5113.library.loops.Loop;
 import com.frc5113.library.motors.SmartNeo;
 import com.frc5113.library.subsystem.SmartSubsystem;
 import com.frc5113.robot.primative.DrivetrainEncoders;
-=======
-import com.kauailabs.navx.frc.AHRS;
->>>>>>> d706b3bf2e833105d0c8b9986206315c7d458657
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.kauailabs.navx.frc.AHRS;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-<<<<<<< HEAD
 import edu.wpi.first.wpilibj.SPI;
 
-=======
 import com.revrobotics.RelativeEncoder;
->>>>>>> d706b3bf2e833105d0c8b9986206315c7d458657
 import edu.wpi.first.math.estimator.DifferentialDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.math.util.Units;
-<<<<<<< HEAD
-=======
 import edu.wpi.first.wpilibj.SPI;
->>>>>>> d706b3bf2e833105d0c8b9986206315c7d458657
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -58,12 +48,8 @@ public class S_DriveTrain extends SmartSubsystem {
   private final MotorControllerGroup leftGroup;
   private final MotorControllerGroup rightGroup;
 
-<<<<<<< HEAD
   private S_Gyro navX;
 
-=======
-  private AHRS navX;
->>>>>>> d706b3bf2e833105d0c8b9986206315c7d458657
   private RelativeEncoder leftEncoder;
   private RelativeEncoder rightEncoder;
 
@@ -89,17 +75,12 @@ public class S_DriveTrain extends SmartSubsystem {
     leftFollower.setInverted(true);
     rightGroup.setInverted(false);
 
-<<<<<<< HEAD
     navX = new S_Gyro();
 
-=======
-    navX = new AHRS(SPI.Port.kMXP);
->>>>>>> d706b3bf2e833105d0c8b9986206315c7d458657
     leftEncoder = leftLeader.getEncoder();
     rightEncoder = rightLeader.getEncoder();
 
     drive = new DifferentialDrive(leftGroup, rightGroup);
-<<<<<<< HEAD
 
     // Generate the onboard encoders
     leftLeaderEncoder = leftLeader.encoder;
@@ -112,12 +93,6 @@ public class S_DriveTrain extends SmartSubsystem {
     poseEstimator = new DifferentialDrivePoseEstimator(
       driveKinematics, navX.getRot2d(), 0.0, 0.0, new Pose2d());
 
-=======
-    driveKinematics = new DifferentialDriveKinematics(TRACK_WIDTH);
-    poseEstimator =
-        new DifferentialDrivePoseEstimator(
-            driveKinematics, navX.getRotation2d(), 0.0, 0.0, new Pose2d());
->>>>>>> d706b3bf2e833105d0c8b9986206315c7d458657
   }
 
   public void tankDrive(double leftSpeed, double rightSpeed) {
@@ -148,7 +123,6 @@ public class S_DriveTrain extends SmartSubsystem {
     SmartDashboard.putNumber("NavX: roll", navX.getRoll());;
   }
 
-<<<<<<< HEAD
   @Override
   public void zeroSensors() {
     leftLeaderEncoder.setPosition(0);
@@ -210,116 +184,27 @@ public class S_DriveTrain extends SmartSubsystem {
    */
   public void updateOdometry(){
     poseEstimator.update(navX.getRot2d(), posToMeters(leftEncoder.getPosition()), posToMeters(rightEncoder.getPosition()));
-=======
-  /** Updates the pose estimator with the newest measurements */
-  public void updateOdometry() {
-    poseEstimator.update(
-        navX.getRotation2d(),
-        posToMeters(leftEncoder.getPosition()),
-        posToMeters(rightEncoder.getPosition()));
->>>>>>> d706b3bf2e833105d0c8b9986206315c7d458657
   }
 
   /**
    * Returns the current pose of the robot
-<<<<<<< HEAD
    * @return A Pose2d current pose of the robot
    */
 
-  public Pose2d getEstimatedPose(){
-=======
-   *
-   * @return A Pose2d current pose of the robot
-   */
+  
   public Pose2d getEstimatedPose() {
->>>>>>> d706b3bf2e833105d0c8b9986206315c7d458657
     return poseEstimator.getEstimatedPosition();
   }
 
   /**
    * Converts encoder position (in rotations) into meters
-<<<<<<< HEAD
    * @param position The current encoder position (in rotations)
    * @return The meters corresponding to the current encoder position in rotations 
-=======
-   *
-   * @param position The current encoder position (in rotations)
-   * @return The meters corresponding to the current encoder position in rotations
->>>>>>> d706b3bf2e833105d0c8b9986206315c7d458657
    */
   public double posToMeters(double position) {
     return Units.inchesToMeters((WHEEL_CIRCUMFERENCE / GEAR_RATIO) * position);
   }
-<<<<<<< HEAD
   
-=======
-  // navX info
-
-  public double angle() {
-    return navX.getAngle();
-  }
-
-  public double angle(double deadband) {
-    if (Math.abs(navX.getAngle()) < deadband) {
-      return 0;
-    } else {
-      return navX.getAngle();
-    }
-  }
-
-  public double angle(double deadband, float offset) {
-    if (Math.abs(navX.getAngle()) < deadband) {
-      return 0;
-    } else {
-      return navX.getAngle() - offset;
-    }
-  }
-
-  public float pitch() {
-    return navX.getPitch();
-  }
-
-  public float pitch(double deadband) {
-    if (Math.abs(navX.getPitch()) < deadband) {
-      return 0;
-    } else {
-      return navX.getPitch();
-    }
-  }
-
-  public float pitch(double deadband, float offset) {
-    if (Math.abs(navX.getPitch()) < deadband) {
-      return 0;
-    } else {
-      return navX.getPitch() - offset;
-    }
-  }
-
-  public float roll() {
-    return navX.getRoll();
-  }
-
-  public float roll(double deadband) {
-    if (Math.abs(navX.getRoll()) < deadband) {
-      return 0;
-    } else {
-      return navX.getRoll();
-    }
-  }
-
-  public float roll(double deadband, float offset) {
-    if (Math.abs(navX.getRoll()) < deadband) {
-      return 0;
-    } else {
-      return navX.getRoll() - offset;
-    }
-  }
-
-  public void resetGyro() {
-    navX.reset();
-    navX.resetDisplacement();
-  }
->>>>>>> d706b3bf2e833105d0c8b9986206315c7d458657
 
   public void resetEncoders() {
     leftLeader.getEncoder().setPosition(0);
@@ -329,32 +214,11 @@ public class S_DriveTrain extends SmartSubsystem {
   }
 
   public void resetOdometry() {
-<<<<<<< HEAD
     navX.zeroSensors();
-=======
-    resetGyro();
->>>>>>> d706b3bf2e833105d0c8b9986206315c7d458657
     resetEncoders();
     updateOdometry();
   }
 
-<<<<<<< HEAD
-
-=======
-  public void outputTelemetry() {
-    SmartDashboard.putNumber("Drive: leftLeaderRotations", leftLeader.getEncoder().getPosition());
-    SmartDashboard.putNumber(
-        "Drive: leftFollowerRotations", leftFollower.getEncoder().getPosition());
-    SmartDashboard.putNumber("Drive: rightLeaderRotations", rightLeader.getEncoder().getPosition());
-    SmartDashboard.putNumber(
-        "Drive: rightFollowerRotations", rightFollower.getEncoder().getPosition());
-    SmartDashboard.putNumber("NavX: angle/yaw", angle());
-    SmartDashboard.putNumber("NavX: pitch", pitch());
-    SmartDashboard.putNumber("NavX: roll", roll());
-    SmartDashboard.putNumber("Position", getEstimatedPose().getX());
-    SmartDashboard.putNumber("Position", getEstimatedPose().getY());
-  }
->>>>>>> d706b3bf2e833105d0c8b9986206315c7d458657
 
   // GETTERS
   public CANSparkMax getLeftFollower() {

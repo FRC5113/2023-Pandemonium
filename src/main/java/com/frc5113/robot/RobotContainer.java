@@ -4,24 +4,16 @@
 
 package com.frc5113.robot;
 
-<<<<<<< HEAD
 
 import com.frc5113.robot.commands.auto.Autos;
 import com.frc5113.robot.commands.drive.*;
 import com.frc5113.robot.commands.auto.Autos;
-=======
->>>>>>> d706b3bf2e833105d0c8b9986206315c7d458657
 import com.frc5113.robot.commands.C_ResetOdometry;
 import com.frc5113.robot.commands.drive.D_TeleopDrive;
 import com.frc5113.robot.oi.IOI;
 import com.frc5113.robot.oi.JoystickOI;
 import com.frc5113.robot.subsystems.*;
 import edu.wpi.first.wpilibj2.command.Command;
-<<<<<<< HEAD
-=======
-import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
->>>>>>> d706b3bf2e833105d0c8b9986206315c7d458657
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
@@ -48,10 +40,6 @@ public class RobotContainer {
   // Operator interface
   private final IOI controller1 = new JoystickOI();
 
-  private final CommandJoystick leftJoy =
-      new CommandJoystick(OperatorInterfaceConstants.LEFT_JOYSTICK_PORT);
-  private final CommandJoystick rightJoy =
-      new CommandJoystick(OperatorInterfaceConstants.RIGHT_JOYSTICK_PORT);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -69,15 +57,7 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-<<<<<<< HEAD
     driveTrain.setDefaultCommand(new D_TeleopDrive(driveTrain, controller1.tankL(), controller1.tankR()));
-=======
-    driveTrain.setDefaultCommand(new D_TeleopDrive(driveTrain, leftJoy::getY, leftJoy::getY));
-    int joyOne = 1;
-
-    driverController.a().whileTrue(new C_ResetOdometry(driveTrain));
-    leftJoy.button(joyOne).whileTrue(new C_ResetOdometry(driveTrain));
->>>>>>> d706b3bf2e833105d0c8b9986206315c7d458657
   }
 
   /**
@@ -92,10 +72,7 @@ public class RobotContainer {
 
   public void teleopInit() {}
 
-<<<<<<< HEAD
   public void testPeriodic() {}
-=======
->>>>>>> d706b3bf2e833105d0c8b9986206315c7d458657
   public void robotPeriodic() {
     driveTrain.updateOdometry();
   }
