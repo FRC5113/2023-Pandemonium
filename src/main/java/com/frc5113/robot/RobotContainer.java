@@ -70,5 +70,11 @@ public class RobotContainer {
 
   public void teleopInit() {}
 
+<<<<<<< HEAD
   public void testPeriodic() {}
+=======
+  public void robotPeriodic() {
+    driveTrain.updateOdometry();
+  }
+>>>>>>> 16ca784 (init commit of manually separated odometry and april tags)
 }
