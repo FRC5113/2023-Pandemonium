@@ -4,8 +4,10 @@
 
 package com.frc5113.robot;
 
+
 import com.frc5113.robot.commands.auto.Autos;
 import com.frc5113.robot.commands.drive.*;
+import com.frc5113.robot.commands.C_ResetOdometry;
 import com.frc5113.robot.commands.drive.D_TeleopDrive;
 import com.frc5113.robot.oi.IOI;
 import com.frc5113.robot.oi.JoystickOI;
@@ -23,7 +25,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 public class RobotContainer {
   // Robot subsystems
   /** Neo Drivetrain responsible for robot movement (Subsystem) */
-  private final S_DriveTrain driveTrain = new S_DriveTrain();
+  final S_DriveTrain driveTrain = new S_DriveTrain();
 
   /** General pneumatics controller from which pneumatic components are derived */
   private final S_Pneumatics pneumatics = new S_Pneumatics();
@@ -53,8 +55,7 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    driveTrain.setDefaultCommand(
-        new D_TeleopDrive(driveTrain, controller1.tankL(), controller1.tankR()));
+    driveTrain.setDefaultCommand(new D_TeleopDrive(driveTrain, controller1.tankL(), controller1.tankR()));
   }
 
   /**
