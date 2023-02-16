@@ -27,6 +27,8 @@ public class RobotContainer {
 
   /** General pneumatics controller from which pneumatic components are derived */
   private final S_Pneumatics pneumatics = new S_Pneumatics();
+  public final S_DriveTrain driveTrain = new S_DriveTrain();
+  public final S_PhotonVision photonVision = new S_PhotonVision();
 
   /** Claw pneumatic component (derived from pneumatics) */
   private final S_Claw claw = pneumatics.getClaw();
