@@ -29,7 +29,8 @@ public class RobotContainer {
 
   /** General pneumatics controller from which pneumatic components are derived */
   private final S_Pneumatics pneumatics = new S_Pneumatics();
-  public final S_DriveTrain driveTrain = new S_DriveTrain();
+
+  /** PhotonLib wrapper for defining pose estimation and targeting utils. */
   public final S_PhotonVision photonVision = new S_PhotonVision();
 
   /** Claw pneumatic component (derived from pneumatics) */
