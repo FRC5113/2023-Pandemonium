@@ -9,8 +9,11 @@ package com.frc5113.robot.subsystems;
 import static com.frc5113.robot.constants.FieldConstants.*;
 import static com.frc5113.robot.constants.PhotonVisionConstants.*;
 
+import com.frc5113.library.loops.ILooper;
+import com.frc5113.library.loops.Loop;
+import com.frc5113.library.subsystem.SmartSubsystem;
 import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -20,7 +23,7 @@ import org.photonvision.PhotonPoseEstimator;
 import org.photonvision.PhotonPoseEstimator.PoseStrategy;
 import org.photonvision.targeting.*;
 
-public class S_PhotonVision extends SubsystemBase {
+public class S_PhotonVision extends SmartSubsystem {
 
   private final PhotonCamera camera = new PhotonCamera(CAMERA_NAME);
   private List<PhotonTrackedTarget> targets = new ArrayList<>();
@@ -68,8 +71,6 @@ public class S_PhotonVision extends SubsystemBase {
   }
 
   public int getId(PhotonTrackedTarget target) {
-    System.out.print("######### FIDUCIAL ID ########");
-    System.out.println(target.getFiducialId());
     return target.getFiducialId();
   }
 
@@ -117,9 +118,64 @@ public class S_PhotonVision extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    outputTelemetry();
+    readPeriodicInputs();
+  }
+
+  @Override
+  public boolean checkSubsystem() {
+    return true;
+  }
+
+  @Override
+  public void outputTelemetry() {
+    if (hasTargets) {
+      SmartDashboard.putNumber("Best Target Yaw", getTargetYaw(getBestTarget()));
+      SmartDashboard.putNumber("Best Target Pitch", getTargetPitch(getBestTarget()));
+      SmartDashboard.putNumber("Best Target ID", getId(getBestTarget()));
+      SmartDashboard.putNumber("Best Target Area", getTargetArea(getBestTarget()));
+      SmartDashboard.putNumber("FIDUCIAL Id", getId(getBestTarget()));
+
+      SmartDashboard.putNumber("Best Target TX", getTx());
+      SmartDashboard.putNumber("Best Target TY", getTy());
+    }
+  }
+
+  @Override
+  public void readPeriodicInputs() {
     var result = camera.getLatestResult();
     updateBestTarget(result);
     updateTargets(result);
     hasTargets = result.hasTargets();
   }
+
+  @Override
+  public void registerEnabledLoops(ILooper enabledLooper) {
+    enabledLooper.register(
+        new Loop() {
+          @Override
+          public void onLoop(double arg0) {}
+
+          @Override
+          public void onStart(double arg0) {
+            stop(); // be sure to stop
+            zeroSensors();
+          }
+
+          @Override
+          public void onStop(double arg0) {
+            stop(); // be sure to stop
+            zeroSensors();
+          }
+        });
+  }
+
+  @Override
+  public void stop() {}
+
+  @Override
+  public void writePeriodicOutputs() {}
+
+  @Override
+  public void zeroSensors() {}
 }
