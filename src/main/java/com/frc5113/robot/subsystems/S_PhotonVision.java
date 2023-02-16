@@ -68,6 +68,8 @@ public class S_PhotonVision extends SubsystemBase {
   }
 
   public int getId(PhotonTrackedTarget target) {
+    System.out.print("######### FIDUCIAL ID ########");
+    System.out.println(target.getFiducialId());
     return target.getFiducialId();
   }
 
