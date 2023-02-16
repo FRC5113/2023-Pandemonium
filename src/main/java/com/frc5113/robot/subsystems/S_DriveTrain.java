@@ -195,12 +195,25 @@ public class S_DriveTrain extends SmartSubsystem {
    * @param position The current encoder position (in rotations)
    * @return The meters corresponding to the current encoder position in rotations 
    */
-  public double posToMeters(double position){
-    return Units.inchesToMeters((WHEEL_CIRCUMFERENCE/GEAR_RATIO) * position);
+  public double posToMeters(double position) {
+    return Units.inchesToMeters((WHEEL_CIRCUMFERENCE / GEAR_RATIO) * position);
+  }
+  // navX info
+
+  public double angle() {
+    return navX.getAngle();
+  }
+
+  public double angle(double deadband) {
+    if (Math.abs(navX.getAngle()) < deadband) {
+      return 0;
+    } else {
+      return navX.getAngle();
+    }
   }
 
   public double angle(double deadband, float offset) {
-    if(Math.abs(navX.getAngle()) < deadband) {
+    if (Math.abs(navX.getAngle()) < deadband) {
       return 0;
     } else {
       return navX.getAngle() - offset;
@@ -214,9 +227,17 @@ public class S_DriveTrain extends SmartSubsystem {
   public float yaw() {
     return navX.getYaw();
   }
+  
+  public float pitch(double deadband) {
+    if (Math.abs(navX.getPitch()) < deadband) {
+      return 0;
+    } else {
+      return navX.getPitch();
+    }
+  }
 
   public float pitch(double deadband, float offset) {
-    if(Math.abs(navX.getPitch()) < deadband) {
+    if (Math.abs(navX.getPitch()) < deadband) {
       return 0;
     } else {
       return navX.getPitch() - offset;
@@ -227,12 +248,16 @@ public class S_DriveTrain extends SmartSubsystem {
     return navX.getRoll();
   }
 
-  public double angle() {
-    return navX.getAngle();
+  public float roll(double deadband) {
+    if (Math.abs(navX.getRoll()) < deadband) {
+      return 0;
+    } else {
+      return navX.getRoll();
+    }
   }
 
   public float roll(double deadband, float offset) {
-    if(Math.abs(navX.getRoll()) < deadband) {
+    if (Math.abs(navX.getRoll()) < deadband) {
       return 0;
     } else {
       return navX.getRoll() - offset;
