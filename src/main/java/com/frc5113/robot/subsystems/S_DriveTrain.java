@@ -254,6 +254,7 @@ public class S_DriveTrain extends SmartSubsystem {
   public void resetOdometry() {
     resetGyro();
     resetEncoders();
+    updateOdometry();
   }
 
 
