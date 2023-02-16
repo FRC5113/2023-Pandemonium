@@ -7,6 +7,7 @@ package com.frc5113.robot;
 
 import com.frc5113.robot.commands.auto.Autos;
 import com.frc5113.robot.commands.drive.*;
+import com.frc5113.robot.commands.auto.Autos;
 import com.frc5113.robot.commands.C_ResetOdometry;
 import com.frc5113.robot.commands.drive.D_TeleopDrive;
 import com.frc5113.robot.oi.IOI;
