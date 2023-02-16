@@ -102,14 +102,14 @@ public class S_DriveTrain extends SubsystemBase {
   public double posToMeters(double position) {
     return Units.inchesToMeters((WHEEL_CIRCUMFERENCE / GEAR_RATIO) * position);
   }
-  //navX info
+  // navX info
 
   public double angle() {
     return navX.getAngle();
   }
 
   public double angle(double deadband) {
-    if(Math.abs(navX.getAngle()) < deadband) {
+    if (Math.abs(navX.getAngle()) < deadband) {
       return 0;
     } else {
       return navX.getAngle();
@@ -117,7 +117,7 @@ public class S_DriveTrain extends SubsystemBase {
   }
 
   public double angle(double deadband, float offset) {
-    if(Math.abs(navX.getAngle()) < deadband) {
+    if (Math.abs(navX.getAngle()) < deadband) {
       return 0;
     } else {
       return navX.getAngle() - offset;
@@ -129,7 +129,7 @@ public class S_DriveTrain extends SubsystemBase {
   }
 
   public float pitch(double deadband) {
-    if(Math.abs(navX.getPitch()) < deadband) {
+    if (Math.abs(navX.getPitch()) < deadband) {
       return 0;
     } else {
       return navX.getPitch();
@@ -137,7 +137,7 @@ public class S_DriveTrain extends SubsystemBase {
   }
 
   public float pitch(double deadband, float offset) {
-    if(Math.abs(navX.getPitch()) < deadband) {
+    if (Math.abs(navX.getPitch()) < deadband) {
       return 0;
     } else {
       return navX.getPitch() - offset;
@@ -149,7 +149,7 @@ public class S_DriveTrain extends SubsystemBase {
   }
 
   public float roll(double deadband) {
-    if(Math.abs(navX.getRoll()) < deadband) {
+    if (Math.abs(navX.getRoll()) < deadband) {
       return 0;
     } else {
       return navX.getRoll();
@@ -157,7 +157,7 @@ public class S_DriveTrain extends SubsystemBase {
   }
 
   public float roll(double deadband, float offset) {
-    if(Math.abs(navX.getRoll()) < deadband) {
+    if (Math.abs(navX.getRoll()) < deadband) {
       return 0;
     } else {
       return navX.getRoll() - offset;
