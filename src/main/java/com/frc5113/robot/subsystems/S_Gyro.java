@@ -8,6 +8,8 @@ import com.frc5113.library.loops.ILooper;
 import com.frc5113.library.loops.Loop;
 import com.frc5113.library.subsystem.SmartSubsystem;
 import com.kauailabs.navx.frc.AHRS;
+
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -113,5 +115,9 @@ public class S_Gyro extends SmartSubsystem {
 
   public double getRoll() {
     return roll;
+  }
+
+  public Rotation2d getRot2d() {
+    return navX.getRotation2d();
   }
 }
