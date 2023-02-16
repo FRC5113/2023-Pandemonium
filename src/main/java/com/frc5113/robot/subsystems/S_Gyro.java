@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class S_Gyro extends SmartSubsystem {
 
   private AHRS navX;
+  private double yaw, pitch, roll;
   /** Creates a new S_Gyro. */
   public S_Gyro() {
     navX = new AHRS(SPI.Port.kMXP);
@@ -31,13 +32,17 @@ public class S_Gyro extends SmartSubsystem {
 
   @Override
   public void outputTelemetry() {
-    SmartDashboard.putNumber("YAW: ", getAngle(0, 0));
-    SmartDashboard.putNumber("PITCH: ", getPitch(0, 0));
-    SmartDashboard.putNumber("ROLL: ", getRoll(0, 0));
+    SmartDashboard.putNumber("YAW: ", fetchAngle(0, 0));
+    SmartDashboard.putNumber("PITCH: ", fetchPitch(0, 0));
+    SmartDashboard.putNumber("ROLL: ", fetchRoll(0, 0));
   }
 
   @Override
-  public void readPeriodicInputs() {}
+  public void readPeriodicInputs() {
+    yaw = fetchAngle(0, 0);
+    roll = fetchRoll(0, 0);
+    pitch = fetchPitch(0, 0);
+  }
 
   @Override
   public void registerEnabledLoops(ILooper enabledLooper) {
@@ -69,11 +74,11 @@ public class S_Gyro extends SmartSubsystem {
   @Override
   public void zeroSensors() {
     navX.reset();
+    yaw = roll = pitch = 0;
   }
 
-  // GETTER Methods
-
-  public double getAngle(double deadband, double offset) {
+  // Internal GETTER Methods
+  private double fetchAngle(double deadband, double offset) {
     if (Math.abs(navX.getAngle()) < deadband) {
       return 0;
     } else {
@@ -81,7 +86,7 @@ public class S_Gyro extends SmartSubsystem {
     }
   }
 
-  public double getPitch(double deadband, double offset) {
+  private double fetchPitch(double deadband, double offset) {
     if (Math.abs(navX.getPitch()) < deadband) {
       return 0;
     } else {
@@ -89,11 +94,24 @@ public class S_Gyro extends SmartSubsystem {
     }
   }
 
-  public double getRoll(double deadband, double offset) {
+  private double fetchRoll(double deadband, double offset) {
     if (Math.abs(navX.getRoll()) < deadband) {
       return 0;
     } else {
       return navX.getRoll() - offset;
     }
+  }
+
+  // GETTER Methods
+  public double getAngle() {
+    return yaw;
+  }
+
+  public double getPitch() {
+    return pitch;
+  }
+
+  public double getRoll() {
+    return roll;
   }
 }
