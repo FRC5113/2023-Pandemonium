@@ -66,15 +66,11 @@ public class RobotContainer {
     return Autos.driveBackward(driveTrain); // Do Nothing: new InstantCommand(() -> {});
   }
 
-  public void robotPeriodic() {}
 
   public void teleopInit() {}
 
-<<<<<<< HEAD
   public void testPeriodic() {}
-=======
   public void robotPeriodic() {
     driveTrain.updateOdometry();
   }
->>>>>>> 16ca784 (init commit of manually separated odometry and april tags)
 }

@@ -6,7 +6,6 @@ package com.frc5113.robot.subsystems;
 
 import static com.frc5113.robot.constants.DrivetrainConstants.*;
 
-<<<<<<< HEAD
 import com.frc5113.library.loops.ILooper;
 import com.frc5113.library.loops.Loop;
 import com.frc5113.library.motors.SmartNeo;
@@ -14,7 +13,6 @@ import com.frc5113.library.subsystem.SmartSubsystem;
 import com.frc5113.robot.primative.DrivetrainEncoders;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
-=======
 import com.kauailabs.navx.frc.AHRS;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
@@ -25,7 +23,6 @@ import edu.wpi.first.math.estimator.DifferentialDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.math.util.Units;
->>>>>>> 16ca784 (init commit of manually separated odometry and april tags)
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -77,7 +74,6 @@ public class S_DriveTrain extends SmartSubsystem {
     rightEncoder = rightLeader.getEncoder();
 
     drive = new DifferentialDrive(leftGroup, rightGroup);
-<<<<<<< HEAD
 
     // Generate the onboard encoders
     leftLeaderEncoder = leftLeader.encoder;
@@ -86,12 +82,10 @@ public class S_DriveTrain extends SmartSubsystem {
     rightFolowerEncoder = rightFollower.encoder;
 
     encoders = new DrivetrainEncoders();
-=======
     driveKinematics = new DifferentialDriveKinematics(TRACK_WIDTH);
     poseEstimator = new DifferentialDrivePoseEstimator(
       driveKinematics, navX.getRotation2d(), 0.0, 0.0, new Pose2d());
 
->>>>>>> 16ca784 (init commit of manually separated odometry and april tags)
   }
 
   public void tankDrive(double leftSpeed, double rightSpeed) {
