@@ -5,10 +5,13 @@
 package com.frc5113.robot;
 
 import com.frc5113.robot.commands.auto.Autos;
+import com.frc5113.robot.commands.drive.*;
 import com.frc5113.robot.commands.drive.D_TeleopDrive;
+import com.frc5113.robot.commands.photonvision.*;
 import com.frc5113.robot.oi.IOI;
 import com.frc5113.robot.oi.JoystickOI;
 import com.frc5113.robot.subsystems.*;
+
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -30,6 +33,9 @@ public class RobotContainer {
   private final S_Pneumatics pneumatics = new S_Pneumatics();
 
   public final PowerDistribution powerDistribution = new PowerDistribution(1, ModuleType.kRev);
+  
+  /** PhotonLib wrapper for defining pose estimation and targeting utils. */
+  public final S_PhotonVision photonVision = new S_PhotonVision();
 
   /** Claw pneumatic component (derived from pneumatics) */
   private final S_Claw claw = pneumatics.getClaw();
