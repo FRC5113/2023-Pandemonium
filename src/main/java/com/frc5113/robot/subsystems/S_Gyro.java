@@ -21,20 +21,15 @@ public class S_Gyro extends SmartSubsystem {
   }
 
   @Override
-  public void periodic() {
-    // This method will be called once per scheduler run
-  }
-
-  @Override
   public boolean checkSubsystem() {
-    return true;
+    return navX.isConnected();
   }
 
   @Override
   public void outputTelemetry() {
-    SmartDashboard.putNumber("YAW: ", fetchAngle(0, 0));
-    SmartDashboard.putNumber("PITCH: ", fetchPitch(0, 0));
-    SmartDashboard.putNumber("ROLL: ", fetchRoll(0, 0));
+    SmartDashboard.putNumber("Gyro: Yaw", fetchAngle(0, 0));
+    SmartDashboard.putNumber("Gyro: Pitch", fetchPitch(0, 0));
+    SmartDashboard.putNumber("Gyro: Roll", fetchRoll(0, 0));
   }
 
   @Override
