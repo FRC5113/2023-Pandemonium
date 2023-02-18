@@ -9,7 +9,9 @@ import static com.frc5113.robot.constants.GeneralConstants.LOOP_DT;
 import com.frc5113.library.loops.Looper;
 import com.frc5113.library.loops.SubsystemManager;
 import com.frc5113.robot.commands.auto.Autos;
+import com.frc5113.robot.commands.drive.*;
 import com.frc5113.robot.commands.drive.D_TeleopDrive;
+import com.frc5113.robot.commands.photonvision.*;
 import com.frc5113.robot.oi.IOI;
 import com.frc5113.robot.oi.JoystickOI;
 import com.frc5113.robot.subsystems.*;
@@ -30,6 +32,9 @@ public class RobotContainer {
 
   /** General pneumatics controller from which pneumatic components are derived */
   private final S_Pneumatics pneumatics = new S_Pneumatics();
+
+  /** PhotonLib wrapper for defining pose estimation and targeting utils. */
+  public final S_PhotonVision photonVision = new S_PhotonVision();
 
   /** Claw pneumatic component (derived from pneumatics) */
   private final S_Claw claw = pneumatics.getClaw();
