@@ -91,6 +91,12 @@ public class RobotContainer {
     manager.outputToSmartDashboard();
   }
 
+  public void autoInit() {
+    disabledLoop.stop();
+    manager.stop();
+    enabledLoop.start();
+  }
+
   public void teleopInit() {
     disabledLoop.stop();
     manager.stop();
