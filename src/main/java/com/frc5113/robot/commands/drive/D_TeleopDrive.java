@@ -1,49 +1,139 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
-
 package com.frc5113.robot.commands.drive;
 
-import com.frc5113.robot.subsystems.S_DriveTrain;
-import edu.wpi.first.wpilibj2.command.CommandBase;
 import java.util.function.Supplier;
 
+import org.littletonrobotics.junction.Logger;
+
+import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.wpilibj2.command.CommandBase;
+import com.frc5113.robot.subsystems.DriveTrain.S_DriveTrain;
+
+import static com.frc5113.robot.constants.DrivetrainConstants.*;
+import static com.frc5113.robot.constants.OperatorInterfaceConstants.*;
+
 public class D_TeleopDrive extends CommandBase {
+  private static final double deadband = DEAD_BAND;
+  private static final double maxAcceleration = MAX_ACCELERATION; // Percent velocity per second
+  private static final double curvatureArcadeTurnScale = 1; // Arcade turning scale factor
+  private static final double maxJerk = MAX_JERK;
+  private final S_DriveTrain drive;
+  private final Supplier<Double> leftXSupplier;
+  private final Supplier<Double> leftYSupplier;
+  private final Supplier<Double> rightXSupplier;
+  private final Supplier<Double> rightYSupplier;
+  private final boolean arcade;
 
-  private final S_DriveTrain driveTrain;
-  private final Supplier<Double> leftSpeed;
-  private final Supplier<Double> rightSpeed;
 
-  /** Creates a new DEF_DriveTrain. */
-  public D_TeleopDrive(
-      S_DriveTrain driveTrain, Supplier<Double> leftSpeed, Supplier<Double> rightSpeed) {
-    // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(driveTrain);
+  private final AxisProcessor leftXProcessor = new AxisProcessor();
+  private final AxisProcessor leftYProcessor = new AxisProcessor();
+  private final AxisProcessor rightXProcessor = new AxisProcessor();
+  private final AxisProcessor rightYProcessor = new AxisProcessor();
 
-    this.leftSpeed = leftSpeed;
-    this.rightSpeed = rightSpeed;
-    this.driveTrain = driveTrain;
+  /** Creates a new DriveWithJoysticks. Drives based on the joystick values. */
+  public D_TeleopDrive(S_DriveTrain drive, boolean arcade, Supplier<Double> leftXSupplier,
+      Supplier<Double> leftYSupplier, Supplier<Double> rightXSupplier,
+      Supplier<Double> rightYSupplier, Supplier<Boolean> sniperModeSupplier) {
+    addRequirements(drive);
+    this.drive = drive;
+    this.leftXSupplier = leftXSupplier;
+    this.leftYSupplier = leftYSupplier;
+    this.rightXSupplier = rightXSupplier;
+    this.rightYSupplier = rightYSupplier;
+    this.arcade = arcade;
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    leftXProcessor.reset(leftXSupplier.get());
+    leftYProcessor.reset(leftYSupplier.get());
+    rightXProcessor.reset(rightXSupplier.get());
+    rightYProcessor.reset(rightYSupplier.get());
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
+  @SuppressWarnings("unused")
   public void execute() {
-    driveTrain.tankDrive(leftSpeed.get(), rightSpeed.get());
+    double leftXValue = leftXProcessor.process(leftXSupplier.get());
+    double leftYValue = leftYProcessor.process(leftYSupplier.get());
+    double rightXValue = rightXProcessor.process(rightXSupplier.get());
+    double rightYValue = rightYProcessor.process(rightYSupplier.get());
+
+    WheelSpeeds speeds = new WheelSpeeds(0.0, 0.0);
+    if(arcade) {
+      speeds = WheelSpeeds.fromArcade(leftYValue, rightXValue);
+    } else {
+      speeds = new WheelSpeeds(leftYValue, rightYValue);
+    }
+
+
+    double leftPercent =
+        MathUtil.clamp(speeds.left, -1.0, 1.0);
+    double rightPercent =
+        MathUtil.clamp(speeds.right, -1.0, 1.0);
+
+    Logger.getInstance().recordOutput("ActiveCommands/DriveWithJoysticks",
+        true);
+    Logger.getInstance().recordOutput("DriveWithJoysticks/LeftPercent",
+        leftPercent);
+    Logger.getInstance().recordOutput("DriveWithJoysticks/RightPercent",
+        rightPercent);
+    drive.drivePercent(leftPercent, rightPercent);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    driveTrain.tankDrive(0, 0);
+    drive.stop();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
     return false;
+  }
+
+  public static double getDeadband() {
+    return deadband;
+  }
+
+  /** Represents a left and right percentage. */
+  private static class WheelSpeeds {
+    public double left;
+    public double right;
+
+    public WheelSpeeds(double left, double right) {
+      this.left = left;
+      this.right = right;
+    }
+
+    public static WheelSpeeds fromArcade(double baseSpeed, double turnSpeed) {
+      return new WheelSpeeds(baseSpeed + turnSpeed, baseSpeed - turnSpeed);
+    }
+  }
+
+  /** Cleans up a series of axis value (deadband + squaring + profile) */
+  public static class AxisProcessor {
+    private TrapezoidProfile.State state = new TrapezoidProfile.State();
+
+    public void reset(double value) {
+      state = new TrapezoidProfile.State(value, 0.0);
+    }
+
+    public double process(double value) {
+      double scaledValue = 0.0;
+      if (Math.abs(value) > deadband) {
+        scaledValue = (Math.abs(value) - deadband) / (1 - deadband);
+        scaledValue = Math.copySign(scaledValue * scaledValue, value);
+      }
+      TrapezoidProfile profile = new TrapezoidProfile(
+          new TrapezoidProfile.Constraints(maxAcceleration,
+              maxJerk),
+          new TrapezoidProfile.State(scaledValue, 0.0), state);
+      state = profile.calculate(0.02);
+      return state.position;
+    }
   }
 }
