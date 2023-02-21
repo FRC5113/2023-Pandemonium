@@ -6,6 +6,7 @@ package com.frc5113.robot.subsystems;
 
 import static com.frc5113.robot.constants.ArmConstants.LEFT_FALCON_CAN_ID;
 import static com.frc5113.robot.constants.ArmConstants.RIGHT_FALCON_CAN_ID;
+import static com.frc5113.robot.constants.ArmConstants.ENCODER_PORT;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
@@ -13,6 +14,8 @@ import com.frc5113.library.loops.ILooper;
 import com.frc5113.library.loops.Loop;
 import com.frc5113.library.motors.SmartFalcon;
 import com.frc5113.library.subsystem.SmartSubsystem;
+
+import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
@@ -27,8 +30,14 @@ public class S_Arm extends SmartSubsystem {
   /** Falcon located left of robot */
   private final SmartFalcon leftFalcon;
 
+  /** Falcon value - left side */
   private double leftFalconEncoderTicks;
+  /** Falcon value - right side */
   private double rightFalconEncoderTicks;
+
+  /** Encoder on arm mount - quadrature encoders connected to DIO are called DutyCycles */
+  private final DutyCycleEncoder throughBore;
+  private double throughBoreTicks;
 
   /** Creates a new Arm Subsystem. */
   public S_Arm() {
@@ -37,6 +46,7 @@ public class S_Arm extends SmartSubsystem {
         new SmartFalcon(LEFT_FALCON_CAN_ID, true); // create a inverted falcon on the left side
     leftFalcon.follow(rightFalcon); // this is necessary, and motor controller groups can't be used
     // because we will be using "position set()"
+    throughBore = new DutyCycleEncoder(ENCODER_PORT);
   }
 
   // Stuff required by SmartSubsystem
@@ -68,6 +78,7 @@ public class S_Arm extends SmartSubsystem {
   public void readPeriodicInputs() {
     leftFalconEncoderTicks = leftFalcon.getEncoderTicks();
     rightFalconEncoderTicks = rightFalcon.getEncoderTicks();
+    throughBoreTicks = throughBore.get();
   }
 
   @Override
@@ -99,7 +110,11 @@ public class S_Arm extends SmartSubsystem {
     rightFalcon.set(ControlMode.Position, position);
   }
 
-  public double getTickPosition() {
-    return rightFalcon.getEncoderTicks();
+  public double getFalconTickPosition() {
+    return rightFalconEncoderTicks;
+  }
+
+  public double getThroughBorePosition() {
+    return throughBoreTicks;
   }
 }

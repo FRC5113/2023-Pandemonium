@@ -15,14 +15,14 @@ import com.frc5113.robot.subsystems.S_Arm;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.PIDCommand;
 
-public class C_GoToSetpoint extends PIDCommand {
+public class P_GoToSetpoint extends PIDCommand {
   /** Creates a new C_GoToSetpoint. */
-  public C_GoToSetpoint(S_Arm arm, ArmPosition setpoint) {
+  public P_GoToSetpoint(S_Arm arm, ArmPosition setpoint) {
     super(
         // The controller that the command will use
         new PIDController(kP.get(), kI.get(), kD.get()),
         // This should return the measurement
-        () -> arm.getTickPosition(),
+        () -> arm.getThroughBorePosition(),
         // This should return the setpoint (can also be a constant)
         () -> setpoint.getSetpoint(),
         // This uses the output
