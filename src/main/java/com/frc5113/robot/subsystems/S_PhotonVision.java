@@ -116,13 +116,6 @@ public class S_PhotonVision extends SmartSubsystem {
   }
 
   @Override
-  public void periodic() {
-    // This method will be called once per scheduler run
-    outputTelemetry();
-    readPeriodicInputs();
-  }
-
-  @Override
   public boolean checkSubsystem() {
     return true;
   }

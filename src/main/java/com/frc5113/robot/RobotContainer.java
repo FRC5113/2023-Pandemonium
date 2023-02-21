@@ -4,6 +4,10 @@
 
 package com.frc5113.robot;
 
+import static com.frc5113.robot.constants.GeneralConstants.LOOP_DT;
+
+import com.frc5113.library.loops.Looper;
+import com.frc5113.library.loops.SubsystemManager;
 import com.frc5113.robot.commands.auto.Autos;
 import com.frc5113.robot.commands.drive.*;
 import com.frc5113.robot.commands.drive.D_TeleopDrive;
@@ -41,6 +45,13 @@ public class RobotContainer {
   // Operator interface
   private final IOI controller1 = new JoystickOI();
 
+  // subsystem manager
+  private final Looper enabledLoop =
+      new Looper(LOOP_DT); // Loop for when robot is enabled (auto, teleop)
+  private final Looper disabledLoop =
+      new Looper(LOOP_DT); // Loop for when robot is disabled (disabled)
+  private final SubsystemManager manager = new SubsystemManager();
+
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the trigger bindings
@@ -70,9 +81,45 @@ public class RobotContainer {
     return Autos.driveBackward(driveTrain); // Do Nothing: new InstantCommand(() -> {});
   }
 
-  public void robotPeriodic() {}
+  public void robotInit() {
+    manager.registerEnabledLoops(enabledLoop);
+    manager.registerDisabledLoops(disabledLoop);
+    manager.setSubsystems(driveTrain, claw, arm, pneumatics);
+  }
 
-  public void teleopInit() {}
+  public void robotPeriodic() {
+    manager.outputToSmartDashboard();
+  }
+
+  public void autoInit() {
+    disabledLoop.stop();
+    manager.stop();
+    enabledLoop.start();
+  }
+
+  public void teleopInit() {
+    disabledLoop.stop();
+    manager.stop();
+    enabledLoop.start();
+  }
+
+  public void disabledInit() {
+    enabledLoop.stop();
+    disabledLoop.start();
+  }
+
+  public void testInit() {
+    System.out.println("Starting check systems");
+
+    disabledLoop.stop();
+    enabledLoop.start();
+
+    if (manager.checkSubsystems()) {
+      System.out.println("ALL SYSTEMS PASSED");
+    } else {
+      System.out.println("CHECK ABOVE OUTPUT SOME SYSTEMS FAILED!!!");
+    }
+  }
 
   public void testPeriodic() {}
 }
