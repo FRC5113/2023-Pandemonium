@@ -4,9 +4,9 @@
 
 package com.frc5113.robot.subsystems;
 
+import static com.frc5113.robot.constants.ArmConstants.ENCODER_PORT;
 import static com.frc5113.robot.constants.ArmConstants.LEFT_FALCON_CAN_ID;
 import static com.frc5113.robot.constants.ArmConstants.RIGHT_FALCON_CAN_ID;
-import static com.frc5113.robot.constants.ArmConstants.ENCODER_PORT;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
@@ -14,7 +14,6 @@ import com.frc5113.library.loops.ILooper;
 import com.frc5113.library.loops.Loop;
 import com.frc5113.library.motors.SmartFalcon;
 import com.frc5113.library.subsystem.SmartSubsystem;
-
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -37,6 +36,7 @@ public class S_Arm extends SmartSubsystem {
 
   /** Encoder on arm mount - quadrature encoders connected to DIO are called DutyCycles */
   private final DutyCycleEncoder throughBore;
+
   private double throughBoreTicks;
 
   /** Creates a new Arm Subsystem. */

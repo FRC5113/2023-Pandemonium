@@ -17,5 +17,5 @@ public class ArmConstants {
   public static final TunableNumber kVTolerance =
       new TunableNumber("Arm: Velocity Tolerance", 50, TUNING_MODE);
 
-  public static final int ENCODER_PORT = 1; 
+  public static final int ENCODER_PORT = 1;
 }
