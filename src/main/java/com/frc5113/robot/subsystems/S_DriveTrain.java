@@ -71,6 +71,14 @@ public class S_DriveTrain extends SmartSubsystem {
     drive.tankDrive(leftSpeed, rightSpeed);
   }
 
+  public void arcadeDrive(double arcadeSpeed, double arcadeTurn) {
+    if (arcadeSpeed < -1 || arcadeSpeed > 1 || arcadeTurn < -1 || arcadeTurn > 1) {
+      throw new InvalidParameterException(
+          "Speed=" + arcadeSpeed + " Turn=" + arcadeTurn + " - MUST -1 < Speed||Turn < 1");
+    }
+    drive.arcadeDrive(arcadeSpeed, arcadeTurn);
+  }
+
   // Methods required by SmartSubsystem
   @Override
   public void outputTelemetry() {
