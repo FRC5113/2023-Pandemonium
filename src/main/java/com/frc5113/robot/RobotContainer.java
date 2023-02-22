@@ -11,7 +11,6 @@ import com.frc5113.library.loops.Looper;
 import com.frc5113.library.loops.SubsystemManager;
 import com.frc5113.robot.commands.auto.Autos;
 import com.frc5113.robot.commands.drive.*;
-import com.frc5113.robot.commands.drive.D_TeleopDrive;
 import com.frc5113.robot.commands.photonvision.*;
 import com.frc5113.robot.oi.IOI;
 import com.frc5113.robot.oi.XboxOI;
@@ -90,7 +89,7 @@ public class RobotContainer {
    */
   private void configureBindings() {
     driveTrain.setDefaultCommand(
-        new D_TeleopDrive(driveTrain, controller1.tankL(), controller1.tankR()));
+        new D_TeleopDriveArcade(driveTrain, controller1.arcadeSpeed(), controller1.arcadeTurn()));
   }
 
   /**
