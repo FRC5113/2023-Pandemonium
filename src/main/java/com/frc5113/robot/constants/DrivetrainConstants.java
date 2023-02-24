@@ -1,5 +1,7 @@
 package com.frc5113.robot.constants;
 
+import static com.frc5113.robot.constants.GeneralConstants.TUNING_MODE;
+import com.frc5113.library.utils.tunable.TunableNumber;
 import com.revrobotics.CANSparkMax.IdleMode;
 
 public class DrivetrainConstants {
@@ -15,9 +17,11 @@ public class DrivetrainConstants {
   public static final IdleMode MOTOR_MODE = IdleMode.kCoast;
 
   // Auto Balance stuff
-  public static final double BALANCE_KP = 0.;
-  public static final double BALANCE_KI = 0.;
-  public static final double BALANCE_KD = 0.;
-  public static final double BALANCE_TOLERANCE_P = 0.;
-  public static final double BALANCE_TOLERANCE_D = 0.;
+  public static final TunableNumber BALANCE_KP = new TunableNumber("Arm: P", 1, TUNING_MODE);
+  public static final TunableNumber BALANCE_KI = new TunableNumber("Arm: I", .01, TUNING_MODE);
+  public static final TunableNumber BALANCE_KD = new TunableNumber("Arm: D", .001, TUNING_MODE);
+  public static final TunableNumber BALANCE_TOLERANCE_P =
+      new TunableNumber("Arm: Tolerance", 1, TUNING_MODE);
+  public static final TunableNumber BALANCE_TOLERANCE_D =
+      new TunableNumber("Arm: Velocity Tolerance", 1, TUNING_MODE);  
 }
