@@ -1,6 +1,7 @@
 package com.frc5113.robot.constants;
 
 import static com.frc5113.robot.constants.GeneralConstants.TUNING_MODE;
+
 import com.frc5113.library.utils.tunable.TunableNumber;
 import com.revrobotics.CANSparkMax.IdleMode;
 
@@ -23,5 +24,5 @@ public class DrivetrainConstants {
   public static final TunableNumber BALANCE_TOLERANCE_P =
       new TunableNumber("Arm: Tolerance", 1, TUNING_MODE);
   public static final TunableNumber BALANCE_TOLERANCE_D =
-      new TunableNumber("Arm: Velocity Tolerance", 1, TUNING_MODE);  
+      new TunableNumber("Arm: Velocity Tolerance", 1, TUNING_MODE);
 }
