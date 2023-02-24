@@ -11,12 +11,12 @@ public class P_AutoBalance extends PIDCommand {
 
   public P_AutoBalance(S_DriveTrain driveTrain, S_Gyro gyro) {
     super(
-        new PIDController(BALANCE_KP, BALANCE_KI, BALANCE_KD),
+        new PIDController(BALANCE_KP.get(), BALANCE_KI.get(), BALANCE_KD.get()),
         () -> gyro.getRoll(),
         0.0,
         output -> driveTrain.tankDrive(output, output),
         driveTrain);
-    getController().setTolerance(BALANCE_TOLERANCE_P, BALANCE_TOLERANCE_D);
+    getController().setTolerance(BALANCE_TOLERANCE_P.get(), BALANCE_TOLERANCE_D.get());
   }
 
   @Override
