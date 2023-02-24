@@ -42,6 +42,9 @@ public class RobotContainer {
   /** Arm/truss subsystem */
   private final S_Arm arm = new S_Arm();
 
+  /** Gyro subsystem */
+  private final S_Gyro gyro = new S_Gyro();
+
   // Operator interface
   private final IOI controller1 = new JoystickOI();
 
@@ -56,6 +59,11 @@ public class RobotContainer {
   public RobotContainer() {
     // Configure the trigger bindings
     configureBindings();
+
+    // Register loops and subsystems to the manager
+    manager.registerEnabledLoops(enabledLoop);
+    manager.registerDisabledLoops(disabledLoop);
+    manager.setSubsystems(driveTrain, claw, arm, pneumatics, gyro, photonVision);
   }
 
   /**
@@ -81,11 +89,7 @@ public class RobotContainer {
     return Autos.driveBackward(driveTrain); // Do Nothing: new InstantCommand(() -> {});
   }
 
-  public void robotInit() {
-    manager.registerEnabledLoops(enabledLoop);
-    manager.registerDisabledLoops(disabledLoop);
-    manager.setSubsystems(driveTrain, claw, arm, pneumatics);
-  }
+  public void robotInit() {}
 
   public void robotPeriodic() {
     manager.outputToSmartDashboard();
