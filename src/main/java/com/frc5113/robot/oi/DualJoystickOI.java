@@ -1,6 +1,7 @@
 package com.frc5113.robot.oi;
 
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import java.util.function.Supplier;
 
 public class DualJoystickOI implements IOI {
@@ -37,5 +38,15 @@ public class DualJoystickOI implements IOI {
   @Override
   public Supplier<Double> tankR() {
     return joystick2::getY;
+  }
+
+  @Override
+  public Trigger getPrimary() {
+    return joystick1.trigger();
+  }
+
+  @Override
+  public Trigger getSecondary() {
+    return joystick2.trigger();
   }
 }
