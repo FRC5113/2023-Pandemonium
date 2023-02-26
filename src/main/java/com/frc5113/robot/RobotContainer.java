@@ -4,10 +4,10 @@
 
 package com.frc5113.robot;
 
+import com.frc5113.robot.commands.arm.*;
 import com.frc5113.robot.commands.auto.Autos;
 import com.frc5113.robot.commands.drive.D_TeleopDrive;
 import com.frc5113.robot.enums.ArmPosition;
-import com.frc5113.robot.commands.arm.*;
 import com.frc5113.robot.oi.IOI;
 import com.frc5113.robot.oi.JoystickOI;
 import com.frc5113.robot.subsystems.*;
@@ -56,8 +56,10 @@ public class RobotContainer {
   private void configureBindings() {
     driveTrain.setDefaultCommand(
         new D_TeleopDrive(driveTrain, controller1.tankL(), controller1.tankR()));
-    controller1.getPrimary().onTrue(new C_GoToSetpoint(arm, ArmPosition.Drop));
-    controller1.getSecondary().onTrue(new C_GoToSetpoint(arm, ArmPosition.Folded));
+
+    controller1.armFoldedButton().onTrue(new C_GoToSetpoint(arm, ArmPosition.Folded));
+    controller1.armGroundButton().onTrue(new C_GoToSetpoint(arm, ArmPosition.Ground));
+    controller1.armDropButton().onTrue(new C_GoToSetpoint(arm, ArmPosition.Drop));
   }
 
   /**

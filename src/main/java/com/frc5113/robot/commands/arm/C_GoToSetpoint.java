@@ -4,18 +4,24 @@
 
 package com.frc5113.robot.commands.arm;
 
-import static com.frc5113.robot.constants.ArmConstants.kD;
-import static com.frc5113.robot.constants.ArmConstants.kI;
-import static com.frc5113.robot.constants.ArmConstants.kP;
-import static com.frc5113.robot.constants.ArmConstants.kTolerance;
-import static com.frc5113.robot.constants.ArmConstants.kVTolerance;
+import static com.frc5113.robot.constants.ArmConstants.*;
+import static com.frc5113.robot.constants.GeneralConstants.TUNING_MODE;
 
+import com.frc5113.library.utils.tunable.TunableNumber;
 import com.frc5113.robot.enums.ArmPosition;
 import com.frc5113.robot.subsystems.S_Arm;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.PIDCommand;
 
 public class C_GoToSetpoint extends PIDCommand {
+  private static final TunableNumber kP = new TunableNumber("Arm: P", ARM_P, TUNING_MODE);
+  private static final TunableNumber kI = new TunableNumber("Arm: I", ARM_I, TUNING_MODE);
+  private static final TunableNumber kD = new TunableNumber("Arm: D", ARM_D, TUNING_MODE);
+  private static final TunableNumber kTolerance =
+      new TunableNumber("Arm: Tolerance", ARM_TOLERANCE, TUNING_MODE);
+  private static final TunableNumber kVTolerance =
+      new TunableNumber("Arm: VTolerance", ARM_VTOLERANCE, TUNING_MODE);
+
   /** Creates a new C_GoToSetpoint. */
   public C_GoToSetpoint(S_Arm arm, ArmPosition setpoint) {
     super(
@@ -28,7 +34,7 @@ public class C_GoToSetpoint extends PIDCommand {
         // This uses the output
         output -> {
           // Use output to set position on arm
-          arm.setPosition(output);
+          arm.set(output);
         },
         arm);
     // Aditional configs

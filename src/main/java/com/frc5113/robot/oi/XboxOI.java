@@ -40,12 +40,17 @@ public class XboxOI implements IOI {
   }
 
   @Override
-  public Trigger getPrimary() {
+  public Trigger armFoldedButton() {
     return xbox.a();
   }
 
   @Override
-  public Trigger getSecondary() {
+  public Trigger armGroundButton() {
     return xbox.b();
+  }
+
+  @Override
+  public Trigger armDropButton() {
+    return xbox.y();
   }
 }

@@ -1,8 +1,7 @@
 package com.frc5113.robot.oi;
 
-import java.util.function.Supplier;
-
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import java.util.function.Supplier;
 
 public interface IOI {
   /**
@@ -26,12 +25,17 @@ public interface IOI {
   Supplier<Double> tankR();
 
   /**
-   * @return get primary button on controller
+   * @return get button to put arm in folded state
    */
-  Trigger getPrimary();
+  Trigger armFoldedButton();
 
   /**
-   * @return get secondary button on controller
+   * @return get button to put arm in ground state
    */
-  Trigger getSecondary();
+  Trigger armGroundButton();
+
+  /**
+   * @return get button to put arm in drop state
+   */
+  Trigger armDropButton();
 }

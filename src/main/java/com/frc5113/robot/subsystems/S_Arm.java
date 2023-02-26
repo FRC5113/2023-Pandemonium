@@ -94,11 +94,15 @@ public class S_Arm extends SmartSubsystem {
         });
   }
 
-  // Getters
+  public void set(double speed) {
+    rightFalcon.set(speed);
+  }
+
   public void setPosition(double position) {
     rightFalcon.set(ControlMode.Position, position);
   }
 
+  // Getters
   public double getTickPosition() {
     return rightFalcon.getEncoderTicks();
   }
