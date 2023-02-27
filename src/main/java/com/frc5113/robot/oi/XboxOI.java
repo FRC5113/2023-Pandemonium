@@ -53,4 +53,9 @@ public class XboxOI implements IOI {
   public Trigger armDropButton() {
     return xbox.y();
   }
+
+  @Override
+  public Trigger panicButton() {
+    return xbox.start();
+  }
 }

@@ -94,6 +94,11 @@ public class S_Arm extends SmartSubsystem {
         });
   }
 
+  public boolean atPosition(double position, double tolerance) {
+    double error = position - getTickPosition();
+    return error < tolerance && error > -tolerance;
+  }
+
   public void set(double speed) {
     rightFalcon.set(speed);
   }
