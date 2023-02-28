@@ -4,10 +4,11 @@
 
 package com.frc5113.robot;
 
+import static com.frc5113.robot.constants.DrivetrainConstants.ROBOT_VERSION;
 import static com.frc5113.robot.constants.GeneralConstants.LOOP_DT;
+
 import com.frc5113.library.loops.Looper;
 import com.frc5113.library.loops.SubsystemManager;
-import static com.frc5113.robot.constants.DrivetrainConstants.ROBOT_VERSION;
 import com.frc5113.robot.commands.auto.Autos;
 import com.frc5113.robot.commands.drive.*;
 import com.frc5113.robot.commands.drive.D_TeleopDrive;
