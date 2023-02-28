@@ -9,4 +9,11 @@ public class DrivetrainConstants {
   public static final int RIGHT_FOLLOWER_ID = 21;
 
   public static final IdleMode MOTOR_MODE = IdleMode.kCoast;
+
+  public static final double MAX_VELOCITY = 10.0; // change me
+  public static final double WHEEL_RADIUS = 0.0; // change me
+  public static final double TRACK_WIDTH = 0.0; // change me
+  public static final double MAX_ACCELERATION = 1; // change me
+  public static final double DEAD_BAND = 0.1;
+  public static final double MAX_JERK = 0.1; // change me
 }

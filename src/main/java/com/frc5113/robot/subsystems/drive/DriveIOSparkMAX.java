@@ -1,4 +1,4 @@
-package com.frc5113.robot.subsystems.DriveTrain;
+package com.frc5113.robot.subsystems.drive;
 
 import static com.frc5113.robot.constants.DrivetrainConstants.*;
 
@@ -16,9 +16,12 @@ import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.SerialPort;
+import edu.wpi.first.wpilibj.SPI.Port;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 
 import com.frc5113.library.motors.SmartNeo;
+import com.frc5113.library.motors.SparkMAXBurnManager;
+import com.frc5113.robot.BuildConstants;
 
 public class DriveIOSparkMAX implements DriveIO {
 
@@ -34,24 +37,22 @@ public class DriveIOSparkMAX implements DriveIO {
   private final MotorControllerGroup rightGroup;
 
   private final double afterEncoderReduction;
-  private final boolean hasExternalEncoders;
   private Encoder leftExternalEncoder;
   private Encoder rightExternalEncoder;
 
   private final RelativeEncoder leftLeaderEncoder;
   private final RelativeEncoder rightLeaderEncoder;
   private final RelativeEncoder leftFollowerEncoder;
-  private final RelativeEncoder rightFolslowerEncoder;
+  private final RelativeEncoder rightFollowerEncoder;
 
   private final SparkMaxPIDController leftPID;
   private final SparkMaxPIDController rightPID;
 
+  private final AHRS gyro;
+
 
   public DriveIOSparkMAX() {
-      
-
     afterEncoderReduction = 6.0; // Internal encoders
-    hasExternalEncoders = true;
     leftInverted = true;
     rightInverted = false;
 
@@ -60,8 +61,6 @@ public class DriveIOSparkMAX implements DriveIO {
     rightLeader = new SmartNeo(RIGHT_LEADER_ID, MOTOR_MODE);
     rightFollower = new SmartNeo(RIGHT_FOLLOWER_ID, MOTOR_MODE);
 
-
-    
     leftGroup = new MotorControllerGroup(leftLeader, leftFollower);
     rightGroup = new MotorControllerGroup(rightLeader, rightFollower);
     leftLeader.setInverted(leftInverted);
@@ -87,9 +86,6 @@ public class DriveIOSparkMAX implements DriveIO {
     leftPID = leftLeader.getPIDController();
     rightPID = rightLeader.getPIDController();
 
-    
-
-
     leftLeader.setInverted(leftInverted);
     rightLeader.setInverted(rightInverted);
 
@@ -100,30 +96,21 @@ public class DriveIOSparkMAX implements DriveIO {
     leftFollower.setSmartCurrentLimit(30);
     rightLeader.setSmartCurrentLimit(30);
     rightFollower.setSmartCurrentLimit(30);
-    if (hasThreeControllers) {
-      leftFollower2.setSmartCurrentLimit(30);
-      rightFollower2.setSmartCurrentLimit(30);
-    }
 
     leftLeader.setCANTimeout(0);
     leftFollower.setCANTimeout(0);
     rightLeader.setCANTimeout(0);
     rightFollower.setCANTimeout(0);
-    if (hasThreeControllers) {
-      leftFollower2.setCANTimeout(0);
-      rightFollower2.setCANTimeout(0);
-    }
 
+    SparkMAXBurnManager.setBuildDate(BuildConstants.BUILD_DATE);
     if (SparkMAXBurnManager.shouldBurn()) {
       leftLeader.burnFlash();
       leftFollower.burnFlash();
       rightLeader.burnFlash();
       rightFollower.burnFlash();
-      if (hasThreeControllers) {
-        leftFollower2.burnFlash();
-        rightFollower2.burnFlash();
-      }
     }
+
+    gyro = new AHRS(Port.kMXP);
 
     if (gyro != null) {
       gyro.calibrate();
@@ -133,56 +120,31 @@ public class DriveIOSparkMAX implements DriveIO {
   @Override
   public void updateInputs(DriveIOInputs inputs) {
     inputs.leftPositionRad =
-        Units.rotationsToRadians(leftInternalEncoder.getPosition())
+        Units.rotationsToRadians(leftLeaderEncoder.getPosition())
             / afterEncoderReduction;
     inputs.rightPositionRad =
-        Units.rotationsToRadians(rightInternalEncoder.getPosition())
+        Units.rotationsToRadians(rightLeaderEncoder.getPosition())
             / afterEncoderReduction;
     inputs.leftVelocityRadPerSec = Units.rotationsPerMinuteToRadiansPerSecond(
-        leftInternalEncoder.getVelocity()) / afterEncoderReduction;
+        leftLeaderEncoder.getVelocity()) / afterEncoderReduction;
     inputs.rightVelocityRadPerSec = Units.rotationsPerMinuteToRadiansPerSecond(
-        rightInternalEncoder.getVelocity()) / afterEncoderReduction;
+        rightLeaderEncoder.getVelocity()) / afterEncoderReduction;
 
-    inputs.externalAvailable = hasExternalEncoders;
-    if (hasExternalEncoders) {
-      inputs.externalLeftPositionRad =
-          Units.rotationsToRadians(leftExternalEncoder.getDistance());
-      inputs.externalRightPositionRad =
-          Units.rotationsToRadians(rightExternalEncoder.getDistance());
-      inputs.externalLeftVelocityRadPerSec =
-          Units.rotationsToRadians(leftExternalEncoder.getRate());
-      inputs.externalRightVelocityRadPerSec =
-          Units.rotationsToRadians(rightExternalEncoder.getRate());
-    }
+    inputs.externalAvailable = false;
 
     inputs.leftAppliedVolts =
         leftLeader.getAppliedOutput() * RobotController.getBatteryVoltage();
     inputs.rightAppliedVolts =
         rightLeader.getAppliedOutput() * RobotController.getBatteryVoltage();
+    inputs.leftCurrentAmps = new double[] {leftLeader.getOutputCurrent(),
+        leftFollower.getOutputCurrent()};
+    inputs.rightCurrentAmps = new double[] {rightLeader.getOutputCurrent(),
+        rightFollower.getOutputCurrent()};
 
-    if (hasThreeControllers) {
-      inputs.leftCurrentAmps = new double[] {leftLeader.getOutputCurrent(),
-          leftFollower.getOutputCurrent(), leftFollower2.getOutputCurrent()};
-      inputs.rightCurrentAmps = new double[] {rightLeader.getOutputCurrent(),
-          rightFollower.getOutputCurrent(), rightFollower2.getOutputCurrent()};
-
-      inputs.leftTempCelcius = new double[] {leftLeader.getMotorTemperature(),
-          leftFollower.getMotorTemperature(),
-          leftFollower2.getMotorTemperature()};
-      inputs.rightTempCelcius = new double[] {rightLeader.getMotorTemperature(),
-          rightFollower.getMotorTemperature(),
-          rightFollower2.getMotorTemperature()};
-    } else {
-      inputs.leftCurrentAmps = new double[] {leftLeader.getOutputCurrent(),
-          leftFollower.getOutputCurrent()};
-      inputs.rightCurrentAmps = new double[] {rightLeader.getOutputCurrent(),
-          rightFollower.getOutputCurrent()};
-
-      inputs.leftTempCelcius = new double[] {leftLeader.getMotorTemperature(),
-          leftFollower.getMotorTemperature()};
-      inputs.rightTempCelcius = new double[] {rightLeader.getMotorTemperature(),
-          rightFollower.getMotorTemperature()};
-    }
+    inputs.leftTempCelcius = new double[] {leftLeader.getMotorTemperature(),
+        leftFollower.getMotorTemperature()};
+    inputs.rightTempCelcius = new double[] {rightLeader.getMotorTemperature(),
+        rightFollower.getMotorTemperature()};
 
     if (gyro != null) {
       inputs.gyroConnected = gyro.isConnected();
@@ -224,10 +186,6 @@ public class DriveIOSparkMAX implements DriveIO {
     leftFollower.setIdleMode(mode);
     rightLeader.setIdleMode(mode);
     rightFollower.setIdleMode(mode);
-    if (hasThreeControllers) {
-      leftFollower2.setIdleMode(mode);
-      rightFollower2.setIdleMode(mode);
-    }
   }
 
   @Override

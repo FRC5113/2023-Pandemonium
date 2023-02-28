@@ -11,7 +11,8 @@ import com.frc5113.robot.commands.photonvision.*;
 import com.frc5113.robot.oi.IOI;
 import com.frc5113.robot.oi.JoystickOI;
 import com.frc5113.robot.subsystems.*;
-import com.frc5113.robot.subsystems.DriveTrain.S_DriveTrain;
+import com.frc5113.robot.subsystems.drive.DriveIOSparkMAX;
+import com.frc5113.robot.subsystems.drive.S_DriveTrain;
 
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
@@ -28,7 +29,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 public class RobotContainer {
   // Robot subsystems
   /** Neo Drivetrain responsible for robot movement (Subsystem) */
-  private final S_DriveTrain driveTrain = new S_DriveTrain();
+  private final S_DriveTrain driveTrain = new S_DriveTrain(new DriveIOSparkMAX() {});
 
   /** General pneumatics controller from which pneumatic components are derived */
   private final S_Pneumatics pneumatics = new S_Pneumatics();

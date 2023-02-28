@@ -1,5 +1,5 @@
 
-package com.frc5113.robot.subsystems.DriveTrain;
+package com.frc5113.robot.subsystems.drive;
 
 import java.util.function.Supplier;
 
@@ -14,8 +14,9 @@ import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import com.frc5113.robot.subsystems.DriveTrain.DriveIO.DriveIOInputs;
+
 import com.frc5113.robot.subsystems.S_Gyro;
+import com.frc5113.robot.subsystems.drive.DriveIO.DriveIOInputs;
 
 public class S_DriveTrain extends SubsystemBase {
   private static final double maxCoastVelocityMetersPerSec = 0.05; // Need to be under this to
@@ -42,7 +43,6 @@ public class S_DriveTrain extends SubsystemBase {
   private boolean lastGyroConnected = false;
   private Rotation2d lastGyroRotation = new Rotation2d();
   private boolean brakeMode = false;
-  private boolean pitchResetComplete = false;
   private double basePitchRadians = 0.0;
 
   /** Creates a new DriveTrain. */
@@ -80,8 +80,6 @@ public class S_DriveTrain extends SubsystemBase {
     lastLeftPositionMeters = getLeftPositionMeters();
     lastRightPositionMeters = getRightPositionMeters();
     lastGyroRotation = currentGyroRotation;
-
-
 
     // Update brake mode
     if (DriverStation.isEnabled()) {

@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import java.util.function.Supplier;
 
-import com.frc5113.robot.subsystems.DriveTrain.S_DriveTrain;
+import com.frc5113.robot.subsystems.drive.S_DriveTrain;
 
 public class A_AutoDrive extends CommandBase {
   /** Creates a new AutoDriveCommand. */

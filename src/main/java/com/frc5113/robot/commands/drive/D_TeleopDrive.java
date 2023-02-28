@@ -4,18 +4,17 @@ import java.util.function.Supplier;
 
 import org.littletonrobotics.junction.Logger;
 
+import com.frc5113.robot.subsystems.drive.S_DriveTrain;
+
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import com.frc5113.robot.subsystems.DriveTrain.S_DriveTrain;
 
 import static com.frc5113.robot.constants.DrivetrainConstants.*;
-import static com.frc5113.robot.constants.OperatorInterfaceConstants.*;
 
 public class D_TeleopDrive extends CommandBase {
   private static final double deadband = DEAD_BAND;
   private static final double maxAcceleration = MAX_ACCELERATION; // Percent velocity per second
-  private static final double curvatureArcadeTurnScale = 1; // Arcade turning scale factor
   private static final double maxJerk = MAX_JERK;
   private final S_DriveTrain drive;
   private final Supplier<Double> leftXSupplier;
@@ -54,7 +53,6 @@ public class D_TeleopDrive extends CommandBase {
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  @SuppressWarnings("unused")
   public void execute() {
     double leftXValue = leftXProcessor.process(leftXSupplier.get());
     double leftYValue = leftYProcessor.process(leftYSupplier.get());

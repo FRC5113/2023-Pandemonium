@@ -1,4 +1,4 @@
-package com.frc5113.robot.subsystems.DriveTrain;
+package com.frc5113.robot.subsystems.drive;
 
 import org.littletonrobotics.junction.LogTable;
 import org.littletonrobotics.junction.inputs.LoggableInputs;
