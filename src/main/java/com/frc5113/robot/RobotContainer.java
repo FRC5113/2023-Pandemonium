@@ -4,9 +4,15 @@
 
 package com.frc5113.robot;
 
+import static com.frc5113.robot.constants.GeneralConstants.LOOP_DT;
+
+import com.frc5113.library.loops.Looper;
+import com.frc5113.library.loops.SubsystemManager;
 import com.frc5113.robot.commands.arm.*;
 import com.frc5113.robot.commands.auto.Autos;
+import com.frc5113.robot.commands.drive.*;
 import com.frc5113.robot.commands.drive.D_TeleopDrive;
+import com.frc5113.robot.commands.photonvision.*;
 import com.frc5113.robot.enums.ArmPosition;
 import com.frc5113.robot.oi.IOI;
 import com.frc5113.robot.oi.JoystickOI;
@@ -29,19 +35,37 @@ public class RobotContainer {
   /** General pneumatics controller from which pneumatic components are derived */
   private final S_Pneumatics pneumatics = new S_Pneumatics();
 
+  /** PhotonLib wrapper for defining pose estimation and targeting utils. */
+  public final S_PhotonVision photonVision = new S_PhotonVision();
+
   /** Claw pneumatic component (derived from pneumatics) */
   private final S_Claw claw = pneumatics.getClaw();
 
   /** Arm/truss subsystem */
   private final S_Arm arm = new S_Arm();
 
+  /** Gyro subsystem */
+  private final S_Gyro gyro = new S_Gyro();
+
   // Operator interface
   private final IOI controller1 = new JoystickOI();
+
+  // subsystem manager
+  private final Looper enabledLoop =
+      new Looper(LOOP_DT); // Loop for when robot is enabled (auto, teleop)
+  private final Looper disabledLoop =
+      new Looper(LOOP_DT); // Loop for when robot is disabled (disabled)
+  private final SubsystemManager manager = new SubsystemManager();
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the trigger bindings
     configureBindings();
+
+    // Register loops and subsystems to the manager
+    manager.registerEnabledLoops(enabledLoop);
+    manager.registerDisabledLoops(disabledLoop);
+    manager.setSubsystems(driveTrain, claw, arm, pneumatics, gyro, photonVision);
   }
 
   /**
@@ -71,9 +95,41 @@ public class RobotContainer {
     return Autos.driveBackward(driveTrain); // Do Nothing: new InstantCommand(() -> {});
   }
 
-  public void robotPeriodic() {}
+  public void robotInit() {}
 
-  public void teleopInit() {}
+  public void robotPeriodic() {
+    manager.outputToSmartDashboard();
+  }
+
+  public void autoInit() {
+    disabledLoop.stop();
+    manager.stop();
+    enabledLoop.start();
+  }
+
+  public void teleopInit() {
+    disabledLoop.stop();
+    manager.stop();
+    enabledLoop.start();
+  }
+
+  public void disabledInit() {
+    enabledLoop.stop();
+    disabledLoop.start();
+  }
+
+  public void testInit() {
+    System.out.println("Starting check systems");
+
+    disabledLoop.stop();
+    enabledLoop.start();
+
+    if (manager.checkSubsystems()) {
+      System.out.println("ALL SYSTEMS PASSED");
+    } else {
+      System.out.println("CHECK ABOVE OUTPUT SOME SYSTEMS FAILED!!!");
+    }
+  }
 
   public void testPeriodic() {}
 }
