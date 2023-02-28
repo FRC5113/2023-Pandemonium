@@ -4,6 +4,8 @@
 
 package com.frc5113.robot;
 
+import static com.frc5113.robot.constants.DrivetrainConstants.ROBOT_VERSION;
+
 import com.frc5113.robot.commands.auto.Autos;
 import com.frc5113.robot.commands.drive.D_TeleopDrive;
 import com.frc5113.robot.oi.IOI;
@@ -22,7 +24,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 public class RobotContainer {
   // Robot subsystems
   /** Neo Drivetrain responsible for robot movement (Subsystem) */
-  private final S_DriveTrain driveTrain = new S_DriveTrain();
+  private final DriveTrain driveTrain;
 
   /** General pneumatics controller from which pneumatic components are derived */
   private final S_Pneumatics pneumatics = new S_Pneumatics();
@@ -38,6 +40,18 @@ public class RobotContainer {
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
+    switch (ROBOT_VERSION) {
+      case Pandemonium:
+        driveTrain = new S_DriveTrainPandemonium();
+        break;
+      case Pandeguardium:
+        driveTrain = new S_DriveTrainPandeguardium();
+        break;
+      default:
+        driveTrain = new S_DriveTrainPandemonium();
+        break;
+    }
+
     // Configure the trigger bindings
     configureBindings();
   }
