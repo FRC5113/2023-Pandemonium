@@ -9,7 +9,6 @@ import static com.frc5113.robot.constants.DrivetrainConstants.*;
 import com.frc5113.library.loops.ILooper;
 import com.frc5113.library.loops.Loop;
 import com.frc5113.library.motors.SmartNeo;
-import com.frc5113.library.subsystem.SmartSubsystem;
 import com.frc5113.robot.primative.DrivetrainEncoders;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
@@ -19,7 +18,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import java.security.InvalidParameterException;
 
 /** The drivetrain, well... drives */
-public class S_DriveTrain extends SmartSubsystem {
+public class S_DriveTrainPandemonium extends DriveTrain {
   private final SmartNeo leftLeader;
   private final SmartNeo leftFollower;
   private final SmartNeo rightLeader;
@@ -39,11 +38,11 @@ public class S_DriveTrain extends SmartSubsystem {
   private final DrivetrainEncoders encoders;
 
   /** Creates a new DriveTrain. */
-  public S_DriveTrain() {
-    leftLeader = new SmartNeo(LEFT_LEADER_ID, MOTOR_MODE);
-    leftFollower = new SmartNeo(LEFT_FOLLOWER_ID, MOTOR_MODE);
-    rightLeader = new SmartNeo(RIGHT_LEADER_ID, MOTOR_MODE);
-    rightFollower = new SmartNeo(RIGHT_FOLLOWER_ID, MOTOR_MODE);
+  public S_DriveTrainPandemonium() {
+    leftLeader = new SmartNeo(LEFT_LEADER_ID_PANDEMONIUM, MOTOR_MODE_PANDEMONIUM);
+    leftFollower = new SmartNeo(LEFT_FOLLOWER_ID_PANDEMONIUM, MOTOR_MODE_PANDEMONIUM);
+    rightLeader = new SmartNeo(RIGHT_LEADER_ID_PANDEMONIUM, MOTOR_MODE_PANDEMONIUM);
+    rightFollower = new SmartNeo(RIGHT_FOLLOWER_ID_PANDEMONIUM, MOTOR_MODE_PANDEMONIUM);
 
     leftGroup = new MotorControllerGroup(leftLeader, leftFollower);
     rightGroup = new MotorControllerGroup(rightLeader, rightFollower);
@@ -69,6 +68,14 @@ public class S_DriveTrain extends SmartSubsystem {
           "Left=" + leftSpeed + " Right=" + rightSpeed + " - MUST -1 < Left||Right < 1");
     }
     drive.tankDrive(leftSpeed, rightSpeed);
+  }
+
+  public void arcadeDrive(double arcadeSpeed, double arcadeTurn) {
+    if (arcadeSpeed < -1 || arcadeSpeed > 1 || arcadeTurn < -1 || arcadeTurn > 1) {
+      throw new InvalidParameterException(
+          "Speed=" + arcadeSpeed + " Turn=" + arcadeTurn + " - MUST -1 < Speed||Turn < 1");
+    }
+    drive.arcadeDrive(arcadeSpeed, arcadeTurn);
   }
 
   // Methods required by SmartSubsystem
