@@ -59,12 +59,15 @@ public class RobotContainer {
     switch (ROBOT_VERSION) {
       case Pandemonium:
         driveTrain = new S_DriveTrainPandemonium();
+        manager.setSubsystems(driveTrain, claw, arm, pneumatics, gyro, photonVision);
         break;
       case Pandeguardium:
         driveTrain = new S_DriveTrainPandeguardium();
+        manager.setSubsystems(driveTrain, gyro);
         break;
       default:
         driveTrain = new S_DriveTrainPandemonium();
+        manager.setSubsystems(driveTrain, claw, arm, pneumatics, gyro, photonVision);
         break;
     }
 
@@ -74,7 +77,6 @@ public class RobotContainer {
     // Register loops and subsystems to the manager
     manager.registerEnabledLoops(enabledLoop);
     manager.registerDisabledLoops(disabledLoop);
-    manager.setSubsystems(driveTrain, claw, arm, pneumatics, gyro, photonVision);
   }
 
   /**

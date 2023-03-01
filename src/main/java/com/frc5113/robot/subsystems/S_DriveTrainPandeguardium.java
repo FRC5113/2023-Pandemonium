@@ -10,7 +10,6 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.frc5113.library.loops.ILooper;
 import com.frc5113.library.loops.Loop;
 import com.frc5113.library.motors.SmartFalcon;
-import com.frc5113.library.oi.scalers.CubicCurve;
 import com.frc5113.robot.primative.DrivetrainEncoders;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
@@ -32,9 +31,6 @@ public class S_DriveTrainPandeguardium extends DriveTrain {
   // encoder values
   private final DrivetrainEncoders encoders;
 
-  // input scaler
-  private final CubicCurve curve;
-
   /** Creates a new DriveTrain. */
   public S_DriveTrainPandeguardium() {
     leftLeader = new SmartFalcon(LEFT_LEADER_ID_PANDEGUARDIUM, true, MOTOR_MODE_PANDEGUARDIUM);
@@ -49,13 +45,9 @@ public class S_DriveTrainPandeguardium extends DriveTrain {
     drive = new DifferentialDrive(leftGroup, rightGroup);
 
     encoders = new DrivetrainEncoders();
-
-    curve = new CubicCurve(0.0, 0.3, 0.0);
   }
 
-  public void tankDrive(double leftSpeedRaw, double rightSpeedRaw) {
-    double leftSpeed = curve.calculateMappedVal(leftSpeedRaw);
-    double rightSpeed = curve.calculateMappedVal(rightSpeedRaw);
+  public void tankDrive(double leftSpeed, double rightSpeed) {
     if (leftSpeed < -1 || leftSpeed > 1 || rightSpeed < -1 || rightSpeed > 1) {
       throw new InvalidParameterException(
           "Left=" + leftSpeed + " Right=" + rightSpeed + " - MUST -1 < Left||Right < 1");
@@ -63,9 +55,7 @@ public class S_DriveTrainPandeguardium extends DriveTrain {
     drive.tankDrive(leftSpeed, rightSpeed);
   }
 
-  public void arcadeDrive(double arcadeSpeedRaw, double arcadeTurnRaw) {
-    double arcadeSpeed = curve.calculateMappedVal(arcadeSpeedRaw);
-    double arcadeTurn = curve.calculateMappedVal(arcadeTurnRaw);
+  public void arcadeDrive(double arcadeSpeed, double arcadeTurn) {
     if (arcadeSpeed < -1 || arcadeSpeed > 1 || arcadeTurn < -1 || arcadeTurn > 1) {
       throw new InvalidParameterException(
           "Speed=" + arcadeSpeed + " Turn=" + arcadeTurn + " - MUST -1 < Speed||Turn < 1");
