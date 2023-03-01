@@ -4,6 +4,7 @@
 
 package com.frc5113.robot;
 
+import static com.frc5113.robot.constants.DrivetrainConstants.ROBOT_VERSION;
 import static com.frc5113.robot.constants.GeneralConstants.LOOP_DT;
 
 import com.frc5113.library.loops.Looper;
@@ -13,7 +14,7 @@ import com.frc5113.robot.commands.drive.*;
 import com.frc5113.robot.commands.drive.D_TeleopDrive;
 import com.frc5113.robot.commands.photonvision.*;
 import com.frc5113.robot.oi.IOI;
-import com.frc5113.robot.oi.JoystickOI;
+import com.frc5113.robot.oi.XboxOI;
 import com.frc5113.robot.subsystems.*;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -28,7 +29,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 public class RobotContainer {
   // Robot subsystems
   /** Neo Drivetrain responsible for robot movement (Subsystem) */
-  private final S_DriveTrain driveTrain = new S_DriveTrain();
+  private final DriveTrain driveTrain;
 
   /** General pneumatics controller from which pneumatic components are derived */
   private final S_Pneumatics pneumatics = new S_Pneumatics();
@@ -46,7 +47,7 @@ public class RobotContainer {
   private final S_Gyro gyro = new S_Gyro();
 
   // Operator interface
-  private final IOI controller1 = new JoystickOI();
+  private final IOI controller1 = new XboxOI();
 
   // subsystem manager
   private final Looper enabledLoop =
@@ -57,6 +58,18 @@ public class RobotContainer {
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
+    switch (ROBOT_VERSION) {
+      case Pandemonium:
+        driveTrain = new S_DriveTrainPandemonium();
+        break;
+      case Pandeguardium:
+        driveTrain = new S_DriveTrainPandeguardium();
+        break;
+      default:
+        driveTrain = new S_DriveTrainPandemonium();
+        break;
+    }
+
     // Configure the trigger bindings
     configureBindings();
 
