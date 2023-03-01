@@ -14,7 +14,7 @@ import com.frc5113.robot.commands.drive.*;
 import com.frc5113.robot.commands.drive.D_TeleopDrive;
 import com.frc5113.robot.commands.photonvision.*;
 import com.frc5113.robot.oi.IOI;
-import com.frc5113.robot.oi.JoystickOI;
+import com.frc5113.robot.oi.XboxOI;
 import com.frc5113.robot.subsystems.*;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -43,8 +43,11 @@ public class RobotContainer {
   /** Arm/truss subsystem */
   private final S_Arm arm = new S_Arm();
 
+  /** Gyro subsystem */
+  private final S_Gyro gyro = new S_Gyro();
+
   // Operator interface
-  private final IOI controller1 = new JoystickOI();
+  private final IOI controller1 = new XboxOI();
 
   // subsystem manager
   private final Looper enabledLoop =
@@ -69,6 +72,11 @@ public class RobotContainer {
 
     // Configure the trigger bindings
     configureBindings();
+
+    // Register subsystems to subsystemmanager and loops
+    manager.registerEnabledLoops(enabledLoop);
+    manager.registerDisabledLoops(disabledLoop);
+    manager.setSubsystems(driveTrain, claw, arm, pneumatics, gyro, photonVision);
   }
 
   /**
@@ -94,11 +102,7 @@ public class RobotContainer {
     return Autos.driveBackward(driveTrain); // Do Nothing: new InstantCommand(() -> {});
   }
 
-  public void robotInit() {
-    manager.registerEnabledLoops(enabledLoop);
-    manager.registerDisabledLoops(disabledLoop);
-    manager.setSubsystems(driveTrain, claw, arm, pneumatics);
-  }
+  public void robotInit() {}
 
   public void robotPeriodic() {
     manager.outputToSmartDashboard();
