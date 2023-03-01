@@ -98,7 +98,7 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    return Autos.driveBackward(driveTrain); // Do Nothing: new InstantCommand(() -> {});
+    return new P_AutoBalance(driveTrain, gyro); // Do Nothing: new InstantCommand(() -> {});
   }
 
   public void robotInit() {}
