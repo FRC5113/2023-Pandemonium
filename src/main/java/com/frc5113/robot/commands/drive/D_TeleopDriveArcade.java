@@ -4,19 +4,19 @@
 
 package com.frc5113.robot.commands.drive;
 
-import com.frc5113.robot.subsystems.S_DriveTrain;
+import com.frc5113.robot.subsystems.DriveTrain;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import java.util.function.Supplier;
 
 public class D_TeleopDriveArcade extends CommandBase {
 
-  private final S_DriveTrain driveTrain;
+  private final DriveTrain driveTrain;
   private final Supplier<Double> arcadeSpeed;
   private final Supplier<Double> arcadeTurn;
 
   /** Creates a new DEF_DriveTrain. */
   public D_TeleopDriveArcade(
-      S_DriveTrain driveTrain, Supplier<Double> arcadeSpeed, Supplier<Double> arcadeTurn) {
+      DriveTrain driveTrain, Supplier<Double> arcadeSpeed, Supplier<Double> arcadeTurn) {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(driveTrain);
 
