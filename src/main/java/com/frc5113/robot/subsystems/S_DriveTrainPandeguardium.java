@@ -50,7 +50,7 @@ public class S_DriveTrainPandeguardium extends DriveTrain {
 
     encoders = new DrivetrainEncoders();
 
-    curve = new CubicCurve();
+    curve = new CubicCurve(0.0, 0.3, 0.0);
   }
 
   public void tankDrive(double leftSpeedRaw, double rightSpeedRaw) {
