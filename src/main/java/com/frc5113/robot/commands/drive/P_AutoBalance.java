@@ -23,6 +23,7 @@ public class P_AutoBalance extends PIDCommand {
     super(
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
         new PIDController(BALANCE_KP.get(), BALANCE_KI.get(), BALANCE_KD.get()),
 =======
         new PIDController(BALANCE_KP, BALANCE_KI, BALANCE_KD),
@@ -30,10 +31,14 @@ public class P_AutoBalance extends PIDCommand {
 =======
         new PIDController(BALANCE_KP.get(), BALANCE_KI.get(), BALANCE_KD.get()),
 >>>>>>> 88faa89 (implemented tunable numbers)
+=======
+        new PIDController(BALANCE_KP.get(), BALANCE_KI.get(), BALANCE_KD.get()),
+>>>>>>> fef06d234b1f4d0de6df11bb76090c722c603648
         () -> gyro.getRoll(),
         0.0,
         output -> driveTrain.tankDrive(output, output),
         driveTrain);
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
     getController().setTolerance(BALANCE_TOLERANCE_P.get(), BALANCE_TOLERANCE_D.get());
@@ -43,6 +48,9 @@ public class P_AutoBalance extends PIDCommand {
 =======
     getController().setTolerance(BALANCE_TOLERANCE_P.get(), BALANCE_TOLERANCE_D.get());
 >>>>>>> 88faa89 (implemented tunable numbers)
+=======
+    getController().setTolerance(BALANCE_TOLERANCE_P.get(), BALANCE_TOLERANCE_D.get());
+>>>>>>> fef06d234b1f4d0de6df11bb76090c722c603648
   }
 
   @Override
