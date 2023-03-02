@@ -32,10 +32,12 @@ public class S_Arm extends SmartSubsystem {
 
   /** Creates a new Arm Subsystem. */
   public S_Arm() {
-    rightFalcon = new SmartFalcon(RIGHT_FALCON_CAN_ID); // create a regular falcon on the right side
+    rightFalcon =
+        new SmartFalcon(RIGHT_FALCON_CAN_ID, false); // create a regular falcon on the right side
     leftFalcon =
         new SmartFalcon(LEFT_FALCON_CAN_ID, true); // create a inverted falcon on the left side
-    leftFalcon.follow(rightFalcon); // this is necessary, and motor controller groups can't be used
+    // leftFalcon.follow(rightFalcon); // this is necessary, and motor controller groups can't be
+    // used
     // because we will be using "position set()"
   }
 
@@ -110,5 +112,13 @@ public class S_Arm extends SmartSubsystem {
   // Getters
   public double getTickPosition() {
     return rightFalcon.getEncoderTicks();
+  }
+
+  public SmartFalcon getRightFalcon() {
+    return rightFalcon;
+  }
+
+  public SmartFalcon getLeftFalcon() {
+    return leftFalcon;
   }
 }

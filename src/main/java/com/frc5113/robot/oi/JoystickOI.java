@@ -66,8 +66,19 @@ public class JoystickOI implements IOI {
   }
 
   @Override
-  public Trigger actuateClawButton(){
-    return new JoystickButton(
-      joystick.getHID(), 6);
+  public Trigger actuateClawButton() {
+    return new JoystickButton(joystick.getHID(), 6);
+  }
+
+  @Override
+  public Supplier<Double> test1() {
+    // TODO Auto-generated method stub
+    return () -> 0.0;
+  }
+
+  @Override
+  public Supplier<Double> test2() {
+    // TODO Auto-generated method stub
+    return () -> 0.0;
   }
 }

@@ -60,7 +60,17 @@ public class XboxOI implements IOI {
   }
 
   @Override
-  public Trigger actuateClawButton(){
+  public Trigger actuateClawButton() {
     return xbox.x();
+  }
+
+  @Override
+  public Supplier<Double> test1() {
+    return xbox::getLeftTriggerAxis;
+  }
+
+  @Override
+  public Supplier<Double> test2() {
+    return xbox::getRightTriggerAxis;
   }
 }

@@ -59,6 +59,7 @@ public class S_Pneumatics extends SmartSubsystem {
 
   @Override
   public void readPeriodicInputs() {
+    // System.out.println(pneumaticHub.getPressure(1));
     pressure = pneumaticHub.getPressure(ANALOG_SENSOR_PORT);
   }
 

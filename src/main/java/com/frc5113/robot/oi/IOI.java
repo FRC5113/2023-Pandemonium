@@ -45,4 +45,8 @@ public interface IOI {
   Trigger panicButton();
 
   Trigger actuateClawButton();
+
+  Supplier<Double> test1();
+
+  Supplier<Double> test2();
 }

@@ -14,11 +14,12 @@ import com.frc5113.robot.commands.claw.C_ActuateClaw;
 import com.frc5113.robot.commands.drive.*;
 import com.frc5113.robot.commands.drive.D_TeleopDrive;
 import com.frc5113.robot.commands.photonvision.*;
-import com.frc5113.robot.enums.ArmPosition;
 import com.frc5113.robot.oi.IOI;
-import com.frc5113.robot.oi.JoystickOI;
+import com.frc5113.robot.oi.XboxOI;
 import com.frc5113.robot.subsystems.*;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.RepeatCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
@@ -49,7 +50,7 @@ public class RobotContainer {
   private final S_Gyro gyro = new S_Gyro();
 
   // Operator interface
-  private final IOI controller1 = new JoystickOI();
+  private final IOI controller1 = new XboxOI();
 
   // subsystem manager
   private final Looper enabledLoop =
@@ -87,6 +88,17 @@ public class RobotContainer {
     // controller1.armDropButton().onTrue(new C_GoToSetpoint(arm, ArmPosition.Drop));
 
     controller1.actuateClawButton().onTrue(new C_ActuateClaw(claw));
+
+    // controller1.armFoldedButton().onTrue(new RepeatCommand(new InstantCommand(() ->
+    // arm.set(0.3))));
+    arm.setDefaultCommand(
+        new RepeatCommand(
+            new InstantCommand(
+                () -> {
+                  arm.getLeftFalcon().set(controller1.test1().get());
+                  arm.getRightFalcon().set(controller1.test2().get());
+                },
+                arm)));
   }
 
   /**
