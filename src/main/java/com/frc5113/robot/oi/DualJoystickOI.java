@@ -65,4 +65,10 @@ public class DualJoystickOI implements IOI {
     return new JoystickButton(
         joystick1.getHID(), OperatorInterfaceConstants.JOYSTICK_PANIC_BUTTON_ID);
   }
+
+  @Override
+  public Trigger actuateClawButton(){
+    return new JoystickButton(
+      joystick1.getHID(), 6);
+  }
 }

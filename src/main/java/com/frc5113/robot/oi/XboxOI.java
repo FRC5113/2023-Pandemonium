@@ -58,4 +58,9 @@ public class XboxOI implements IOI {
   public Trigger panicButton() {
     return xbox.start();
   }
+
+  @Override
+  public Trigger actuateClawButton(){
+    return xbox.x();
+  }
 }

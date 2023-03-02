@@ -10,6 +10,7 @@ import com.frc5113.library.loops.Looper;
 import com.frc5113.library.loops.SubsystemManager;
 import com.frc5113.robot.commands.arm.*;
 import com.frc5113.robot.commands.auto.Autos;
+import com.frc5113.robot.commands.claw.C_ActuateClaw;
 import com.frc5113.robot.commands.drive.*;
 import com.frc5113.robot.commands.drive.D_TeleopDrive;
 import com.frc5113.robot.commands.photonvision.*;
@@ -81,9 +82,11 @@ public class RobotContainer {
     driveTrain.setDefaultCommand(
         new D_TeleopDrive(driveTrain, controller1.tankL(), controller1.tankR()));
 
-    controller1.armFoldedButton().onTrue(new C_GoToSetpoint(arm, ArmPosition.Folded));
-    controller1.armGroundButton().onTrue(new C_GoToSetpoint(arm, ArmPosition.Ground));
-    controller1.armDropButton().onTrue(new C_GoToSetpoint(arm, ArmPosition.Drop));
+    // controller1.armFoldedButton().onTrue(new C_GoToSetpoint(arm, ArmPosition.Folded));
+    // controller1.armGroundButton().onTrue(new C_GoToSetpoint(arm, ArmPosition.Ground));
+    // controller1.armDropButton().onTrue(new C_GoToSetpoint(arm, ArmPosition.Drop));
+
+    controller1.actuateClawButton().onTrue(new C_ActuateClaw(claw));
   }
 
   /**

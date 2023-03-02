@@ -43,4 +43,6 @@ public interface IOI {
    * @return get button to cancel all commands
    */
   Trigger panicButton();
+
+  Trigger actuateClawButton();
 }
