@@ -1,17 +1,34 @@
 package com.frc5113.robot.oi;
 
+import com.frc5113.library.oi.scalers.*;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import java.util.function.Supplier;
 
 public class XboxOI implements IOI {
-  private final CommandXboxController xbox = new CommandXboxController(0);
+  private final CommandXboxController xbox;
+  private Curve curve;
+
+  public XboxOI() {
+    xbox = new CommandXboxController(0);
+    curve = new NoOpCurve();
+  }
+
+  public XboxOI(int port) {
+    xbox = new CommandXboxController(port);
+    curve = new NoOpCurve();
+  }
+
+  public XboxOI(int port, Curve curve) {
+    this(port);
+    setCurve(curve);
+  }
 
   /**
    * @return Axis responsible for arcade speed
    */
   @Override
   public Supplier<Double> arcadeSpeed() {
-    return xbox::getLeftY;
+    return () -> curve.calculateMappedVal(xbox.getLeftY());
   }
 
   /**
@@ -19,7 +36,7 @@ public class XboxOI implements IOI {
    */
   @Override
   public Supplier<Double> arcadeTurn() {
-    return xbox::getRightX;
+    return () -> curve.calculateMappedVal(xbox.getRightX());
   }
 
   /**
@@ -27,7 +44,7 @@ public class XboxOI implements IOI {
    */
   @Override
   public Supplier<Double> tankL() {
-    return xbox::getLeftY;
+    return () -> curve.calculateMappedVal(xbox.getLeftY());
   }
 
   /**
@@ -35,6 +52,16 @@ public class XboxOI implements IOI {
    */
   @Override
   public Supplier<Double> tankR() {
-    return xbox::getRightY;
+    return () -> curve.calculateMappedVal(xbox.getRightY());
+  }
+
+  @Override
+  public Curve getCurve() {
+    return curve;
+  }
+
+  @Override
+  public void setCurve(Curve curve) {
+    this.curve = curve;
   }
 }

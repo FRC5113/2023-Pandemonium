@@ -9,6 +9,7 @@ import static com.frc5113.robot.constants.GeneralConstants.LOOP_DT;
 
 import com.frc5113.library.loops.Looper;
 import com.frc5113.library.loops.SubsystemManager;
+import com.frc5113.library.oi.scalers.*;
 import com.frc5113.robot.commands.drive.*;
 import com.frc5113.robot.commands.photonvision.*;
 import com.frc5113.robot.oi.IOI;
@@ -45,7 +46,7 @@ public class RobotContainer {
   private final S_Gyro gyro = new S_Gyro();
 
   // Operator interface
-  private final IOI controller1 = new XboxOI();
+  private final IOI controller1 = new XboxOI(0, new CubicCurve(0.0, 0.5, 0.0));
 
   // subsystem manager
   private final Looper enabledLoop =

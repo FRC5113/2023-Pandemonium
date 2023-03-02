@@ -1,17 +1,34 @@
 package com.frc5113.robot.oi;
 
+import com.frc5113.library.oi.scalers.*;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import java.util.function.Supplier;
 
 public class JoystickOI implements IOI {
-  private final CommandJoystick joystick = new CommandJoystick(1);
+  private final CommandJoystick joystick;
+  private Curve curve;
+
+  public JoystickOI() {
+    joystick = new CommandJoystick(1);
+    curve = new NoOpCurve();
+  }
+
+  public JoystickOI(int port) {
+    joystick = new CommandJoystick(port);
+    curve = new NoOpCurve();
+  }
+
+  public JoystickOI(int port, Curve curve) {
+    this(port);
+    setCurve(curve);
+  }
 
   /**
    * @return Axis responsible for arcade speed
    */
   @Override
   public Supplier<Double> arcadeSpeed() {
-    return joystick::getX;
+    return () -> curve.calculateMappedVal(joystick.getX());
   }
 
   /**
@@ -19,7 +36,7 @@ public class JoystickOI implements IOI {
    */
   @Override
   public Supplier<Double> arcadeTurn() {
-    return joystick::getZ;
+    return () -> curve.calculateMappedVal(joystick.getZ());
   }
 
   /**
@@ -27,7 +44,7 @@ public class JoystickOI implements IOI {
    */
   @Override
   public Supplier<Double> tankL() {
-    return joystick::getX;
+    return () -> curve.calculateMappedVal(joystick.getZ());
   }
 
   /**
@@ -35,6 +52,16 @@ public class JoystickOI implements IOI {
    */
   @Override
   public Supplier<Double> tankR() {
-    return joystick::getY;
+    return () -> curve.calculateMappedVal(joystick.getY());
+  }
+
+  @Override
+  public Curve getCurve() {
+    return curve;
+  }
+
+  @Override
+  public void setCurve(Curve curve) {
+    this.curve = curve;
   }
 }
