@@ -11,6 +11,7 @@ import com.frc5113.library.loops.Looper;
 import com.frc5113.library.loops.SubsystemManager;
 import com.frc5113.robot.commands.arm.C_GoToSetpoint;
 import com.frc5113.robot.commands.auto.Autos;
+import com.frc5113.robot.commands.claw.C_ActuateClaw;
 import com.frc5113.robot.commands.drive.*;
 import com.frc5113.robot.commands.photonvision.*;
 import com.frc5113.robot.enums.ArmPosition;
@@ -100,10 +101,12 @@ public class RobotContainer {
     driveTrain.setDefaultCommand(
         new D_TeleopDriveArcade(driveTrain, controller1.arcadeSpeed(), controller1.arcadeTurn()));
 
+    controller1.clawButton().whileTrue(new C_ActuateClaw(claw));
+
     controller1.armButton().onTrue(new C_GoToSetpoint(arm, ArmPosition.Drop));
     controller1
         .armButtonTest()
-        .onTrue(new RepeatCommand(new InstantCommand(() -> arm.set(0.3), arm)));
+        .whileTrue(new RepeatCommand(new InstantCommand(() -> arm.set(0.3), arm)));
   }
 
   /**

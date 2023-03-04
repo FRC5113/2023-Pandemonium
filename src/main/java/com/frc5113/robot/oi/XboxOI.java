@@ -46,4 +46,8 @@ public class XboxOI implements IOI {
   public Trigger armButtonTest() {
     return xbox.y();
   }
+
+  public Trigger clawButton() {
+    return xbox.b();
+  }
 }
