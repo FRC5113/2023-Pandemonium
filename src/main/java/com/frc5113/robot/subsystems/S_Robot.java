@@ -18,7 +18,9 @@ public class S_Robot extends SmartSubsystem {
 
   private PowerDistribution pdh;
 
-  public S_Robot() {}
+  public S_Robot() {
+    pdh = new PowerDistribution();
+  }
 
   // Methods required by SmartSubsystem
   @Override

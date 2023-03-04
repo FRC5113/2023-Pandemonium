@@ -16,7 +16,6 @@ import com.frc5113.robot.commands.drive.*;
 import com.frc5113.robot.commands.photonvision.*;
 import com.frc5113.robot.enums.ArmPosition;
 import com.frc5113.robot.oi.CMPOI;
-import com.frc5113.robot.oi.XboxOI;
 import com.frc5113.robot.subsystems.*;
 import com.frc5113.robot.subsystems.drive.DriveTrain;
 import com.frc5113.robot.subsystems.drive.S_DriveTrainPandeguardium;
@@ -99,24 +98,23 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    driveTrain.setDefaultCommand(
-        new D_TeleopDriveArcade(driveTrain, oi.arcadeSpeed(), oi.arcadeTurn()));
+    // driveTrain.setDefaultCommand(
+    //     new D_TeleopDriveArcade(driveTrain, oi.arcadeSpeed(), oi.arcadeTurn()));
+    driveTrain.setDefaultCommand(new D_TeleopDrive(driveTrain, oi.tankL(), oi.tankR()));
 
     oi.clawButton().whileTrue(new C_ActuateClaw(claw));
 
     oi.armGroundButton().onTrue(new C_GoToSetpoint(arm, ArmPosition.Ground));
     oi.armDropButton().onTrue(new C_GoToSetpoint(arm, ArmPosition.Drop));
-    oi
-        .armButtonTest()
-        .whileTrue(new RepeatCommand(new InstantCommand(() -> arm.set(0.3), arm)));
+    oi.armButtonTest().whileTrue(new RepeatCommand(new InstantCommand(() -> arm.set(0.3), arm)));
     arm.setDefaultCommand(
-      new RepeatCommand(
-          new InstantCommand(
-              () -> {
-                arm.getLeftFalcon().set(oi.leftTrigger().get());
-                arm.getRightFalcon().set(oi.rightTrigger().get());
-              },
-              arm)));
+        new RepeatCommand(
+            new InstantCommand(
+                () -> {
+                  arm.getLeftFalcon().set(oi.leftTrigger().get());
+                  arm.getRightFalcon().set(oi.rightTrigger().get());
+                },
+                arm)));
   }
 
   /**
