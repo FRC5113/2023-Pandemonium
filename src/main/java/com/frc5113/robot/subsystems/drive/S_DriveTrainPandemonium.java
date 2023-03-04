@@ -2,7 +2,7 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package com.frc5113.robot.subsystems;
+package com.frc5113.robot.subsystems.drive;
 
 import static com.frc5113.robot.constants.DrivetrainConstants.*;
 
@@ -100,6 +100,14 @@ public class S_DriveTrainPandemonium extends DriveTrain {
   public boolean checkSubsystem() {
     return true; // FIXME
   }
+
+  @Override
+  public boolean checkSubsystemPeriodic() {
+    return true;
+  }
+
+  @Override
+  public void registerPeriodicSubsystemCheck(ILooper loop) {}
 
   @Override
   public void stop() {

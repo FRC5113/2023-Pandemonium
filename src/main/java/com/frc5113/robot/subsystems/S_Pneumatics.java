@@ -38,6 +38,14 @@ public class S_Pneumatics extends SmartSubsystem {
   }
 
   @Override
+  public boolean checkSubsystemPeriodic() {
+    return true;
+  }
+
+  @Override
+  public void registerPeriodicSubsystemCheck(ILooper loop) {}
+
+  @Override
   public void outputTelemetry() {
     SmartDashboard.putNumber("Pneumatics: Pressure", getPressure());
   }

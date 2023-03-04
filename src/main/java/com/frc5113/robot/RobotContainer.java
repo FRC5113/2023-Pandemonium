@@ -9,13 +9,19 @@ import static com.frc5113.robot.constants.GeneralConstants.LOOP_DT;
 
 import com.frc5113.library.loops.Looper;
 import com.frc5113.library.loops.SubsystemManager;
+import com.frc5113.robot.commands.arm.C_GoToSetpoint;
 import com.frc5113.robot.commands.auto.Autos;
 import com.frc5113.robot.commands.drive.*;
 import com.frc5113.robot.commands.photonvision.*;
-import com.frc5113.robot.oi.IOI;
+import com.frc5113.robot.enums.ArmPosition;
 import com.frc5113.robot.oi.XboxOI;
 import com.frc5113.robot.subsystems.*;
+import com.frc5113.robot.subsystems.drive.DriveTrain;
+import com.frc5113.robot.subsystems.drive.S_DriveTrainPandeguardium;
+import com.frc5113.robot.subsystems.drive.S_DriveTrainPandemonium;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.RepeatCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
@@ -45,8 +51,11 @@ public class RobotContainer {
   /** Gyro subsystem */
   private final S_Gyro gyro = new S_Gyro();
 
+  /** Robot Logging + GenOps */
+  private final S_Robot robot = new S_Robot();
+
   // Operator interface
-  private final IOI controller1 = new XboxOI();
+  private final XboxOI controller1 = new XboxOI();
 
   // subsystem manager
   private final Looper enabledLoop =
@@ -75,7 +84,7 @@ public class RobotContainer {
     // Register loops and subsystems to the manager
     manager.registerEnabledLoops(enabledLoop);
     manager.registerDisabledLoops(disabledLoop);
-    manager.setSubsystems(driveTrain, claw, arm, pneumatics, gyro, photonVision);
+    manager.setSubsystems(driveTrain, claw, arm, pneumatics, gyro, photonVision, robot);
   }
 
   /**
@@ -90,6 +99,11 @@ public class RobotContainer {
   private void configureBindings() {
     driveTrain.setDefaultCommand(
         new D_TeleopDriveArcade(driveTrain, controller1.arcadeSpeed(), controller1.arcadeTurn()));
+
+    controller1.armButton().onTrue(new C_GoToSetpoint(arm, ArmPosition.Drop));
+    controller1
+        .armButtonTest()
+        .onTrue(new RepeatCommand(new InstantCommand(() -> arm.set(0.3), arm)));
   }
 
   /**
@@ -98,7 +112,7 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    return Autos.driveBackward(driveTrain); // Do Nothing: new InstantCommand(() -> {});
+    return Autos.driveBackward(driveTrain, .5, 2); // Do Nothing: new InstantCommand(() -> {});
   }
 
   public void robotInit() {}
