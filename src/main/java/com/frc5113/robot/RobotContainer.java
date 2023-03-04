@@ -15,6 +15,7 @@ import com.frc5113.robot.commands.claw.C_ActuateClaw;
 import com.frc5113.robot.commands.drive.*;
 import com.frc5113.robot.commands.photonvision.*;
 import com.frc5113.robot.enums.ArmPosition;
+import com.frc5113.robot.oi.CMPOI;
 import com.frc5113.robot.oi.XboxOI;
 import com.frc5113.robot.subsystems.*;
 import com.frc5113.robot.subsystems.drive.DriveTrain;
@@ -56,7 +57,7 @@ public class RobotContainer {
   private final S_Robot robot = new S_Robot();
 
   // Operator interface
-  private final XboxOI controller1 = new XboxOI();
+  private final CMPOI oi = new CMPOI();
 
   // subsystem manager
   private final Looper enabledLoop =
@@ -99,14 +100,23 @@ public class RobotContainer {
    */
   private void configureBindings() {
     driveTrain.setDefaultCommand(
-        new D_TeleopDriveArcade(driveTrain, controller1.arcadeSpeed(), controller1.arcadeTurn()));
+        new D_TeleopDriveArcade(driveTrain, oi.arcadeSpeed(), oi.arcadeTurn()));
 
-    controller1.clawButton().whileTrue(new C_ActuateClaw(claw));
+    oi.clawButton().whileTrue(new C_ActuateClaw(claw));
 
-    controller1.armButton().onTrue(new C_GoToSetpoint(arm, ArmPosition.Drop));
-    controller1
+    oi.armGroundButton().onTrue(new C_GoToSetpoint(arm, ArmPosition.Ground));
+    oi.armDropButton().onTrue(new C_GoToSetpoint(arm, ArmPosition.Drop));
+    oi
         .armButtonTest()
         .whileTrue(new RepeatCommand(new InstantCommand(() -> arm.set(0.3), arm)));
+    arm.setDefaultCommand(
+      new RepeatCommand(
+          new InstantCommand(
+              () -> {
+                arm.getLeftFalcon().set(oi.leftTrigger().get());
+                arm.getRightFalcon().set(oi.rightTrigger().get());
+              },
+              arm)));
   }
 
   /**
@@ -115,7 +125,7 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    return Autos.driveBackward(driveTrain, .5, 2); // Do Nothing: new InstantCommand(() -> {});
+    return Autos.drive(driveTrain, .5, 2); // Do Nothing: new InstantCommand(() -> {});
   }
 
   public void robotInit() {}

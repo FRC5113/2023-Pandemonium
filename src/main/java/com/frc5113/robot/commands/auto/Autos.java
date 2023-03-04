@@ -18,10 +18,10 @@ public final class Autos {
   }
 
   public static Command driveBackward(DriveTrain drive, double power) {
-    return driveBackward(drive, power, 2);
+    return drive(drive, power, 2);
   }
 
-  public static Command driveBackward(DriveTrain drive, double power, double endTime) {
+  public static Command drive(DriveTrain drive, double power, double endTime) {
     return driveBackward(drive, power, power, endTime);
   }
 

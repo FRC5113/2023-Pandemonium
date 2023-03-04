@@ -104,6 +104,14 @@ public class S_Arm extends SmartSubsystem {
     return rightFalcon.getEncoderTicks();
   }
 
+  public SmartFalcon getLeftFalcon() {
+    return leftFalcon;
+  }
+
+  public SmartFalcon getRightFalcon() {
+    return rightFalcon;
+  }
+
   public void set(double speed) {
     rightFalcon.set(speed);
   }
