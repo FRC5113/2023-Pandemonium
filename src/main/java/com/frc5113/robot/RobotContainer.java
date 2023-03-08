@@ -15,10 +15,10 @@ import com.frc5113.robot.commands.photonvision.*;
 import com.frc5113.robot.oi.IOI;
 import com.frc5113.robot.oi.XboxOI;
 import com.frc5113.robot.subsystems.*;
+import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import edu.wpi.first.wpilibj.Preferences;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -80,7 +80,7 @@ public class RobotContainer {
     manager.registerEnabledLoops(enabledLoop);
     manager.registerDisabledLoops(disabledLoop);
 
-    //initialize Preferences with a default if none exists
+    // initialize Preferences with a default if none exists
     initializePreferences();
   }
 
