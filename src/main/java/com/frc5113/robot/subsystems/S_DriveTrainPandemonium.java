@@ -12,6 +12,9 @@ import com.frc5113.library.motors.SmartNeo;
 import com.frc5113.robot.primative.DrivetrainEncoders;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -175,5 +178,35 @@ public class S_DriveTrainPandemonium extends DriveTrain {
 
   public DrivetrainEncoders getEncoders() {
     return encoders;
+  }
+
+  @Override
+  public void updatePose(Rotation2d gyroAngle) {
+    // TODO Auto-generated method stub
+
+  }
+
+  @Override
+  public void tankDriveVolts(double leftVolts, double rightVolts) {
+    // TODO Auto-generated method stub
+
+  }
+
+  @Override
+  public void resetOdometry(Rotation2d gyroAngle, Pose2d pose) {
+    // TODO Auto-generated method stub
+
+  }
+
+  @Override
+  public Pose2d getPose() {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  @Override
+  public DifferentialDriveWheelSpeeds getWheelSpeeds() {
+    // TODO Auto-generated method stub
+    return null;
   }
 }

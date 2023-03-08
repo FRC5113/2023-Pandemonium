@@ -12,6 +12,11 @@ import com.frc5113.library.loops.Loop;
 import com.frc5113.library.motors.SmartFalcon;
 import com.frc5113.library.oi.scalers.CubicCurve;
 import com.frc5113.robot.primative.DrivetrainEncoders;
+import edu.wpi.first.math.estimator.DifferentialDrivePoseEstimator;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -28,6 +33,7 @@ public class S_DriveTrainPandeguardium extends DriveTrain {
   private final MotorControllerGroup rightGroup;
 
   private final DifferentialDrive drive;
+  private final DifferentialDrivePoseEstimator driveOdometry;
 
   // encoder values
   private final DrivetrainEncoders encoders;
@@ -36,7 +42,7 @@ public class S_DriveTrainPandeguardium extends DriveTrain {
   private final CubicCurve curve;
 
   /** Creates a new DriveTrain. */
-  public S_DriveTrainPandeguardium() {
+  public S_DriveTrainPandeguardium(Rotation2d initialRotation) {
     leftLeader = new SmartFalcon(LEFT_LEADER_ID_PANDEGUARDIUM, true, MOTOR_MODE_PANDEGUARDIUM);
     leftFollower = new SmartFalcon(LEFT_FOLLOWER_ID_PANDEGUARDIUM, true, MOTOR_MODE_PANDEGUARDIUM);
     rightLeader = new SmartFalcon(RIGHT_LEADER_ID_PANDEGUARDIUM, false, MOTOR_MODE_PANDEGUARDIUM);
@@ -47,6 +53,9 @@ public class S_DriveTrainPandeguardium extends DriveTrain {
     rightGroup = new MotorControllerGroup(rightLeader, rightFollower);
 
     drive = new DifferentialDrive(leftGroup, rightGroup);
+    driveOdometry =
+        new DifferentialDrivePoseEstimator(
+            kDriveKinematics, initialRotation, 0.0, 0.0, new Pose2d());
 
     encoders = new DrivetrainEncoders();
 
@@ -170,5 +179,41 @@ public class S_DriveTrainPandeguardium extends DriveTrain {
 
   public DrivetrainEncoders getEncoders() {
     return encoders;
+  }
+
+  public double posToMeters(double position) {
+    // Wheel circ in inches
+    return Units.inchesToMeters((WHEEL_CIRCUMFERENCE / GEAR_RATIO) * position);
+  }
+
+  public void updatePose(Rotation2d gyroAngle) {
+    driveOdometry.update(
+        gyroAngle,
+        posToMeters(leftLeader.getEncoderRotations()),
+        posToMeters(rightLeader.getEncoderRotations()));
+  }
+
+  public Pose2d getPose() {
+    return driveOdometry.getEstimatedPosition();
+  }
+
+  public void resetOdometry(Rotation2d gyroAngle, Pose2d pose) {
+    zeroSensors();
+    driveOdometry.resetPosition(
+        gyroAngle,
+        posToMeters(leftLeader.getEncoderRotations()),
+        posToMeters(rightLeader.getEncoderRotations()),
+        pose);
+  }
+
+  public DifferentialDriveWheelSpeeds getWheelSpeeds() {
+    return new DifferentialDriveWheelSpeeds(
+        leftLeader.getEncoderVelocity(), rightLeader.getEncoderVelocity());
+  }
+
+  public void tankDriveVolts(double leftVolts, double rightVolts) {
+    leftGroup.setVoltage(leftVolts);
+    rightGroup.setVoltage(rightVolts);
+    drive.feed();
   }
 }
