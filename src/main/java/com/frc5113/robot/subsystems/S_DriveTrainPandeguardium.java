@@ -216,4 +216,12 @@ public class S_DriveTrainPandeguardium extends DriveTrain {
     rightGroup.setVoltage(rightVolts);
     drive.feed();
   }
+
+  @Override
+  public boolean checkSubsystemPeriodic() {
+    return false;
+  }
+
+  @Override
+  public void registerPeriodicSubsystemCheck(ILooper loop) {}
 }

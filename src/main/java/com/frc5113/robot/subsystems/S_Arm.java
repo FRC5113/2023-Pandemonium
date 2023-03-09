@@ -102,4 +102,12 @@ public class S_Arm extends SmartSubsystem {
   public double getTickPosition() {
     return rightFalcon.getEncoderTicks();
   }
+
+  @Override
+  public boolean checkSubsystemPeriodic() {
+    return false;
+  }
+
+  @Override
+  public void registerPeriodicSubsystemCheck(ILooper loop) {}
 }

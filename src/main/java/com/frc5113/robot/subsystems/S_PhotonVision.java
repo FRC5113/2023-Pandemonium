@@ -171,4 +171,12 @@ public class S_PhotonVision extends SmartSubsystem {
 
   @Override
   public void zeroSensors() {}
+
+  @Override
+  public boolean checkSubsystemPeriodic() {
+    return false;
+  }
+
+  @Override
+  public void registerPeriodicSubsystemCheck(ILooper loop) {}
 }

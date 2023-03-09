@@ -77,4 +77,12 @@ public class S_Pneumatics extends SmartSubsystem {
   public PneumaticHub getPneumaticHub() {
     return pneumaticHub;
   }
+
+  @Override
+  public boolean checkSubsystemPeriodic() {
+    return false;
+  }
+
+  @Override
+  public void registerPeriodicSubsystemCheck(ILooper loop) {}
 }

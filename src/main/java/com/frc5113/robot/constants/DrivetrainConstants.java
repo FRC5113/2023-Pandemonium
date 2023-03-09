@@ -27,15 +27,15 @@ public class DrivetrainConstants {
   public static final double WHEEL_CIRCUMFERENCE = WHEEL_DIAMETER * Math.PI; // inches
   public static final double GEAR_RATIO = 11.5;
 
-  public static final double kMaxSpeedMetersPerSecond = 0.;
-  public static final double kMaxAccelerationMetersPerSecondSquared = 0.;
-  public static final double kRamseteB = 0.;
-  public static final double kRamseteZeta = 0.;
-  public static final double kPDriveVel = 0.;
+  public static final double kMaxSpeedMetersPerSecond = 3;
+  public static final double kMaxAccelerationMetersPerSecondSquared = 1;
+  public static final double kRamseteB = 2.0;
+  public static final double kRamseteZeta = 0.7;
+  public static final double kPDriveVel = 8; // FIXME
 
-  public static final double ksVolts = 0.0;
-  public static final double kvVoltSecondsPerMeter = 0.0;
-  public static final double kaVoltSecondsSquaredPerMeter = 0.0;
+  public static final double ksVolts = 0.10284;
+  public static final double kvVoltSecondsPerMeter = 1.2526;
+  public static final double kaVoltSecondsSquaredPerMeter = 0.097782;
   public static final DifferentialDriveKinematics kDriveKinematics =
       new DifferentialDriveKinematics(TRACK_WIDTH);
 }

@@ -1,0 +1,19 @@
+{
+    "fileName": "Library5113.json",
+    "name": "Library5113",
+    "version": "2.0.1",
+    "uuid": "85bf4f52-0ccb-4187-807e-1dca1a96e689",
+    "mavenUrls": [
+        "https://frc5113.github.io/LibraryBuilds/repo/"
+    ],
+    "jsonUrl": "https://frc5113.github.io/LibraryBuilds/repo/Library5113.json",
+    "javaDependencies": [
+        {
+            "groupId": "com.frc5113",
+            "artifactId": "library",
+            "version": "2.0.1"
+        }
+    ],
+    "jniDependencies": [],
+    "cppDependencies": []
+}

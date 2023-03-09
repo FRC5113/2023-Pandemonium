@@ -209,4 +209,12 @@ public class S_DriveTrainPandemonium extends DriveTrain {
     // TODO Auto-generated method stub
     return null;
   }
+
+  @Override
+  public boolean checkSubsystemPeriodic() {
+    return false;
+  }
+
+  @Override
+  public void registerPeriodicSubsystemCheck(ILooper loop) {}
 }

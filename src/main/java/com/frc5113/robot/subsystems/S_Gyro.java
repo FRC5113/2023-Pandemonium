@@ -118,4 +118,12 @@ public class S_Gyro extends SmartSubsystem {
   public double getHeading() {
     return getRotation2d().getDegrees();
   }
+
+  @Override
+  public boolean checkSubsystemPeriodic() {
+    return false;
+  }
+
+  @Override
+  public void registerPeriodicSubsystemCheck(ILooper loop) {}
 }

@@ -105,4 +105,12 @@ public class S_Claw extends SmartSubsystem {
   private void setState(ClawState state) {
     this.state = state;
   }
+
+  @Override
+  public boolean checkSubsystemPeriodic() {
+    return false;
+  }
+
+  @Override
+  public void registerPeriodicSubsystemCheck(ILooper loop) {}
 }

@@ -11,7 +11,6 @@ import com.frc5113.library.loops.Looper;
 import com.frc5113.library.loops.SubsystemManager;
 import com.frc5113.robot.commands.drive.*;
 import com.frc5113.robot.commands.photonvision.*;
-import com.frc5113.robot.oi.IOI;
 import com.frc5113.robot.oi.XboxOI;
 import com.frc5113.robot.subsystems.*;
 import edu.wpi.first.math.controller.PIDController;
@@ -57,7 +56,7 @@ public class RobotContainer {
   private final S_Gyro gyro = new S_Gyro();
 
   // Operator interface
-  private final IOI controller1 = new XboxOI();
+  private final XboxOI controller1 = new XboxOI();
 
   // subsystem manager
   private final Looper enabledLoop =
