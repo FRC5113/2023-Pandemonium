@@ -18,15 +18,21 @@ import edu.wpi.first.math.controller.RamseteController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
+import edu.wpi.first.math.trajectory.TrajectoryUtil;
 import edu.wpi.first.math.trajectory.constraint.DifferentialDriveVoltageConstraint;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Filesystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import java.io.IOException;
+import java.nio.file.Path;
 import java.util.List;
 
 /**
@@ -100,6 +106,12 @@ public class RobotContainer {
   private void configureBindings() {
     driveTrain.setDefaultCommand(
         new D_TeleopDriveArcade(driveTrain, controller1.arcadeSpeed(), controller1.arcadeTurn()));
+    controller1
+        .button1()
+        .onTrue(
+            new InstantCommand(() -> driveTrain.resetOdometry(new Rotation2d(0), new Pose2d())));
+    controller1.button2().onTrue(new InstantCommand(() -> gyro.zeroSensors()));
+    controller1.button3().onTrue(new InstantCommand(() -> driveTrain.zeroSensors()));
   }
 
   /**
@@ -108,6 +120,7 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
+    gyro.zeroSensors();
     // Create a voltage constraint to ensure we don't accelerate too fast
     var autoVoltageConstraint =
         new DifferentialDriveVoltageConstraint(
@@ -125,41 +138,43 @@ public class RobotContainer {
             .addConstraint(autoVoltageConstraint);
 
     // An example trajectory to follow.  All units in meters.
-    Trajectory exampleTrajectory =
-        TrajectoryGenerator.generateTrajectory(
-            // Start at the origin facing the +X direction
-            new Pose2d(0, 0, new Rotation2d(0)),
-            // Pass through these two interior waypoints, making an 's' curve path
-            List.of(new Translation2d(1, 1), new Translation2d(2, -1)),
-            // End 3 meters straight ahead of where we started, facing forward
-            new Pose2d(3, 0, new Rotation2d(0)),
-            // Pass config
-            config);
+    // Trajectory exampleTrajectory =
+    //     TrajectoryGenerator.generateTrajectory(
+    //         // Start at the origin facing the +X direction
+    //         new Pose2d(0, 0, new Rotation2d(0)),
+    //         // Pass through these two interior waypoints, making an 's' curve path
+    //         List.of(new Translation2d(1, 1), new Translation2d(2, -1)),
+    //         // End 3 meters straight ahead of where we started, facing forward
+    //         new Pose2d(3, 0, new Rotation2d(0)),
+    //         // Pass config
+    //         config);
 
     Trajectory forwardTrajectory =
         TrajectoryGenerator.generateTrajectory(
             new Pose2d(0, 0, new Rotation2d(0)),
-            List.of(new Translation2d(2, 0), new Translation2d(2, 0)),
-            new Pose2d(4, 0, new Rotation2d(0)),
+            List.of(),
+            new Pose2d(1, 0, new Rotation2d(4)),
             config);
+
+    // Trajectory t = getTrajectory("paths/output/Auto1.wpilib.json");
 
     RamseteCommand ramseteCommand =
         new RamseteCommand(
-            exampleTrajectory,
+            forwardTrajectory, // forwardTrajectory
             driveTrain::getPose,
             new RamseteController(kRamseteB, kRamseteZeta),
             new SimpleMotorFeedforward(
                 ksVolts, kvVoltSecondsPerMeter, kaVoltSecondsSquaredPerMeter),
             kDriveKinematics,
             driveTrain::getWheelSpeeds,
-            new PIDController(kPDriveVel, 0, 0),
-            new PIDController(kPDriveVel, 0, 0),
+            new PIDController(kPDriveVel, 0, kDDriveVel),
+            new PIDController(kPDriveVel, 0, kDDriveVel),
             // RamseteCommand passes volts to the callback
             driveTrain::tankDriveVolts,
             driveTrain);
 
     // Reset odometry to the starting pose of the trajectory.
-    driveTrain.resetOdometry(gyro.getRotation2d(), exampleTrajectory.getInitialPose());
+    driveTrain.resetOdometry(gyro.getRotation2d(), forwardTrajectory.getInitialPose());
     // Run path following command, then stop at the end.
     return ramseteCommand.andThen(() -> driveTrain.tankDriveVolts(0, 0));
   }
@@ -169,6 +184,7 @@ public class RobotContainer {
   public void robotPeriodic() {
     manager.outputToSmartDashboard();
     driveTrain.updatePose(gyro.getRotation2d());
+    SmartDashboard.putNumber("Gyro Angle:", gyro.getRotation2d().getDegrees());
   }
 
   public void autoInit() {
@@ -202,4 +218,17 @@ public class RobotContainer {
   }
 
   public void testPeriodic() {}
+
+  public Trajectory getTrajectory(String weaverFile) {
+    Trajectory trajectory = new Trajectory();
+
+    try {
+      Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(weaverFile);
+      trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
+    } catch (IOException ex) {
+      DriverStation.reportError("Unable to open trajectory: " + weaverFile, ex.getStackTrace());
+    }
+
+    return trajectory;
+  }
 }

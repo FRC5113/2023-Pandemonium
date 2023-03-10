@@ -4,6 +4,7 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.frc5113.robot.enums.RobotVersion;
 import com.revrobotics.CANSparkMax.IdleMode;
 import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
+import edu.wpi.first.math.util.Units;
 
 public class DrivetrainConstants {
   public static final RobotVersion ROBOT_VERSION = RobotVersion.Pandeguardium;
@@ -22,20 +23,21 @@ public class DrivetrainConstants {
 
   public static final NeutralMode MOTOR_MODE_PANDEGUARDIUM = NeutralMode.Brake;
 
-  public static final double TRACK_WIDTH = 30.7; // inches
+  public static final double TRACK_WIDTH = Units.inchesToMeters(30.7); // inches
   public static final double WHEEL_DIAMETER = 6.0; // inches
   public static final double WHEEL_CIRCUMFERENCE = WHEEL_DIAMETER * Math.PI; // inches
   public static final double GEAR_RATIO = 11.5;
 
-  public static final double kMaxSpeedMetersPerSecond = 3;
-  public static final double kMaxAccelerationMetersPerSecondSquared = 1;
+  public static final double kMaxSpeedMetersPerSecond = .5;
+  public static final double kMaxAccelerationMetersPerSecondSquared = .25;
   public static final double kRamseteB = 2.0;
   public static final double kRamseteZeta = 0.7;
-  public static final double kPDriveVel = 1.3837;
+  public static final double kPDriveVel = 0.2049;
+  public static final double kDDriveVel = 0.;
 
-  public static final double ksVolts = 0.10284;
-  public static final double kvVoltSecondsPerMeter = 1.2526;
-  public static final double kaVoltSecondsSquaredPerMeter = 0.097782;
+  public static final double ksVolts = 0.080442;
+  public static final double kvVoltSecondsPerMeter = 1.258;
+  public static final double kaVoltSecondsSquaredPerMeter = 0.13599;
   public static final DifferentialDriveKinematics kDriveKinematics =
       new DifferentialDriveKinematics(TRACK_WIDTH);
 }

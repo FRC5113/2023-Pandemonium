@@ -1,6 +1,7 @@
 package com.frc5113.robot.oi;
 
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import java.util.function.Supplier;
 
 public class XboxOI implements IOI {
@@ -36,5 +37,18 @@ public class XboxOI implements IOI {
   @Override
   public Supplier<Double> tankR() {
     return xbox::getRightY;
+  }
+
+  @Override
+  public Trigger button1() {
+    return xbox.a();
+  }
+
+  public Trigger button2() {
+    return xbox.b();
+  }
+
+  public Trigger button3() {
+    return xbox.x();
   }
 }

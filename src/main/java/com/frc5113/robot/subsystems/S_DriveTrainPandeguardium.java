@@ -19,6 +19,7 @@ import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import java.security.InvalidParameterException;
 
@@ -41,6 +42,8 @@ public class S_DriveTrainPandeguardium extends DriveTrain {
   // input scaler
   private final CubicCurve curve;
 
+  private final Field2d field = new Field2d();
+
   /** Creates a new DriveTrain. */
   public S_DriveTrainPandeguardium(Rotation2d initialRotation) {
     leftLeader = new SmartFalcon(LEFT_LEADER_ID_PANDEGUARDIUM, true, MOTOR_MODE_PANDEGUARDIUM);
@@ -54,12 +57,11 @@ public class S_DriveTrainPandeguardium extends DriveTrain {
 
     drive = new DifferentialDrive(leftGroup, rightGroup);
     driveOdometry =
-        new DifferentialDrivePoseEstimator(
-            kDriveKinematics, initialRotation, 0.0, 0.0, new Pose2d());
+        new DifferentialDrivePoseEstimator(kDriveKinematics, initialRotation, 0, 0, new Pose2d());
 
     encoders = new DrivetrainEncoders();
 
-    curve = new CubicCurve(0.0, 0.3, 0.0);
+    curve = new CubicCurve(0.0, 0.7, 0.0);
   }
 
   public void tankDrive(double leftSpeedRaw, double rightSpeedRaw) {
@@ -86,10 +88,19 @@ public class S_DriveTrainPandeguardium extends DriveTrain {
   @Override
   public void outputTelemetry() {
     SmartDashboard.putData("Drive: Diff Drive", drive);
-    SmartDashboard.putNumber("Drive: Right Leader Enc", rightLeader.getEncoderRotations());
-    SmartDashboard.putNumber("Drive: Left Leader Enc", leftLeader.getEncoderRotations());
-    SmartDashboard.putNumber("Drive: Right Follower Enc", rightFollower.getEncoderRotations());
-    SmartDashboard.putNumber("Drive: Left Follower Enc", leftFollower.getEncoderRotations());
+    SmartDashboard.putNumber("Drive: Right Leader Enc", rightLeader.getEncoderTicks());
+    SmartDashboard.putNumber("Drive: Left Leader Enc", leftLeader.getEncoderTicks());
+    SmartDashboard.putNumber("Drive: Right Follower Enc", rightFollower.getEncoderTicks());
+    SmartDashboard.putNumber("Drive: Left Follower Enc", leftFollower.getEncoderTicks());
+    SmartDashboard.putNumber(
+        "Drive: Right Leader VT", ticksToMeters(rightLeader.getEncoderTicks()));
+    SmartDashboard.putNumber("Drive: Left Leader VT", ticksToMeters(leftLeader.getEncoderTicks()));
+    SmartDashboard.putNumber(
+        "Drive: Right Follower VT", ticksToMeters(rightFollower.getEncoderTicks()));
+    SmartDashboard.putNumber(
+        "Drive: Left Follower VT", ticksToMeters(leftFollower.getEncoderTicks()));
+    SmartDashboard.putData("Drive: Field", field);
+    System.out.println();
   }
 
   @Override
@@ -122,6 +133,7 @@ public class S_DriveTrainPandeguardium extends DriveTrain {
   @Override
   public void readPeriodicInputs() {
     updatePositions();
+    field.setRobotPose(getPose());
   }
 
   @Override
@@ -181,23 +193,23 @@ public class S_DriveTrainPandeguardium extends DriveTrain {
     return encoders;
   }
 
-  public double posToMeters(double position) {
-    // Wheel circ in inches
-    return Units.inchesToMeters((WHEEL_CIRCUMFERENCE / GEAR_RATIO) * position);
-  }
+  // public double posToMeters(double position) {
+  //   // Wheel circ in inches
+  //   return Units.inchesToMeters((WHEEL_CIRCUMFERENCE / GEAR_RATIO) * position);
+  // }
 
   public void updatePose(Rotation2d gyroAngle) {
     driveOdometry.update(
         gyroAngle,
-        posToMeters(leftLeader.getEncoderRotations()),
-        posToMeters(rightLeader.getEncoderRotations()));
+        ticksToMeters(leftLeader.getEncoderTicks()),
+        ticksToMeters(rightLeader.getEncoderTicks()));
   }
 
   public Pose2d getPose() {
     return driveOdometry.getEstimatedPosition();
   }
 
-  private double velocityToMeters(double velocity) {
+  private double ticksToMeters(double velocity) {
     return (velocity * (Units.inchesToMeters(WHEEL_CIRCUMFERENCE))) / (2048 * GEAR_RATIO);
   }
 
@@ -205,20 +217,22 @@ public class S_DriveTrainPandeguardium extends DriveTrain {
     zeroSensors();
     driveOdometry.resetPosition(
         gyroAngle,
-        posToMeters(leftLeader.getEncoderRotations()),
-        posToMeters(rightLeader.getEncoderRotations()),
+        ticksToMeters(leftLeader.getEncoderTicks()),
+        ticksToMeters(rightLeader.getEncoderTicks()),
         pose);
   }
 
   public DifferentialDriveWheelSpeeds getWheelSpeeds() {
     return new DifferentialDriveWheelSpeeds(
-        velocityToMeters(leftLeader.getEncoderVelocity()),
-        velocityToMeters(rightLeader.getEncoderVelocity()));
+        ticksToMeters(leftLeader.getEncoderVelocity()),
+        ticksToMeters(rightLeader.getEncoderVelocity()));
   }
 
   public void tankDriveVolts(double leftVolts, double rightVolts) {
     leftGroup.setVoltage(leftVolts);
     rightGroup.setVoltage(rightVolts);
+    SmartDashboard.putNumber("tdv/left", leftVolts);
+    SmartDashboard.putNumber("tdv/right", rightVolts);
     drive.feed();
   }
 
