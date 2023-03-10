@@ -31,7 +31,7 @@ public class DrivetrainConstants {
   public static final double kMaxAccelerationMetersPerSecondSquared = 1;
   public static final double kRamseteB = 2.0;
   public static final double kRamseteZeta = 0.7;
-  public static final double kPDriveVel = 8; // FIXME
+  public static final double kPDriveVel = 1.3837;
 
   public static final double ksVolts = 0.10284;
   public static final double kvVoltSecondsPerMeter = 1.2526;
