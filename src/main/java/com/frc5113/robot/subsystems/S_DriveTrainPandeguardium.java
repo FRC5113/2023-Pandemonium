@@ -197,9 +197,10 @@ public class S_DriveTrainPandeguardium extends DriveTrain {
     return driveOdometry.getEstimatedPosition();
   }
 
-  private double velocityToMeters(double velocity){
-    return velocity/2048/11.5/(Units.inchesToMeters(WHEEL_CIRCUMFERENCE));
+  private double velocityToMeters(double velocity) {
+    return (velocity * (Units.inchesToMeters(WHEEL_CIRCUMFERENCE))) / (2048 * GEAR_RATIO);
   }
+
   public void resetOdometry(Rotation2d gyroAngle, Pose2d pose) {
     zeroSensors();
     driveOdometry.resetPosition(
@@ -211,7 +212,7 @@ public class S_DriveTrainPandeguardium extends DriveTrain {
 
   public DifferentialDriveWheelSpeeds getWheelSpeeds() {
     return new DifferentialDriveWheelSpeeds(
-        velocityToMeters(leftLeader.getEncoderVelocity()), 
+        velocityToMeters(leftLeader.getEncoderVelocity()),
         velocityToMeters(rightLeader.getEncoderVelocity()));
   }
 
