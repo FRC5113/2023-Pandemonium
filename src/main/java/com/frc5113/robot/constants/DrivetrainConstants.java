@@ -32,12 +32,12 @@ public class DrivetrainConstants {
   public static final double kMaxAccelerationMetersPerSecondSquared = .25;
   public static final double kRamseteB = 2.0;
   public static final double kRamseteZeta = 0.7;
-  public static final double kPDriveVel = 0.2049;
+  public static final double kPDriveVel = 2.9388;
   public static final double kDDriveVel = 0.;
 
-  public static final double ksVolts = 0.080442;
-  public static final double kvVoltSecondsPerMeter = 1.258;
-  public static final double kaVoltSecondsSquaredPerMeter = 0.13599;
+  public static final double ksVolts = 0.11325;
+  public static final double kvVoltSecondsPerMeter = 2.599;
+  public static final double kaVoltSecondsSquaredPerMeter = 0.21658;
   public static final DifferentialDriveKinematics kDriveKinematics =
       new DifferentialDriveKinematics(TRACK_WIDTH);
 }

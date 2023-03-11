@@ -20,7 +20,6 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
-import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.math.trajectory.TrajectoryUtil;
 import edu.wpi.first.math.trajectory.constraint.DifferentialDriveVoltageConstraint;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -33,7 +32,6 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.List;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -135,7 +133,8 @@ public class RobotContainer {
             // Add kinematics to ensure max speed is actually obeyed
             .setKinematics(kDriveKinematics)
             // Apply the voltage constraint
-            .addConstraint(autoVoltageConstraint);
+            .addConstraint(autoVoltageConstraint)
+            .setReversed(true);
 
     // An example trajectory to follow.  All units in meters.
     // Trajectory exampleTrajectory =
@@ -149,18 +148,18 @@ public class RobotContainer {
     //         // Pass config
     //         config);
 
-    Trajectory forwardTrajectory =
-        TrajectoryGenerator.generateTrajectory(
-            new Pose2d(0, 0, new Rotation2d(0)),
-            List.of(),
-            new Pose2d(1, 0, new Rotation2d(4)),
-            config);
+    // Trajectory forwardTrajectory =
+    //     TrajectoryGenerator.generateTrajectory(
+    //         new Pose2d(0, 0, new Rotation2d(0)),
+    //         List.of(),
+    //         new Pose2d(0, 0, new Rotation2d(4)),
+    //         config);
 
-    // Trajectory t = getTrajectory("paths/output/Auto1.wpilib.json");
+    Trajectory t = getTrajectory("paths/output/Auto1.wpilib.json");
 
     RamseteCommand ramseteCommand =
         new RamseteCommand(
-            forwardTrajectory, // forwardTrajectory
+            t, // forwardTrajectory
             driveTrain::getPose,
             new RamseteController(kRamseteB, kRamseteZeta),
             new SimpleMotorFeedforward(
@@ -174,7 +173,7 @@ public class RobotContainer {
             driveTrain);
 
     // Reset odometry to the starting pose of the trajectory.
-    driveTrain.resetOdometry(gyro.getRotation2d(), forwardTrajectory.getInitialPose());
+    driveTrain.resetOdometry(gyro.getRotation2d(), t.getInitialPose());
     // Run path following command, then stop at the end.
     return ramseteCommand.andThen(() -> driveTrain.tankDriveVolts(0, 0));
   }
