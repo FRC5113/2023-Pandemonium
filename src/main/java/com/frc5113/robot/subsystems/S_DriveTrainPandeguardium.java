@@ -209,8 +209,8 @@ public class S_DriveTrainPandeguardium extends DriveTrain {
     return driveOdometry.getEstimatedPosition();
   }
 
-  private double ticksToMeters(double velocity) {
-    return (velocity * (Units.inchesToMeters(WHEEL_CIRCUMFERENCE))) / (2048 * GEAR_RATIO);
+  private double ticksToMeters(double ticks) {
+    return (ticks * (Units.inchesToMeters(WHEEL_CIRCUMFERENCE))) / (2048 * GEAR_RATIO);
   }
 
   public void resetOdometry(Rotation2d gyroAngle, Pose2d pose) {
