@@ -51,7 +51,10 @@ public class S_DriveTrainPandeguardium extends DriveTrain {
     rightLeader = new SmartFalcon(RIGHT_LEADER_ID_PANDEGUARDIUM, true, MOTOR_MODE_PANDEGUARDIUM);
     rightFollower =
         new SmartFalcon(RIGHT_FOLLOWER_ID_PANDEGUARDIUM, true, MOTOR_MODE_PANDEGUARDIUM);
-
+    leftLeader.enableVoltageCompensation(false);
+    rightLeader.enableVoltageCompensation(false);
+    leftFollower.enableVoltageCompensation(false);
+    rightFollower.enableVoltageCompensation(false);
     leftGroup = new MotorControllerGroup(leftLeader, leftFollower);
     rightGroup = new MotorControllerGroup(rightLeader, rightFollower);
 
