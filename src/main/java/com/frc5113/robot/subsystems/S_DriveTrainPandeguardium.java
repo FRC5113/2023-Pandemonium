@@ -46,11 +46,11 @@ public class S_DriveTrainPandeguardium extends DriveTrain {
 
   /** Creates a new DriveTrain. */
   public S_DriveTrainPandeguardium(Rotation2d initialRotation) {
-    leftLeader = new SmartFalcon(LEFT_LEADER_ID_PANDEGUARDIUM, true, MOTOR_MODE_PANDEGUARDIUM);
-    leftFollower = new SmartFalcon(LEFT_FOLLOWER_ID_PANDEGUARDIUM, true, MOTOR_MODE_PANDEGUARDIUM);
-    rightLeader = new SmartFalcon(RIGHT_LEADER_ID_PANDEGUARDIUM, false, MOTOR_MODE_PANDEGUARDIUM);
+    leftLeader = new SmartFalcon(LEFT_LEADER_ID_PANDEGUARDIUM, false, MOTOR_MODE_PANDEGUARDIUM);
+    leftFollower = new SmartFalcon(LEFT_FOLLOWER_ID_PANDEGUARDIUM, false, MOTOR_MODE_PANDEGUARDIUM);
+    rightLeader = new SmartFalcon(RIGHT_LEADER_ID_PANDEGUARDIUM, true, MOTOR_MODE_PANDEGUARDIUM);
     rightFollower =
-        new SmartFalcon(RIGHT_FOLLOWER_ID_PANDEGUARDIUM, false, MOTOR_MODE_PANDEGUARDIUM);
+        new SmartFalcon(RIGHT_FOLLOWER_ID_PANDEGUARDIUM, true, MOTOR_MODE_PANDEGUARDIUM);
 
     leftGroup = new MotorControllerGroup(leftLeader, leftFollower);
     rightGroup = new MotorControllerGroup(rightLeader, rightFollower);
@@ -122,14 +122,6 @@ public class S_DriveTrainPandeguardium extends DriveTrain {
     leftGroup.set(0);
   }
 
-  public void updatePositions() {
-    encoders.updateMeasurements(
-        leftLeader.getEncoderRotations(),
-        rightLeader.getEncoderRotations(),
-        leftFollower.getEncoderRotations(),
-        rightFollower.getEncoderRotations());
-  }
-
   @Override
   public void readPeriodicInputs() {
     updatePositions();
@@ -198,6 +190,9 @@ public class S_DriveTrainPandeguardium extends DriveTrain {
   //   return Units.inchesToMeters((WHEEL_CIRCUMFERENCE / GEAR_RATIO) * position);
   // }
 
+  @Override
+  public void updatePositions() {}
+
   public void updatePose(Rotation2d gyroAngle) {
     driveOdometry.update(
         gyroAngle,
@@ -210,7 +205,11 @@ public class S_DriveTrainPandeguardium extends DriveTrain {
   }
 
   private double ticksToMeters(double ticks) {
-    return (ticks * (Units.inchesToMeters(WHEEL_CIRCUMFERENCE))) / (2048 * GEAR_RATIO);
+    // return (ticks * (Units.inchesToMeters(WHEEL_CIRCUMFERENCE))) / (2048 * GEAR_RATIO);
+    double shaftRotations = ticks / 2048;
+    double wheelRotations = shaftRotations / GEAR_RATIO;
+    double distTraveled = wheelRotations * Units.inchesToMeters(WHEEL_CIRCUMFERENCE);
+    return distTraveled;
   }
 
   public void resetOdometry(Rotation2d gyroAngle, Pose2d pose) {
