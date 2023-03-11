@@ -112,7 +112,7 @@ public class S_Gyro extends SmartSubsystem {
   }
 
   public Rotation2d getRotation2d() {
-    return navX.getRotation2d();
+    return navX.getRotation2d().unaryMinus();
   }
 
   public double getHeading() {

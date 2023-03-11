@@ -135,7 +135,8 @@ public class RobotContainer {
             // Add kinematics to ensure max speed is actually obeyed
             .setKinematics(kDriveKinematics)
             // Apply the voltage constraint
-            .addConstraint(autoVoltageConstraint);
+            .addConstraint(autoVoltageConstraint)
+            .setReversed(true);
 
     // An example trajectory to follow.  All units in meters.
     // Trajectory exampleTrajectory =
