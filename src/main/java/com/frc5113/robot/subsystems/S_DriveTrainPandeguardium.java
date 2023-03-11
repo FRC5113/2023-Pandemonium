@@ -11,7 +11,6 @@ import com.frc5113.library.loops.ILooper;
 import com.frc5113.library.loops.Loop;
 import com.frc5113.library.motors.SmartFalcon;
 import com.frc5113.library.oi.scalers.CubicCurve;
-import com.frc5113.robot.primative.DrivetrainEncoders;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -29,9 +28,6 @@ public class S_DriveTrainPandeguardium extends DriveTrain {
 
   private final DifferentialDrive drive;
 
-  // encoder values
-  private final DrivetrainEncoders encoders;
-
   // input scaler
   private final CubicCurve curve;
 
@@ -47,8 +43,6 @@ public class S_DriveTrainPandeguardium extends DriveTrain {
     rightGroup = new MotorControllerGroup(rightLeader, rightFollower);
 
     drive = new DifferentialDrive(leftGroup, rightGroup);
-
-    encoders = new DrivetrainEncoders();
 
     curve = new CubicCurve(0.0, 0.3, 0.0);
   }
@@ -103,11 +97,6 @@ public class S_DriveTrainPandeguardium extends DriveTrain {
   }
 
   public void updatePositions() {
-    encoders.updateMeasurements(
-        leftLeader.getEncoderRotations(),
-        rightLeader.getEncoderRotations(),
-        leftFollower.getEncoderRotations(),
-        rightFollower.getEncoderRotations());
   }
 
   @Override
@@ -166,9 +155,5 @@ public class S_DriveTrainPandeguardium extends DriveTrain {
 
   public MotorControllerGroup getRightMotorGroup() {
     return rightGroup;
-  }
-
-  public DrivetrainEncoders getEncoders() {
-    return encoders;
   }
 }

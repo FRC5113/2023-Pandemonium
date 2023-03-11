@@ -9,7 +9,6 @@ import static com.frc5113.robot.constants.DrivetrainConstants.*;
 import com.frc5113.library.loops.ILooper;
 import com.frc5113.library.loops.Loop;
 import com.frc5113.library.motors.SmartNeo;
-import com.frc5113.robot.primative.DrivetrainEncoders;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
@@ -34,9 +33,6 @@ public class S_DriveTrainPandemonium extends DriveTrain {
 
   private final DifferentialDrive drive;
 
-  // encoder values
-  private final DrivetrainEncoders encoders;
-
   /** Creates a new DriveTrain. */
   public S_DriveTrainPandemonium() {
     leftLeader = new SmartNeo(LEFT_LEADER_ID_PANDEMONIUM, MOTOR_MODE_PANDEMONIUM);
@@ -58,8 +54,6 @@ public class S_DriveTrainPandemonium extends DriveTrain {
     rightLeaderEncoder = rightLeader.encoder;
     leftFollowerEncoder = leftFollower.encoder;
     rightFolowerEncoder = rightFollower.encoder;
-
-    encoders = new DrivetrainEncoders();
   }
 
   public void tankDrive(double leftSpeed, double rightSpeed) {
@@ -107,13 +101,7 @@ public class S_DriveTrainPandemonium extends DriveTrain {
     leftGroup.set(0);
   }
 
-  public void updatePositions() {
-    encoders.updateMeasurements(
-        leftLeaderEncoder.getPosition(),
-        rightLeaderEncoder.getPosition(),
-        leftFollowerEncoder.getPosition(),
-        rightFollower.getPosition());
-  }
+  public void updatePositions() {}
 
   @Override
   public void readPeriodicInputs() {
@@ -171,9 +159,5 @@ public class S_DriveTrainPandemonium extends DriveTrain {
 
   public MotorControllerGroup getRightMotorGroup() {
     return rightGroup;
-  }
-
-  public DrivetrainEncoders getEncoders() {
-    return encoders;
   }
 }
