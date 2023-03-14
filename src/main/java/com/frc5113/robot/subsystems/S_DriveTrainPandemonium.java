@@ -12,11 +12,9 @@ import com.frc5113.library.motors.SmartNeo;
 import com.frc5113.robot.primative.DrivetrainEncoders;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
-
 import edu.wpi.first.math.estimator.DifferentialDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
@@ -67,9 +65,8 @@ public class S_DriveTrainPandemonium extends DriveTrain {
     rightFollowerEncoder = rightFollower.encoder;
 
     encoders = new DrivetrainEncoders();
-    driveOdometry = 
-      new DifferentialDrivePoseEstimator(kDriveKinematics, initialRotation, 0, 0, new Pose2d());
-
+    driveOdometry =
+        new DifferentialDrivePoseEstimator(kDriveKinematics, initialRotation, 0, 0, new Pose2d());
   }
 
   public void tankDrive(double leftSpeed, double rightSpeed) {
@@ -123,7 +120,6 @@ public class S_DriveTrainPandemonium extends DriveTrain {
         rightLeaderEncoder.getPosition(),
         leftFollowerEncoder.getPosition(),
         rightFollowerEncoder.getPosition());
-
   }
 
   @Override
@@ -175,6 +171,7 @@ public class S_DriveTrainPandemonium extends DriveTrain {
   public DifferentialDrive getDifferentialDrive() {
     return drive;
   }
+
   public MotorControllerGroup getLeftMotorGroup() {
     return leftGroup;
   }
@@ -186,21 +183,21 @@ public class S_DriveTrainPandemonium extends DriveTrain {
   public DrivetrainEncoders getEncoders() {
     return encoders;
   }
+
   public double posToMeters(double rawPosition) {
     return (rawPosition * WHEEL_CIRCUMFERENCE) / GEAR_RATIO;
-
   }
 
   public double posVelocityToMeters(double rawVelocity) {
-    return  (rawVelocity * WHEEL_CIRCUMFERENCE) / (GEAR_RATIO * 60);
+    return (rawVelocity * WHEEL_CIRCUMFERENCE) / (GEAR_RATIO * 60);
   }
 
   @Override
   public void updatePose(Rotation2d gyroAngle) {
     driveOdometry.update(
-      gyroAngle, 
-      posToMeters(leftLeaderEncoder.getPosition()),
-      posToMeters(rightLeaderEncoder.getPosition()));
+        gyroAngle,
+        posToMeters(leftLeaderEncoder.getPosition()),
+        posToMeters(rightLeaderEncoder.getPosition()));
   }
 
   @Override
@@ -218,7 +215,6 @@ public class S_DriveTrainPandemonium extends DriveTrain {
         posToMeters(leftLeader.getPosition()),
         posToMeters(rightLeader.getPosition()),
         pose);
-
   }
 
   @Override

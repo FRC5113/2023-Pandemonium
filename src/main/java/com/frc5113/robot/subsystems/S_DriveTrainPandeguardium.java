@@ -16,7 +16,6 @@ import edu.wpi.first.math.estimator.DifferentialDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
-import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
@@ -211,7 +210,7 @@ public class S_DriveTrainPandeguardium extends DriveTrain {
     // return (ticks * (Units.inchesToMeters(WHEEL_CIRCUMFERENCE))) / (2048 * GEAR_RATIO);
     double shaftRotations = ticks / 2048;
     double wheelRotations = shaftRotations / GEAR_RATIO;
-    double distTraveled = wheelRotations * Units.inchesToMeters(WHEEL_CIRCUMFERENCE);
+    double distTraveled = wheelRotations * WHEEL_CIRCUMFERENCE;
     return distTraveled;
   }
 
