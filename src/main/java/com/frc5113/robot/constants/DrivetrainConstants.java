@@ -23,21 +23,33 @@ public class DrivetrainConstants {
 
   public static final NeutralMode MOTOR_MODE_PANDEGUARDIUM = NeutralMode.Brake;
 
-  public static final double TRACK_WIDTH = Units.inchesToMeters(30.7); // inches
-  public static final double WHEEL_DIAMETER = 6.0; // inches
-  public static final double WHEEL_CIRCUMFERENCE = WHEEL_DIAMETER * Math.PI; // inches
-  public static final double GEAR_RATIO = 11.5;
+  // public static final double TRACK_WIDTH = Units.inchesToMeters(30.7); // inches
+  // public static final double WHEEL_DIAMETER = 6.0; // inches
+  // public static final double WHEEL_CIRCUMFERENCE = WHEEL_DIAMETER * Math.PI; // inches
+  // public static final double GEAR_RATIO = 11.5;
 
-  public static final double kMaxSpeedMetersPerSecond = .5;
-  public static final double kMaxAccelerationMetersPerSecondSquared = .25;
-  public static final double kRamseteB = 2.0;
-  public static final double kRamseteZeta = 0.7;
-  public static final double kPDriveVel = 2.9388;
-  public static final double kDDriveVel = 0.;
+  // public static final double kMaxSpeedMetersPerSecond = .5;
+  // public static final double kMaxAccelerationMetersPerSecondSquared = .25;
+  // public static final double kRamseteB = 2.0;
+  // public static final double kRamseteZeta = 0.7;
+  // public static final double kPDriveVel = 2.9388;
+  // public static final double kDDriveVel = 0.;
 
-  public static final double ksVolts = 0.11325;
-  public static final double kvVoltSecondsPerMeter = 2.599;
-  public static final double kaVoltSecondsSquaredPerMeter = 0.21658;
+  public static final double TRACK_WIDTH = Units.inchesToMeters(0); // inches
+  public static final double WHEEL_DIAMETER = 0.0; // inches
+  public static final double WHEEL_CIRCUMFERENCE = Units.inchesToMeters(WHEEL_DIAMETER * Math.PI); // inches
+  public static final double GEAR_RATIO = 0.0;
+
+  public static final double kMaxSpeedMetersPerSecond = 0.0;
+  public static final double kMaxAccelerationMetersPerSecondSquared = 0.0;
+  public static final double kRamseteB = 0.0;
+  public static final double kRamseteZeta = 0.0;
+  public static final double kPDriveVel = 0.0;
+  public static final double kDDriveVel = 0.0;
+
+  public static final double ksVolts = 0.0;
+  public static final double kvVoltSecondsPerMeter = 0.0;
+  public static final double kaVoltSecondsSquaredPerMeter = 0.0;
   public static final DifferentialDriveKinematics kDriveKinematics =
       new DifferentialDriveKinematics(TRACK_WIDTH);
 }

@@ -12,8 +12,11 @@ import com.frc5113.library.motors.SmartNeo;
 import com.frc5113.robot.primative.DrivetrainEncoders;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
+
+import edu.wpi.first.math.estimator.DifferentialDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
@@ -30,18 +33,19 @@ public class S_DriveTrainPandemonium extends DriveTrain {
   private final RelativeEncoder leftLeaderEncoder;
   private final RelativeEncoder rightLeaderEncoder;
   private final RelativeEncoder leftFollowerEncoder;
-  private final RelativeEncoder rightFolowerEncoder;
+  private final RelativeEncoder rightFollowerEncoder;
 
   private final MotorControllerGroup leftGroup;
   private final MotorControllerGroup rightGroup;
 
   private final DifferentialDrive drive;
+  private final DifferentialDrivePoseEstimator driveOdometry;
 
   // encoder values
   private final DrivetrainEncoders encoders;
 
   /** Creates a new DriveTrain. */
-  public S_DriveTrainPandemonium() {
+  public S_DriveTrainPandemonium(Rotation2d initialRotation) {
     leftLeader = new SmartNeo(LEFT_LEADER_ID_PANDEMONIUM, MOTOR_MODE_PANDEMONIUM);
     leftFollower = new SmartNeo(LEFT_FOLLOWER_ID_PANDEMONIUM, MOTOR_MODE_PANDEMONIUM);
     rightLeader = new SmartNeo(RIGHT_LEADER_ID_PANDEMONIUM, MOTOR_MODE_PANDEMONIUM);
@@ -60,9 +64,12 @@ public class S_DriveTrainPandemonium extends DriveTrain {
     leftLeaderEncoder = leftLeader.encoder;
     rightLeaderEncoder = rightLeader.encoder;
     leftFollowerEncoder = leftFollower.encoder;
-    rightFolowerEncoder = rightFollower.encoder;
+    rightFollowerEncoder = rightFollower.encoder;
 
     encoders = new DrivetrainEncoders();
+    driveOdometry = 
+      new DifferentialDrivePoseEstimator(kDriveKinematics, initialRotation, 0, 0, new Pose2d());
+
   }
 
   public void tankDrive(double leftSpeed, double rightSpeed) {
@@ -87,7 +94,7 @@ public class S_DriveTrainPandemonium extends DriveTrain {
     SmartDashboard.putData("Drive: Diff Drive", drive);
     SmartDashboard.putNumber("Drive: Right Leader Enc", rightLeaderEncoder.getPosition());
     SmartDashboard.putNumber("Drive: Left Leader Enc", leftLeaderEncoder.getPosition());
-    SmartDashboard.putNumber("Drive: Right Follower Enc", rightFolowerEncoder.getPosition());
+    SmartDashboard.putNumber("Drive: Right Follower Enc", rightFollowerEncoder.getPosition());
     SmartDashboard.putNumber("Drive: Left Follower Enc", leftFollowerEncoder.getPosition());
   }
 
@@ -96,7 +103,7 @@ public class S_DriveTrainPandemonium extends DriveTrain {
     leftLeaderEncoder.setPosition(0);
     leftFollowerEncoder.setPosition(0);
     rightLeaderEncoder.setPosition(0);
-    rightFolowerEncoder.setPosition(0);
+    rightFollowerEncoder.setPosition(0);
   }
 
   @Override
@@ -115,7 +122,8 @@ public class S_DriveTrainPandemonium extends DriveTrain {
         leftLeaderEncoder.getPosition(),
         rightLeaderEncoder.getPosition(),
         leftFollowerEncoder.getPosition(),
-        rightFollower.getPosition());
+        rightFollowerEncoder.getPosition());
+
   }
 
   @Override
@@ -167,7 +175,6 @@ public class S_DriveTrainPandemonium extends DriveTrain {
   public DifferentialDrive getDifferentialDrive() {
     return drive;
   }
-
   public MotorControllerGroup getLeftMotorGroup() {
     return leftGroup;
   }
@@ -179,35 +186,51 @@ public class S_DriveTrainPandemonium extends DriveTrain {
   public DrivetrainEncoders getEncoders() {
     return encoders;
   }
+  public double posToMeters(double rawPosition) {
+    return (rawPosition * WHEEL_CIRCUMFERENCE) / GEAR_RATIO;
+
+  }
+
+  public double posVelocityToMeters(double rawVelocity) {
+    return  (rawVelocity * WHEEL_CIRCUMFERENCE) / (GEAR_RATIO * 60);
+  }
 
   @Override
   public void updatePose(Rotation2d gyroAngle) {
-    // TODO Auto-generated method stub
-
+    driveOdometry.update(
+      gyroAngle, 
+      posToMeters(leftLeaderEncoder.getPosition()),
+      posToMeters(rightLeaderEncoder.getPosition()));
   }
 
   @Override
   public void tankDriveVolts(double leftVolts, double rightVolts) {
-    // TODO Auto-generated method stub
-
+    leftGroup.setVoltage(leftVolts);
+    rightGroup.setVoltage(rightVolts);
+    drive.feed();
   }
 
   @Override
   public void resetOdometry(Rotation2d gyroAngle, Pose2d pose) {
-    // TODO Auto-generated method stub
+    zeroSensors();
+    driveOdometry.resetPosition(
+        gyroAngle,
+        posToMeters(leftLeader.getPosition()),
+        posToMeters(rightLeader.getPosition()),
+        pose);
 
   }
 
   @Override
   public Pose2d getPose() {
-    // TODO Auto-generated method stub
-    return null;
+    return driveOdometry.getEstimatedPosition();
   }
 
   @Override
   public DifferentialDriveWheelSpeeds getWheelSpeeds() {
-    // TODO Auto-generated method stub
-    return null;
+    return new DifferentialDriveWheelSpeeds(
+        posVelocityToMeters(leftLeaderEncoder.getVelocity()),
+        posVelocityToMeters(rightLeaderEncoder.getVelocity()));
   }
 
   @Override

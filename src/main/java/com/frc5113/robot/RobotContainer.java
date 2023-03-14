@@ -73,13 +73,13 @@ public class RobotContainer {
   public RobotContainer() {
     switch (ROBOT_VERSION) {
       case Pandemonium:
-        driveTrain = new S_DriveTrainPandemonium();
+        driveTrain = new S_DriveTrainPandemonium(gyro.getRotation2d());
         break;
       case Pandeguardium:
         driveTrain = new S_DriveTrainPandeguardium(gyro.getRotation2d());
         break;
       default:
-        driveTrain = new S_DriveTrainPandemonium();
+        driveTrain = new S_DriveTrainPandemonium(gyro.getRotation2d());
         break;
     }
 
