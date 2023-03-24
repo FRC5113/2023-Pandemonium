@@ -15,7 +15,7 @@ import com.frc5113.robot.commands.claw.C_ActuateClaw;
 import com.frc5113.robot.commands.drive.*;
 import com.frc5113.robot.commands.photonvision.*;
 import com.frc5113.robot.enums.ArmPosition;
-import com.frc5113.robot.oi.CMPOI;
+import com.frc5113.robot.oi.XboxOI;
 import com.frc5113.robot.subsystems.*;
 import com.frc5113.robot.subsystems.drive.DriveTrain;
 import com.frc5113.robot.subsystems.drive.S_DriveTrainPandeguardium;
@@ -56,7 +56,7 @@ public class RobotContainer {
   private final S_Robot robot = new S_Robot();
 
   // Operator interface
-  private final CMPOI oi = new CMPOI();
+  private final XboxOI oi = new XboxOI();
 
   // subsystem manager
   private final Looper enabledLoop =
@@ -111,8 +111,13 @@ public class RobotContainer {
         new RepeatCommand(
             new InstantCommand(
                 () -> {
-                  arm.getLeftFalcon().set(oi.leftTrigger().get());
-                  arm.getRightFalcon().set(oi.rightTrigger().get());
+                  double left = oi.leftTrigger().get();
+                  double right = oi.rightTrigger().get();
+                  if (left > right) {
+                    arm.getLeftFalcon().set(left);
+                  } else {
+                    arm.getLeftFalcon().set(-right);
+                  }
                 },
                 arm)));
   }

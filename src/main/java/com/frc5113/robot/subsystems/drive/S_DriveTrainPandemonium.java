@@ -19,15 +19,15 @@ import java.security.InvalidParameterException;
 
 /** The drivetrain, well... drives */
 public class S_DriveTrainPandemonium extends DriveTrain {
-  private final SmartNeo leftLeader;
-  private final SmartNeo leftFollower;
-  private final SmartNeo rightLeader;
-  private final SmartNeo rightFollower;
+  private final CANSparkMax leftLeader;
+  private final CANSparkMax leftFollower;
+  private final CANSparkMax rightLeader;
+  private final CANSparkMax rightFollower;
 
   private final RelativeEncoder leftLeaderEncoder;
   private final RelativeEncoder rightLeaderEncoder;
   private final RelativeEncoder leftFollowerEncoder;
-  private final RelativeEncoder rightFolowerEncoder;
+  private final RelativeEncoder rightFollowerEncoder;
 
   private final MotorControllerGroup leftGroup;
   private final MotorControllerGroup rightGroup;
@@ -49,15 +49,16 @@ public class S_DriveTrainPandemonium extends DriveTrain {
 
     leftLeader.setInverted(true);
     leftFollower.setInverted(true);
-    rightGroup.setInverted(false);
+    rightLeader.setInverted(false);
+    rightFollower.setInverted(false);
 
     drive = new DifferentialDrive(leftGroup, rightGroup);
 
     // Generate the onboard encoders
-    leftLeaderEncoder = leftLeader.encoder;
-    rightLeaderEncoder = rightLeader.encoder;
-    leftFollowerEncoder = leftFollower.encoder;
-    rightFolowerEncoder = rightFollower.encoder;
+    leftLeaderEncoder = leftLeader.getEncoder();
+    rightLeaderEncoder = rightLeader.getEncoder();
+    leftFollowerEncoder = leftFollower.getEncoder();
+    rightFollowerEncoder = rightFollower.getEncoder();
 
     encoders = new DrivetrainEncoders();
   }
@@ -84,7 +85,7 @@ public class S_DriveTrainPandemonium extends DriveTrain {
     SmartDashboard.putData("Drive: Diff Drive", drive);
     SmartDashboard.putNumber("Drive: Right Leader Enc", rightLeaderEncoder.getPosition());
     SmartDashboard.putNumber("Drive: Left Leader Enc", leftLeaderEncoder.getPosition());
-    SmartDashboard.putNumber("Drive: Right Follower Enc", rightFolowerEncoder.getPosition());
+    SmartDashboard.putNumber("Drive: Right Follower Enc", rightFollowerEncoder.getPosition());
     SmartDashboard.putNumber("Drive: Left Follower Enc", leftFollowerEncoder.getPosition());
   }
 
@@ -93,7 +94,7 @@ public class S_DriveTrainPandemonium extends DriveTrain {
     leftLeaderEncoder.setPosition(0);
     leftFollowerEncoder.setPosition(0);
     rightLeaderEncoder.setPosition(0);
-    rightFolowerEncoder.setPosition(0);
+    rightFollowerEncoder.setPosition(0);
   }
 
   @Override
@@ -120,7 +121,7 @@ public class S_DriveTrainPandemonium extends DriveTrain {
         leftLeaderEncoder.getPosition(),
         rightLeaderEncoder.getPosition(),
         leftFollowerEncoder.getPosition(),
-        rightFollower.getPosition());
+        rightFollowerEncoder.getPosition());
   }
 
   @Override
