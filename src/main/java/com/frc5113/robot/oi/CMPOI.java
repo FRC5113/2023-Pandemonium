@@ -43,15 +43,15 @@ public class CMPOI implements IOI {
   }
 
   public Trigger armGroundButton() {
-    return xbox.b();
+    return xbox.y();
   }
 
   public Trigger armDropButton() {
-    return xbox.a();
+    return xbox.x();
   }
 
   public Trigger armButtonTest() {
-    return xbox.y();
+    return xbox.a();
   }
 
   public Trigger clawButton() {
