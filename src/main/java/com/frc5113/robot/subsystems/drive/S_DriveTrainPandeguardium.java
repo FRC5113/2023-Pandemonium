@@ -92,6 +92,12 @@ public class S_DriveTrainPandeguardium extends DriveTrain {
   public void registerPeriodicSubsystemCheck(ILooper loop) {}
 
   @Override
+  public void setAllBrake() {}
+
+  @Override
+  public void setAllCoast() {}
+
+  @Override
   public void zeroSensors() {
     leftLeader.resetEncoder();
     leftFollower.resetEncoder();

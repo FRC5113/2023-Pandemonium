@@ -9,18 +9,17 @@ import static com.frc5113.robot.constants.GeneralConstants.LOOP_DT;
 
 import com.frc5113.library.loops.Looper;
 import com.frc5113.library.loops.SubsystemManager;
-import com.frc5113.robot.commands.arm.C_GoToSetpoint;
-import com.frc5113.robot.commands.auto.Autos;
+import com.frc5113.robot.commands.auto.A_NJTAB;
 import com.frc5113.robot.commands.claw.C_ActuateClaw;
 import com.frc5113.robot.commands.drive.*;
 import com.frc5113.robot.commands.photonvision.*;
-import com.frc5113.robot.enums.ArmPosition;
 import com.frc5113.robot.oi.CMPOI;
 import com.frc5113.robot.subsystems.*;
 import com.frc5113.robot.subsystems.drive.DriveTrain;
 import com.frc5113.robot.subsystems.drive.S_DriveTrainPandeguardium;
 import com.frc5113.robot.subsystems.drive.S_DriveTrainPandemonium;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
@@ -39,7 +38,7 @@ public class RobotContainer {
   private final S_Pneumatics pneumatics = new S_Pneumatics();
 
   /** PhotonLib wrapper for defining pose estimation and targeting utils. */
-  public final S_PhotonVision photonVision = new S_PhotonVision();
+  // public final S_PhotonVision photonVision = new S_PhotonVision();
 
   /** Claw pneumatic component (derived from pneumatics) */
   private final S_Claw claw = pneumatics.getClaw();
@@ -84,7 +83,7 @@ public class RobotContainer {
     // Register loops and subsystems to the manager
     manager.registerEnabledLoops(enabledLoop);
     manager.registerDisabledLoops(disabledLoop);
-    manager.setSubsystems(driveTrain, claw, arm, pneumatics, gyro, photonVision, robot);
+    manager.setSubsystems(driveTrain, claw, arm, pneumatics, gyro, robot);
   }
 
   /**
@@ -100,22 +99,33 @@ public class RobotContainer {
     // driveTrain.setDefaultCommand(
     //     new D_TeleopDriveArcade(driveTrain, oi.arcadeSpeed(), oi.arcadeTurn()));
     driveTrain.setDefaultCommand(
-        new D_TeleopDrive(driveTrain, oi.tankL(), oi.tankR())); // Joysticks
+        new D_TeleopDrive(driveTrain, oi.tankL(), oi.tankR(), oi.slowMode())); // Joysticks
 
     oi.clawButton().whileTrue(new C_ActuateClaw(claw)); // B
-
-    oi.armGroundButton().onTrue(new C_GoToSetpoint(arm, ArmPosition.Ground)); // X
-    oi.armDropButton().onTrue(new C_GoToSetpoint(arm, ArmPosition.Drop)); //  Y
+    // oi.armGroundButton() // Y
+    //     .whileTrue(
+    //         new InstantCommand(
+    //             () -> {
+    //               arm.zeroSensors();
+    //             }));
+    oi.armDropButton()
+        .whileTrue(
+            new InstantCommand(
+                () -> {
+                  driveTrain.setAllBrake();
+                }));
+    // oi.armGroundButton().onTrue(new C_GoToSetpoint(arm, ArmPosition.Ground)); // Y
+    // oi.armDropButton().onTrue(new C_GoToSetpoint(arm, ArmPosition.Drop)); //  X
     // arm.setDefaultCommand(
     //     new RepeatCommand(
     //         new InstantCommand(
     //             () -> {
-    //               double left = oi.leftTrigger().get() * .4;
-    //               double right = oi.rightTrigger().get() * .4;
+    //               double left = oi.leftTrigger().get() * .7;
+    //               double right = oi.rightTrigger().get() * .7;
     //               if (left > right) {
-    //                 arm.getLeftFalcon().set(left);
+    //                 arm.set(left);
     //               } else {
-    //                 arm.getLeftFalcon().set(-right);
+    //                 arm.set(-right);
     //               }
     //             },
     //             arm)));
@@ -127,7 +137,8 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    return Autos.drive(driveTrain, .5, 2); // Do Nothing: new InstantCommand(() -> {});
+    return new A_NJTAB(driveTrain);
+    // return Autos.drive(driveTrain, .5, 2); // Do Nothing: new InstantCommand(() -> {});
   }
 
   public void robotInit() {}
@@ -140,17 +151,20 @@ public class RobotContainer {
     disabledLoop.stop();
     manager.stop();
     enabledLoop.start();
+    driveTrain.setAllCoast();
   }
 
   public void teleopInit() {
     disabledLoop.stop();
     manager.stop();
     enabledLoop.start();
+    driveTrain.setAllCoast();
   }
 
   public void disabledInit() {
     enabledLoop.stop();
     disabledLoop.start();
+    driveTrain.setAllBrake();
   }
 
   public void testInit() {

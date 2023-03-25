@@ -10,6 +10,7 @@ import com.frc5113.library.loops.ILooper;
 import com.frc5113.library.loops.Loop;
 import com.frc5113.robot.primative.DrivetrainEncoders;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.RelativeEncoder;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
@@ -139,6 +140,22 @@ public class S_DriveTrainPandemonium extends DriveTrain {
 
   @Override
   public void writePeriodicOutputs() {}
+
+  @Override
+  public void setAllBrake() {
+    leftFollower.setIdleMode(IdleMode.kBrake);
+    leftLeader.setIdleMode(IdleMode.kBrake);
+    rightFollower.setIdleMode(IdleMode.kBrake);
+    rightLeader.setIdleMode(IdleMode.kBrake);
+  }
+
+  @Override
+  public void setAllCoast() {
+    leftFollower.setIdleMode(IdleMode.kCoast);
+    leftLeader.setIdleMode(IdleMode.kCoast);
+    rightFollower.setIdleMode(IdleMode.kCoast);
+    rightLeader.setIdleMode(IdleMode.kCoast);
+  }
 
   @Override
   public void registerEnabledLoops(ILooper enabledLooper) {

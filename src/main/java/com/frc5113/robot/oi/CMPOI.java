@@ -31,7 +31,7 @@ public class CMPOI implements IOI {
    */
   @Override
   public Supplier<Double> tankL() {
-    return joystickLeft::getY;
+    return () -> joystickLeft.getY();
   }
 
   /**
@@ -39,7 +39,7 @@ public class CMPOI implements IOI {
    */
   @Override
   public Supplier<Double> tankR() {
-    return joystickRight::getY;
+    return () -> joystickRight.getY();
   }
 
   public Trigger armGroundButton() {
@@ -64,5 +64,9 @@ public class CMPOI implements IOI {
 
   public Supplier<Double> rightTrigger() {
     return xbox::getRightTriggerAxis;
+  }
+
+  public Supplier<Boolean> slowMode() {
+    return () -> joystickLeft.button(1).getAsBoolean() || joystickRight.button(1).getAsBoolean();
   }
 }

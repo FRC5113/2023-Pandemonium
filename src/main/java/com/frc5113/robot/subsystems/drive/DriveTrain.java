@@ -19,4 +19,8 @@ public abstract class DriveTrain extends SmartSubsystem {
   public abstract MotorControllerGroup getRightMotorGroup();
 
   public abstract DrivetrainEncoders getEncoders();
+
+  public abstract void setAllBrake();
+
+  public abstract void setAllCoast();
 }
