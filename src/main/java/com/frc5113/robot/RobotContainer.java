@@ -20,6 +20,7 @@ import com.frc5113.robot.subsystems.drive.S_DriveTrainPandeguardium;
 import com.frc5113.robot.subsystems.drive.S_DriveTrainPandemonium;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.RepeatCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
@@ -116,19 +117,19 @@ public class RobotContainer {
                 }));
     // oi.armGroundButton().onTrue(new C_GoToSetpoint(arm, ArmPosition.Ground)); // Y
     // oi.armDropButton().onTrue(new C_GoToSetpoint(arm, ArmPosition.Drop)); //  X
-    // arm.setDefaultCommand(
-    //     new RepeatCommand(
-    //         new InstantCommand(
-    //             () -> {
-    //               double left = oi.leftTrigger().get() * .7;
-    //               double right = oi.rightTrigger().get() * .7;
-    //               if (left > right) {
-    //                 arm.set(left);
-    //               } else {
-    //                 arm.set(-right);
-    //               }
-    //             },
-    //             arm)));
+    arm.setDefaultCommand(
+        new RepeatCommand(
+            new InstantCommand(
+                () -> {
+                  double left = oi.leftTrigger().get() * .3;
+                  double right = oi.rightTrigger().get() * .3;
+                  if (right > left) {
+                    arm.set(right * .8);
+                  } else {
+                    arm.set(-left);
+                  }
+                },
+                arm)));
   }
 
   /**

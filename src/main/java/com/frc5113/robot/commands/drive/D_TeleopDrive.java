@@ -4,9 +4,8 @@
 
 package com.frc5113.robot.commands.drive;
 
-import com.frc5113.library.oi.scalers.CubicCurve;
-import com.frc5113.library.oi.scalers.Curve;
 import com.frc5113.robot.subsystems.drive.DriveTrain;
+import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import java.util.function.Supplier;
 
@@ -16,7 +15,9 @@ public class D_TeleopDrive extends CommandBase {
   private final Supplier<Double> leftSpeed;
   private final Supplier<Double> rightSpeed;
   private final Supplier<Boolean> slowMode;
-  private final Curve cubicCurve;
+  // private final Curve cubicCurve;
+  private final SlewRateLimiter slewLeft;
+  private final SlewRateLimiter slewRight;
 
   /** Creates a new DEF_DriveTrain. */
   public D_TeleopDrive(
@@ -30,8 +31,9 @@ public class D_TeleopDrive extends CommandBase {
     this.leftSpeed = leftSpeed;
     this.rightSpeed = rightSpeed;
     this.driveTrain = driveTrain;
-    this.cubicCurve = new CubicCurve(0, 0, .1);
     this.slowMode = slowMode;
+    this.slewLeft = new SlewRateLimiter(1.75);
+    this.slewRight = new SlewRateLimiter(1.75);
   }
 
   // Called when the command is initially scheduled.
@@ -45,7 +47,8 @@ public class D_TeleopDrive extends CommandBase {
     if (slowMode.get()) {
       driveTrain.tankDrive(leftSpeed.get() * .5, rightSpeed.get() * .5);
     } else {
-      driveTrain.tankDrive(leftSpeed.get(), rightSpeed.get());
+      driveTrain.tankDrive(
+          slewLeft.calculate(leftSpeed.get()), slewRight.calculate(rightSpeed.get()));
     }
   }
 
