@@ -9,12 +9,10 @@ import static com.frc5113.robot.constants.GeneralConstants.LOOP_DT;
 
 import com.frc5113.library.loops.Looper;
 import com.frc5113.library.loops.SubsystemManager;
-import com.frc5113.robot.commands.arm.C_GoToSetpoint;
 import com.frc5113.robot.commands.auto.Autos;
 import com.frc5113.robot.commands.claw.C_ActuateClaw;
 import com.frc5113.robot.commands.drive.*;
 import com.frc5113.robot.commands.photonvision.*;
-import com.frc5113.robot.enums.ArmPosition;
 import com.frc5113.robot.oi.XboxOI;
 import com.frc5113.robot.subsystems.*;
 import com.frc5113.robot.subsystems.drive.DriveTrain;
@@ -104,15 +102,15 @@ public class RobotContainer {
 
     oi.clawButton().whileTrue(new C_ActuateClaw(claw));
 
-    oi.armGroundButton().onTrue(new C_GoToSetpoint(arm, ArmPosition.Ground));
-    oi.armDropButton().onTrue(new C_GoToSetpoint(arm, ArmPosition.Drop));
-    oi.armButtonTest().whileTrue(new RepeatCommand(new InstantCommand(() -> arm.set(0.3), arm)));
+    // oi.armGroundButton().onTrue(new C_GoToSetpoint(arm, ArmPosition.Ground));
+    // oi.armDropButton().onTrue(new C_GoToSetpoint(arm, ArmPosition.Drop));
+    // oi.armButtonTest().whileTrue(new RepeatCommand(new InstantCommand(() -> arm.set(0.3), arm)));
     arm.setDefaultCommand(
         new RepeatCommand(
             new InstantCommand(
                 () -> {
-                  double left = oi.leftTrigger().get();
-                  double right = oi.rightTrigger().get();
+                  double left = oi.leftTrigger().get() * .4;
+                  double right = oi.rightTrigger().get() * .4;
                   if (left > right) {
                     arm.getLeftFalcon().set(left);
                   } else {

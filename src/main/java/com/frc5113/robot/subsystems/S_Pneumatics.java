@@ -5,8 +5,6 @@
 package com.frc5113.robot.subsystems;
 
 import static com.frc5113.robot.constants.PneumaticsConstants.ANALOG_SENSOR_PORT;
-import static com.frc5113.robot.constants.PneumaticsConstants.LOOP_MAX_PRESSURE;
-import static com.frc5113.robot.constants.PneumaticsConstants.LOOP_MIN_PRESSURE;
 
 import com.frc5113.library.loops.ILooper;
 import com.frc5113.library.subsystem.SmartSubsystem;
@@ -28,7 +26,8 @@ public class S_Pneumatics extends SmartSubsystem {
     claw = new S_Claw(pneumaticHub);
 
     // enable pneumatics compressor to refill loop at specified pressures
-    pneumaticHub.enableCompressorAnalog(LOOP_MIN_PRESSURE, LOOP_MAX_PRESSURE);
+    // pneumaticHub.enableCompressorAnalog(LOOP_MIN_PRESSURE, LOOP_MAX_PRESSURE);
+    pneumaticHub.enableCompressorDigital();
   }
 
   // Methods required by SmartSubsystem
