@@ -4,12 +4,9 @@
 
 package com.frc5113.robot.commands.drive;
 
-import com.frc5113.library.oi.scalers.CubicCurve;
 import com.frc5113.robot.subsystems.drive.DriveTrain;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import org.opencv.core.Mat;
-
 import java.util.function.Supplier;
 
 public class D_TeleopDrive extends CommandBase {
@@ -47,8 +44,8 @@ public class D_TeleopDrive extends CommandBase {
   @Override
   public void execute() {
     // System.out.print(leftSpeed.get() + " - " + rightSpeed.get());
-    if (slowMode.get()) {
-//      driveTrain.tankDrive(leftSpeed.get() * .6, rightSpeed.get() * .6);
+    if (!slowMode.get()) {
+      //      driveTrain.tankDrive(leftSpeed.get() * .6, rightSpeed.get() * .6);
       driveTrain.tankDrive(ollieScale(leftSpeed.get()), ollieScale(rightSpeed.get()));
     } else {
       driveTrain.tankDrive(
@@ -69,6 +66,6 @@ public class D_TeleopDrive extends CommandBase {
   }
 
   private double ollieScale(double x) {
-    return x * Math.signum(x);
+    return x * Math.abs(x);
   }
 }

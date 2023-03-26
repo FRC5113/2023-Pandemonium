@@ -17,7 +17,7 @@ public class A_NJTAB extends SequentialCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addRequirements(drive);
-    Command n1 = new A_AutoDrive(drive, () -> 0.5, () -> 0.35, .5);
+    Command n1 = new A_AutoDrive(drive, () -> 0.5, () -> 0.5, .5);
     Command n2 = new A_AutoDrive(drive, () -> 0.0, () -> 0.0, .5);
     Command n3 = new A_AutoDrive(drive, () -> -0.5, () -> -0.5, 1.5);
     Command n4 = new A_AutoDrive(drive, () -> 0.0, () -> 0.0, .5);

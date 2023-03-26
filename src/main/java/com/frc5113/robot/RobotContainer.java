@@ -13,7 +13,7 @@ import com.frc5113.robot.commands.auto.A_NJTAB;
 import com.frc5113.robot.commands.claw.C_ActuateClaw;
 import com.frc5113.robot.commands.drive.*;
 import com.frc5113.robot.commands.photonvision.*;
-import com.frc5113.robot.oi.CMPOI;
+import com.frc5113.robot.oi.XboxOI;
 import com.frc5113.robot.subsystems.*;
 import com.frc5113.robot.subsystems.drive.DriveTrain;
 import com.frc5113.robot.subsystems.drive.S_DriveTrainPandeguardium;
@@ -54,7 +54,7 @@ public class RobotContainer {
   private final S_Robot robot = new S_Robot();
 
   // Operator interface
-  private final CMPOI oi = new CMPOI();
+  private final XboxOI oi = new XboxOI();
   // private final XboxOI oi = new XboxOI();
 
   // subsystem manager
@@ -97,10 +97,10 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    // driveTrain.setDefaultCommand(
-    //     new D_TeleopDriveArcade(driveTrain, oi.arcadeSpeed(), oi.arcadeTurn()));
     driveTrain.setDefaultCommand(
-        new D_TeleopDrive(driveTrain, oi.tankL(), oi.tankR(), oi.slowMode())); // Joysticks
+        new D_TeleopDriveArcade(driveTrain, oi.arcadeSpeed(), oi.arcadeTurn()));
+    // driveTrain.setDefaultCommand(
+    //     new D_TeleopDrive(driveTrain, oi.tankL(), oi.tankR(), oi.slowMode())); // Joysticks
 
     oi.clawButton().whileTrue(new C_ActuateClaw(claw)); // B
     // oi.armGroundButton() // Y
@@ -121,8 +121,8 @@ public class RobotContainer {
         new RepeatCommand(
             new InstantCommand(
                 () -> {
-                  double left = oi.leftTrigger().get() * .3;
-                  double right = oi.rightTrigger().get() * .3;
+                  double left = oi.leftTrigger().get() * .5;
+                  double right = oi.rightTrigger().get() * .6;
                   if (right > left) {
                     arm.set(right * .8);
                   } else {

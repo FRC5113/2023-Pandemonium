@@ -62,4 +62,8 @@ public class XboxOI implements IOI {
   public Supplier<Double> rightTrigger() {
     return xbox::getRightTriggerAxis;
   }
+
+  public Supplier<Boolean> slowMode() {
+    return () -> xbox.y().getAsBoolean();
+  }
 }
