@@ -4,9 +4,12 @@
 
 package com.frc5113.robot.commands.drive;
 
+import com.frc5113.library.oi.scalers.CubicCurve;
 import com.frc5113.robot.subsystems.drive.DriveTrain;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import org.opencv.core.Mat;
+
 import java.util.function.Supplier;
 
 public class D_TeleopDrive extends CommandBase {
@@ -32,8 +35,8 @@ public class D_TeleopDrive extends CommandBase {
     this.rightSpeed = rightSpeed;
     this.driveTrain = driveTrain;
     this.slowMode = slowMode;
-    this.slewLeft = new SlewRateLimiter(1.75);
-    this.slewRight = new SlewRateLimiter(1.75);
+    this.slewLeft = new SlewRateLimiter(1.75, -2.5, 0);
+    this.slewRight = new SlewRateLimiter(1.75, -2.5, 0);
   }
 
   // Called when the command is initially scheduled.
@@ -45,7 +48,8 @@ public class D_TeleopDrive extends CommandBase {
   public void execute() {
     // System.out.print(leftSpeed.get() + " - " + rightSpeed.get());
     if (slowMode.get()) {
-      driveTrain.tankDrive(leftSpeed.get() * .5, rightSpeed.get() * .5);
+//      driveTrain.tankDrive(leftSpeed.get() * .6, rightSpeed.get() * .6);
+      driveTrain.tankDrive(ollieScale(leftSpeed.get()), ollieScale(rightSpeed.get()));
     } else {
       driveTrain.tankDrive(
           slewLeft.calculate(leftSpeed.get()), slewRight.calculate(rightSpeed.get()));
@@ -62,5 +66,9 @@ public class D_TeleopDrive extends CommandBase {
   @Override
   public boolean isFinished() {
     return false;
+  }
+
+  private double ollieScale(double x) {
+    return x * Math.signum(x);
   }
 }
