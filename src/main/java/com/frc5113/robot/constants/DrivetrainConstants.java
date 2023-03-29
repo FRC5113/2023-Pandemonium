@@ -5,7 +5,7 @@ import com.frc5113.robot.enums.RobotVersion;
 import com.revrobotics.CANSparkMax.IdleMode;
 
 public class DrivetrainConstants {
-  public static final RobotVersion ROBOT_VERSION = RobotVersion.Pandemonium;
+  public static final RobotVersion ROBOT_VERSION = RobotVersion.PandemoniumDemoDay;
 
   public static final int LEFT_LEADER_ID_PANDEMONIUM = 12;
   public static final int LEFT_FOLLOWER_ID_PANDEMONIUM = 22;

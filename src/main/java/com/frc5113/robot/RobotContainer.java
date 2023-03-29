@@ -18,9 +18,8 @@ import com.frc5113.robot.subsystems.*;
 import com.frc5113.robot.subsystems.drive.DriveTrain;
 import com.frc5113.robot.subsystems.drive.S_DriveTrainPandeguardium;
 import com.frc5113.robot.subsystems.drive.S_DriveTrainPandemonium;
+import com.frc5113.robot.subsystems.drive.S_DriveTrainPandemoniumDemoDay;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.RepeatCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
@@ -73,6 +72,9 @@ public class RobotContainer {
       case Pandeguardium:
         driveTrain = new S_DriveTrainPandeguardium();
         break;
+      case PandemoniumDemoDay:
+        driveTrain = new S_DriveTrainPandemoniumDemoDay();
+        break;
       default:
         driveTrain = new S_DriveTrainPandemonium();
         break;
@@ -109,27 +111,27 @@ public class RobotContainer {
     //             () -> {
     //               arm.zeroSensors();
     //             }));
-    oi.armDropButton()
-        .whileTrue(
-            new InstantCommand(
-                () -> {
-                  driveTrain.setAllBrake();
-                }));
+    // oi.armDropButton()
+    //     .whileTrue(
+    //         new InstantCommand(
+    //             () -> {
+    //               driveTrain.setAllBrake();
+    //             }));
     // oi.armGroundButton().onTrue(new C_GoToSetpoint(arm, ArmPosition.Ground)); // Y
     // oi.armDropButton().onTrue(new C_GoToSetpoint(arm, ArmPosition.Drop)); //  X
-    arm.setDefaultCommand(
-        new RepeatCommand(
-            new InstantCommand(
-                () -> {
-                  double left = oi.leftTrigger().get() * .5;
-                  double right = oi.rightTrigger().get() * .6;
-                  if (right > left) {
-                    arm.set(right * .8);
-                  } else {
-                    arm.set(-left);
-                  }
-                },
-                arm)));
+    // arm.setDefaultCommand(
+    //     new RepeatCommand(
+    //         new InstantCommand(
+    //             () -> {
+    //               double left = oi.leftTrigger().get() * .5;
+    //               double right = oi.rightTrigger().get() * .6;
+    //               if (right > left) {
+    //                 arm.set(right * .8);
+    //               } else {
+    //                 arm.set(-left);
+    //               }
+    //             },
+    //             arm)));
   }
 
   /**
