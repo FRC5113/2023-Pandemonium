@@ -7,7 +7,7 @@ import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.math.util.Units;
 
 public class DrivetrainConstants {
-  public static final RobotVersion ROBOT_VERSION = RobotVersion.Pandeguardium;
+  public static final RobotVersion ROBOT_VERSION = RobotVersion.Pandemonium;
 
   public static final int LEFT_LEADER_ID_PANDEMONIUM = 12;
   public static final int LEFT_FOLLOWER_ID_PANDEMONIUM = 22;
@@ -42,16 +42,16 @@ public class DrivetrainConstants {
       Units.inchesToMeters(WHEEL_DIAMETER * Math.PI); // inches
   public static final double GEAR_RATIO = 12.75;
 
-  public static final double kMaxSpeedMetersPerSecond = 0.0;
-  public static final double kMaxAccelerationMetersPerSecondSquared = 0.0;
-  public static final double kRamseteB = 0.0;
-  public static final double kRamseteZeta = 0.0;
-  public static final double kPDriveVel = 0.0;
+  public static final double kMaxSpeedMetersPerSecond = 1.0;
+  public static final double kMaxAccelerationMetersPerSecondSquared = 0.5;
+  public static final double kRamseteB = 2.0;
+  public static final double kRamseteZeta = 0.7;
+  public static final double kPDriveVel = 1.0822;
   public static final double kDDriveVel = 0.0;
 
-  public static final double ksVolts = 0.0;
-  public static final double kvVoltSecondsPerMeter = 0.0;
-  public static final double kaVoltSecondsSquaredPerMeter = 0.0;
+  public static final double ksVolts = 0.13119;
+  public static final double kvVoltSecondsPerMeter = 3.4317;
+  public static final double kaVoltSecondsSquaredPerMeter = 0.35008;
   public static final DifferentialDriveKinematics kDriveKinematics =
       new DifferentialDriveKinematics(TRACK_WIDTH);
 }

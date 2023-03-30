@@ -8,9 +8,9 @@ import static com.frc5113.robot.constants.DrivetrainConstants.*;
 
 import com.frc5113.library.loops.ILooper;
 import com.frc5113.library.loops.Loop;
-import com.frc5113.library.motors.SmartNeo;
 import com.frc5113.robot.primative.DrivetrainEncoders;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.RelativeEncoder;
 import edu.wpi.first.math.estimator.DifferentialDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -23,10 +23,10 @@ import java.security.InvalidParameterException;
 
 /** The drivetrain, well... drives */
 public class S_DriveTrainPandemonium extends DriveTrain {
-  private final SmartNeo leftLeader;
-  private final SmartNeo leftFollower;
-  private final SmartNeo rightLeader;
-  private final SmartNeo rightFollower;
+  private final CANSparkMax leftLeader;
+  private final CANSparkMax leftFollower;
+  private final CANSparkMax rightLeader;
+  private final CANSparkMax rightFollower;
 
   private final RelativeEncoder leftLeaderEncoder;
   private final RelativeEncoder rightLeaderEncoder;
@@ -44,25 +44,26 @@ public class S_DriveTrainPandemonium extends DriveTrain {
 
   /** Creates a new DriveTrain. */
   public S_DriveTrainPandemonium(Rotation2d initialRotation) {
-    leftLeader = new SmartNeo(LEFT_LEADER_ID_PANDEMONIUM, MOTOR_MODE_PANDEMONIUM);
-    leftFollower = new SmartNeo(LEFT_FOLLOWER_ID_PANDEMONIUM, MOTOR_MODE_PANDEMONIUM);
-    rightLeader = new SmartNeo(RIGHT_LEADER_ID_PANDEMONIUM, MOTOR_MODE_PANDEMONIUM);
-    rightFollower = new SmartNeo(RIGHT_FOLLOWER_ID_PANDEMONIUM, MOTOR_MODE_PANDEMONIUM);
+    leftLeader = new CANSparkMax(LEFT_LEADER_ID_PANDEMONIUM, MotorType.kBrushless);
+    rightLeader = new CANSparkMax(RIGHT_LEADER_ID_PANDEMONIUM, MotorType.kBrushless);
+    leftFollower = new CANSparkMax(LEFT_FOLLOWER_ID_PANDEMONIUM, MotorType.kBrushless);
+    rightFollower = new CANSparkMax(RIGHT_FOLLOWER_ID_PANDEMONIUM, MotorType.kBrushless);
 
     leftGroup = new MotorControllerGroup(leftLeader, leftFollower);
     rightGroup = new MotorControllerGroup(rightLeader, rightFollower);
 
     leftLeader.setInverted(true);
     leftFollower.setInverted(true);
-    rightGroup.setInverted(false);
+    rightLeader.setInverted(false);
+    rightFollower.setInverted(false);
 
     drive = new DifferentialDrive(leftGroup, rightGroup);
 
     // Generate the onboard encoders
-    leftLeaderEncoder = leftLeader.encoder;
-    rightLeaderEncoder = rightLeader.encoder;
-    leftFollowerEncoder = leftFollower.encoder;
-    rightFollowerEncoder = rightFollower.encoder;
+    leftLeaderEncoder = leftLeader.getEncoder();
+    rightLeaderEncoder = rightLeader.getEncoder();
+    leftFollowerEncoder = leftFollower.getEncoder();
+    rightFollowerEncoder = rightFollower.getEncoder();
 
     encoders = new DrivetrainEncoders();
     driveOdometry =
@@ -212,8 +213,8 @@ public class S_DriveTrainPandemonium extends DriveTrain {
     zeroSensors();
     driveOdometry.resetPosition(
         gyroAngle,
-        posToMeters(leftLeader.getPosition()),
-        posToMeters(rightLeader.getPosition()),
+        posToMeters(leftLeaderEncoder.getPosition()),
+        posToMeters(rightLeaderEncoder.getPosition()),
         pose);
   }
 
