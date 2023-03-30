@@ -2,7 +2,7 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package com.frc5113.robot.subsystems;
+package com.frc5113.robot.subsystems.drive;
 
 import static com.frc5113.robot.constants.DrivetrainConstants.*;
 
@@ -82,6 +82,20 @@ public class S_DriveTrainPandeguardium extends DriveTrain {
     SmartDashboard.putNumber("Drive: Right Follower Enc", rightFollower.getEncoderRotations());
     SmartDashboard.putNumber("Drive: Left Follower Enc", leftFollower.getEncoderRotations());
   }
+
+  @Override
+  public boolean checkSubsystemPeriodic() {
+    return true;
+  }
+
+  @Override
+  public void registerPeriodicSubsystemCheck(ILooper loop) {}
+
+  @Override
+  public void setAllBrake() {}
+
+  @Override
+  public void setAllCoast() {}
 
   @Override
   public void zeroSensors() {

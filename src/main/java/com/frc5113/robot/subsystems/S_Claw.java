@@ -67,6 +67,14 @@ public class S_Claw extends SmartSubsystem {
   }
 
   @Override
+  public boolean checkSubsystemPeriodic() {
+    return true;
+  }
+
+  @Override
+  public void registerPeriodicSubsystemCheck(ILooper loop) {}
+
+  @Override
   public boolean checkSubsystem() {
     return hub.checkSolenoidChannel(CLAW_BACKWARD_SOLENOID_ID)
         && hub.checkSolenoidChannel(CLAW_FORWARD_SOLENOID_ID);

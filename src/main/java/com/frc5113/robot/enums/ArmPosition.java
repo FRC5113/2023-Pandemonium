@@ -5,7 +5,7 @@ public enum ArmPosition {
   // Note that arm positions are in falcon ticks, so the numbers get high
   Folded(0),
   Ground(10000),
-  Drop(50000);
+  Drop(50000); // Theo 83k
   private double setpoint;
 
   ArmPosition(double setpoint) {

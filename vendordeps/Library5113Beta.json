@@ -1,7 +1,7 @@
 {
     "fileName": "Library5113Beta.json",
     "name": "Library5113Beta",
-    "version": "3f00499",
+    "version": "c6f71f1",
     "uuid": "5869a73f-d175-403d-9107-8ce1766835ba",
     "mavenUrls": [
         "https://frc5113.github.io/LibraryBuilds/rcrepo/looper/"
@@ -11,7 +11,7 @@
         {
             "groupId": "com.frc5113",
             "artifactId": "library",
-            "version": "3f00499"
+            "version": "c6f71f1"
         }
     ],
     "jniDependencies": [],

@@ -4,7 +4,7 @@
 
 package com.frc5113.robot.commands.drive;
 
-import com.frc5113.robot.subsystems.DriveTrain;
+import com.frc5113.robot.subsystems.drive.DriveTrain;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import java.util.function.Supplier;
 
@@ -32,13 +32,17 @@ public class D_TeleopDriveArcade extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    driveTrain.arcadeDrive(arcadeSpeed.get(), arcadeTurn.get());
+    driveTrain.arcadeDrive(ollieScale(arcadeSpeed.get()), ollieScale(arcadeTurn.get()));
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
     driveTrain.arcadeDrive(0, 0);
+  }
+
+  private double ollieScale(double x) {
+    return x * Math.abs(x);
   }
 
   // Returns true when the command should end.

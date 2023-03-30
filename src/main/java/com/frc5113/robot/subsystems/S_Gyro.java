@@ -61,6 +61,14 @@ public class S_Gyro extends SmartSubsystem {
   }
 
   @Override
+  public boolean checkSubsystemPeriodic() {
+    return true;
+  }
+
+  @Override
+  public void registerPeriodicSubsystemCheck(ILooper loop) {}
+
+  @Override
   public void stop() {}
 
   @Override

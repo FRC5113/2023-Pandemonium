@@ -135,6 +135,14 @@ public class S_PhotonVision extends SmartSubsystem {
   }
 
   @Override
+  public boolean checkSubsystemPeriodic() {
+    return true;
+  }
+
+  @Override
+  public void registerPeriodicSubsystemCheck(ILooper loop) {}
+
+  @Override
   public void readPeriodicInputs() {
     var result = camera.getLatestResult();
     updateBestTarget(result);

@@ -13,6 +13,7 @@ import com.frc5113.library.loops.ILooper;
 import com.frc5113.library.loops.Loop;
 import com.frc5113.library.motors.SmartFalcon;
 import com.frc5113.library.subsystem.SmartSubsystem;
+import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
@@ -29,14 +30,17 @@ public class S_Arm extends SmartSubsystem {
 
   private double leftFalconEncoderTicks;
   private double rightFalconEncoderTicks;
+  private final SlewRateLimiter sLimiter;
 
   /** Creates a new Arm Subsystem. */
   public S_Arm() {
-    rightFalcon = new SmartFalcon(RIGHT_FALCON_CAN_ID); // create a regular falcon on the right side
+    rightFalcon =
+        new SmartFalcon(RIGHT_FALCON_CAN_ID, false); // create a regular falcon on the right side
     leftFalcon =
-        new SmartFalcon(LEFT_FALCON_CAN_ID, true); // create a inverted falcon on the left side
+        new SmartFalcon(LEFT_FALCON_CAN_ID, false); // create a inverted falcon on the left side
     leftFalcon.follow(rightFalcon); // this is necessary, and motor controller groups can't be used
     // because we will be using "position set()"
+    sLimiter = new SlewRateLimiter(0.5);
   }
 
   // Stuff required by SmartSubsystem
@@ -100,6 +104,31 @@ public class S_Arm extends SmartSubsystem {
   }
 
   public double getTickPosition() {
-    return rightFalcon.getEncoderTicks();
+    return leftFalconEncoderTicks;
   }
+
+  public SmartFalcon getLeftFalcon() {
+    return leftFalcon;
+  }
+
+  public SmartFalcon getRightFalcon() {
+    return rightFalcon;
+  }
+
+  public void set(double speed) {
+    // todo: hard limit, slew
+    // if (leftFalconEncoderTicks < 500000) {
+    leftFalcon.set(sLimiter.calculate(speed));
+    // } else {
+    // System.out.println("limited " + leftFalconEncoderTicks);
+    // }
+  }
+
+  @Override
+  public boolean checkSubsystemPeriodic() {
+    return true;
+  }
+
+  @Override
+  public void registerPeriodicSubsystemCheck(ILooper loop) {}
 }
